@@ -1,0 +1,69 @@
+@startuml
+
+abstract class Repository
+
+Repository <|-- MedDataRepository
+Repository <|-- DoctorDataRepository
+Repository <|-- DataRepository
+
+HiveObject <|-- MedData
+MedData o-- MedDataBox
+MedDataBox o-- MedDataRepository
+
+HiveObject <|-- DoctorData
+DoctorData o-- DoctorDataBox
+DoctorDataBox o-- DoctorDataRepository
+
+MedDataRepository o-- DataRepository
+DoctorDataRepository o-- DataRepository
+
+abstract Repository {
+    Future<void> save(T newObject);
+    Future<void> delete(T objectToDelete);
+    Future<List<T>> getAll();
+}
+
+class DataRepository {
+    _medData = locator<MedDataRepository>();
+    _doctorData = locator<DoctorDataRepository>();
+}
+
+class HiveObject{}
+
+class MedDataRepository {
+    -MedDataBox _medDataBox;
+}
+
+class MedDataBox {
+    -Box _box;
+    initialiseHive();
+    Future<Box> get box();
+}
+
+class MedData {
+    int id;
+    String rxcui;
+    String name;
+    String mfg;
+    String imageURL;
+    List<String> info;
+    List<String> warnings;
+    int doctorId;
+
+    int compareTo(MedData otherMed);
+    String toString({bool warningMsgs: false})
+  }
+
+class DoctorData {
+    int id;
+    String name;
+    String phone;
+
+    String toString();
+}
+
+class DoctorDataRepository {
+    -DoctorDataBox _doctorDataBox;
+}
+
+@enduml
