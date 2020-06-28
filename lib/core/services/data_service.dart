@@ -41,6 +41,10 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
     return medList;
   }
 
+  MedData getMedByRxcui(String rxcui) {
+    return _medRepository.getByRxcui(rxcui);
+  }
+
   /// Returns a Name sorted list of doctors.
   ///
   /// Sort is from the 'name' field NOT lastName, firstName
@@ -108,8 +112,7 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
   @override
   Future<void> delete(Object objectToDelete) async {
     if (objectToDelete is MedData) {
-      _medRepository.delete(objectToDelete);
-      // TODO: Delete RXCUI.jpg from medImages directory.
+      await _medRepository.delete(objectToDelete);
     }
     if (objectToDelete is DoctorData) {
       _doctorRepository.delete(objectToDelete);

@@ -57,6 +57,13 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     return _meds[index];
   }
 
+  MedData getByRxcui(String rxcui) {
+    int index = _meds.indexWhere((element) => element.rxcui == rxcui);
+    if (index == -1) return null;
+    log('Returning: ${_meds[index].name}', linenumber: lineNumber(StackTrace.current));
+    return _meds[index];
+  }
+
   @override
   MedData getByName(String name) {
     int index = _meds.indexWhere((element) => element.name == name);
@@ -96,7 +103,7 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
   @override
   Future<void> delete(MedData objectToDelete) async {
     final _box = await _medDataBox.box;
-    _box.delete(objectToDelete.key);
+    await _box.delete(objectToDelete.key);
   }
 
   @override

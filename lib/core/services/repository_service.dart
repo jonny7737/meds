@@ -19,6 +19,8 @@ abstract class RepositoryService with ChangeNotifier {
 
   DoctorData getDoctorByName(String name);
 
+  MedData getMedByRxcui(String rxcui);
+
   List<DoctorData> getAllDoctors();
 
   Future clearAllDoctors();

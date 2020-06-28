@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 class HomeViewModel extends ChangeNotifier with Logger {
   HomeViewModel() {
-    setDebug(false);
+    setDebug(true);
     _setImageDirectory();
     updateListData();
     _repository.addListener(() {
@@ -153,8 +153,26 @@ class HomeViewModel extends ChangeNotifier with Logger {
     notifyListeners();
   }
 
+  MedData getMedByRxcui(String rxcui) {
+    return _repository.getMedByRxcui(rxcui);
+  }
+
   void delete(Object objectToDelete) async {
-    /// TODO: Add code to delete image file if deleting a medication
     await _repository.delete(objectToDelete);
+
+    if (objectToDelete is DoctorData) return;
+
+    final dir = Directory(imageDirectoryPath);
+    if (dir.existsSync()) {
+      var files = dir.listSync().toList();
+      files.forEach((i) {
+        String _rxcui = p.basename(i.path).split(".")[0];
+        if (getMedByRxcui(_rxcui) == null) {
+          log('Deleting: ${i.path}', linenumber: lineNumber(StackTrace.current));
+          File(i.path).deleteSync();
+          log('Deleted: $_rxcui', linenumber: lineNumber(StackTrace.current));
+        }
+      });
+    }
   }
 }
