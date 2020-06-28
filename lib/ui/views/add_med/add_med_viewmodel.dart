@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:meds/core/helpers/med_request.dart';
 import 'package:meds/core/mixins/logger.dart';
@@ -5,23 +7,28 @@ import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/models/temp_med.dart';
 import 'package:meds/core/services/repository_service.dart';
 import 'package:meds/locator.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 class AddMedViewModel extends ChangeNotifier with Logger {
+  String imageDirectoryPath;
+
   AddMedViewModel() {
     setDebug(true);
+    _setImageDirectory();
   }
 
   RepositoryService _repository = locator();
 
   bool _isDisposed = false;
 
-  /// Cannot use @override here because of the AnimationController being lost.
-//  void dispose() {
-//    if (_isDisposed) return;
-//    _isDisposed = true;
-//    log('Has been disposed.', linenumber: lineNumber(StackTrace.current));
-//    //super.dispose();
-//  }
+  @override
+  void dispose() {
+    if (_isDisposed) return;
+    _isDisposed = true;
+    log('Has been disposed.', linenumber: lineNumber(StackTrace.current));
+    super.dispose();
+  }
 
   int _editIndex;
   int get editIndex => _editIndex;
@@ -60,6 +67,8 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     if (_newMedName.length > 2 && _newMedDose.length > 2 && _newMedFrequency.length > 3) return true;
     return false;
   }
+
+  String get newMedDose => _newMedDose;
 
   void setMedName(String name) => _newMedName = name;
   void setMedDose(String dose) => _newMedDose = dose;
@@ -208,5 +217,26 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     RepositoryService repository = locator();
     repository.save(_medData);
     _medsAdded = true;
+  }
+
+  ///******************************************************************************
+  ///
+  void _setImageDirectory() async {
+    Directory imageDirectory = await getApplicationDocumentsDirectory();
+    Directory subDir = await Directory('${imageDirectory.path}/tempMedImages').create(recursive: true);
+    imageDirectoryPath = subDir.path;
+  }
+
+  File _file(String filename) {
+    String pathName = p.join(imageDirectoryPath, filename);
+    return File(pathName);
+  }
+
+  File imageFile(String rxcui) {
+    List<MedData> _meds = _repository.getAllMeds();
+    int ndx = _meds.indexWhere((element) => element.rxcui == rxcui);
+    if (ndx == -1) return null;
+    File file = _file('${_meds[ndx].rxcui}.jpg');
+    return file;
   }
 }

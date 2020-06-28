@@ -49,7 +49,7 @@ class MedRequest with Logger {
   TempMed med(int index) => meds[index];
 
   Future<bool> medInfoByName(String medName) async {
-    setDebug(false);
+    setDebug(true);
 
     int medCount = 0;
     _rxCUIList = null;
@@ -196,7 +196,7 @@ class MedRequest with Logger {
       response = await http.get(url).timeout(Duration(seconds: 10));
     } on Exception catch (e) {
       log(e.toString());
-      throw Exception('Failed to load XML');
+      throw Exception('Failed to load MedLine XML');
     }
 
     if (response.statusCode == 200) {
@@ -216,7 +216,7 @@ class MedRequest with Logger {
       }
       return link;
     } else {
-      throw Exception('Failed to load XML');
+      throw Exception('Failed to load MedLine XML');
     }
   }
 
@@ -228,11 +228,11 @@ class MedRequest with Logger {
         var html = HTMLParser.parse(response.body.toString());
         return html;
       } else {
-        throw Exception('Failed to load HTML');
+        throw Exception('Failed to load Detail HTML');
       }
     } catch (e) {
       log(e.toString());
-      throw Exception('Failed to load HTML');
+      throw Exception('Failed to load Detail HTML');
     }
   }
 
@@ -270,7 +270,7 @@ class MedRequest with Logger {
     List<String> urls = [];
     List<String> mfgs = [];
     String url = "https://rximage.nlm.nih.gov/api/rximage/1/rxnav"
-        "?rxcui=$rxcui&resolution=600";
+        "?rxcui=$rxcui&resolution=600&rLimit=10";
 
     final response = await http.get(url);
 
@@ -283,6 +283,7 @@ class MedRequest with Logger {
         names.add(rx['name'].toString());
         urls.add(rx['imageUrl'].toString());
         mfgs.add(rx['labeler'].toString());
+        log('${rx['labeler'].toString()}', linenumber: lineNumber(StackTrace.current));
       }
       if (rxcui == "847232") names.add("Lantus 3ml");
       ImageInfo imageInfo = ImageInfo(names: names, urls: urls, mfgs: mfgs);

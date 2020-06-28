@@ -55,7 +55,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
                 _showCupertinoErrorDialog(context);
               }
             }
-            // If form has errors OR no new med set
+            // Else if form has errors OR no new med set
           } else {
             log(
               'FormErrors: ${_model.formHasErrors}',

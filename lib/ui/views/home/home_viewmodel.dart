@@ -154,6 +154,7 @@ class HomeViewModel extends ChangeNotifier with Logger {
   }
 
   void delete(Object objectToDelete) async {
+    /// TODO: Add code to delete image file if deleting a medication
     await _repository.delete(objectToDelete);
   }
 }

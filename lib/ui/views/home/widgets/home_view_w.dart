@@ -85,13 +85,14 @@ class HomeViewWidget extends StatelessWidget with Logger {
                       confirmDismiss: (direction) async {
                         if (direction == DismissDirection.startToEnd) {
                           /// Start edit process here and return false to not dismiss
-                          bool result = await Navigator.pushNamed<bool>(context, addMedRoute,
-                              arguments: AddMedArguments(editIndex: index));
-                          if (result != null && result) {
-                            _model.modelDirty(true);
-                          }
+                          ///
+                          /// navigateToAddMed is done this way to eliminate an exception.
+                          ///   If the navigation is done here, the Dismissible AnimationController
+                          ///   throws an exception for calling reverse() after dispose()
+                          navigateToAddMed(context, index, _model);
                           return false;
                         }
+
                         /// true triggers a delete
                         return true;
                       },
@@ -123,5 +124,12 @@ class HomeViewWidget extends StatelessWidget with Logger {
         ),
       ),
     );
+  }
+
+  Future navigateToAddMed(BuildContext context, int index, HomeViewModel _model) async {
+    bool result = await Navigator.pushNamed<bool>(context, addMedRoute, arguments: AddMedArguments(editIndex: index));
+    if (result != null && result) {
+      _model.modelDirty(true);
+    }
   }
 }

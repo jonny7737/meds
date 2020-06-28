@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
+import 'package:meds/ui/views/add_med/widgets/list_view_card.dart';
 import 'package:provider/provider.dart';
 
 class MedsLoaded extends StatelessWidget with Logger {
@@ -22,9 +23,25 @@ class MedsLoaded extends StatelessWidget with Logger {
                 _model.setSelectedMed(index);
                 _model.clearTempMeds();
               },
-              child: ListTileBuilder(index),
+              child: ListViewCard(index: index),
             );
           },
+        ),
+        Positioned(
+          bottom: 20,
+          left: 60,
+          right: 60,
+          child: RaisedButton(
+            color: Theme.of(context).primaryColor,
+            child: Text(
+              'Manufacturer not listed',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () {},
+          ),
         ),
       ],
     );
