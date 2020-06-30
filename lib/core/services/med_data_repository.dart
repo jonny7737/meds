@@ -22,10 +22,6 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     _initialize();
   }
 
-  /*
-   *   FIXME: This doesn't work because it only counts a user with medications
-        Currently no way to count users
-  */
   bool get onlyOneUser => _numUsers == 1;
 
   void _refreshMeds() async {
@@ -102,12 +98,9 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     return _medData;
   }
 
-  /*
-   *   FIXME: This doesn't work because it only counts a user with medications
-        Currently no way to count users
-  */
   int _countUniqueUsers() {
     List _userList = [];
+    _userList.add(_userModel.name);
     List<MedData> _medData = _box.values.toList();
     _medData.forEach((med) {
       if (!_userList.contains(med.owner)) _userList.add(med.owner);
