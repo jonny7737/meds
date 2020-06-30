@@ -5,18 +5,24 @@ import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/services/med_data_box.dart';
 import 'package:meds/core/services/repository.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/user_viewmodel.dart';
 
 class MedDataRepository with Logger, ChangeNotifier implements Repository<MedData> {
-  MedDataBox _medDataBox;
+  UserViewModel _userModel = locator();
+  MedDataBox _medDataBox = locator();
   Box _box;
   Stream _boxStream;
   List<MedData> _meds = [];
 
   MedDataRepository() {
-    setDebug(true);
-    _medDataBox = locator<MedDataBox>();
+    setDebug(false);
     _medDataBox.addListener(boxOpened);
+    _userModel.addListener(_refreshMeds);
     _initialize();
+  }
+
+  void _refreshMeds() async {
+    _meds = await _getAll();
   }
 
   /// This is required because Hive.openBox()
@@ -32,6 +38,8 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
   void dispose() {
     _box.close();
     log('Doctor box closed.');
+    _userModel.removeListener(_refreshMeds);
+    _medDataBox.removeListener(boxOpened);
     super.dispose();
   }
 
@@ -73,14 +81,16 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
 
   /// Refresh the repository list with sorted data from the box
   ///   Sorting is based on medication name field.
-  ///
+  ///   The list is filtered by the current logged-in user.
   Future<List<MedData>> _getAll() async {
-    final _box = await _medDataBox.box;
+    List<MedData> _medData;
+    _medData = _box.values.toList().where((med) => med.owner == _userModel.name).toList();
+
+    _medData.sort(
+      (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+    );
+
     notifyListeners();
-    List<MedData> _medData = _box.values.toList()
-      ..sort(
-        (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
-      );
     return _medData;
   }
 

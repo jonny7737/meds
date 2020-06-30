@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/material.dart';
@@ -12,16 +13,33 @@ import 'package:path_provider/path_provider.dart';
 
 class HomeViewModel extends ChangeNotifier with Logger {
   HomeViewModel() {
-    setDebug(true);
-    _setImageDirectory();
-    updateListData();
-    _repository.addListener(() {
-      updateListData();
-    });
+    setDebug(false);
+    _init();
     log('Constructor complete');
   }
 
-  RepositoryService _repository = locator<RepositoryService>();
+  void _init() async {
+    _userModel.addListener(update);
+    await _setImageDirectory();
+    updateListData();
+    _repository.addListener(updateListData);
+  }
+
+  UserViewModel _userModel = locator();
+
+  RepositoryService _repository = locator();
+
+  void update() {
+    modelDirty(true);
+  }
+
+  @override
+  void dispose() {
+    log('Dispose was called', linenumber: lineNumber(StackTrace.current));
+    _userModel.removeListener(update);
+    _repository.removeListener(updateListData);
+    super.dispose();
+  }
 
   String imageDirectoryPath;
 
@@ -38,6 +56,19 @@ class HomeViewModel extends ChangeNotifier with Logger {
   String _errorMsg = 'Please add at least one Doctor';
   double _errorMsgMaxHeight = 35;
   double _addMedErrorMsgHeight = 0;
+
+  double get errorMsgHeight => _addMedErrorMsgHeight;
+  String get errorMsg => _errorMsg;
+
+  void showAddMedError() {
+    _setAddMedErrorHeight(_errorMsgMaxHeight);
+    Future.delayed(Duration(seconds: 4), () => {_setAddMedErrorHeight(0)});
+  }
+
+  void _setAddMedErrorHeight(double height) {
+    _addMedErrorMsgHeight = height;
+    notifyListeners();
+  }
 
   bool _bottomSet = false;
   double _bottomCardUp = 0;
@@ -58,7 +89,7 @@ class HomeViewModel extends ChangeNotifier with Logger {
 
   File get activeImageFile => imageFile(activeMed.rxcui);
 
-  void _setImageDirectory() async {
+  Future _setImageDirectory() async {
     Directory imageDirectory = await getApplicationDocumentsDirectory();
     Directory subDir = await Directory('${imageDirectory.path}/medImages').create(recursive: true);
     imageDirectoryPath = subDir.path;
@@ -70,10 +101,13 @@ class HomeViewModel extends ChangeNotifier with Logger {
   }
 
   File imageFile(String rxcui) {
+    //   if (rxcui == '00000') return null;
+
     List<MedData> _meds = _repository.getAllMeds();
     int ndx = _meds.indexWhere((element) => element.rxcui == rxcui);
-    if (ndx == -1) return null;
-    File file = _file('${_meds[ndx].rxcui}.jpg');
+
+    if (ndx == -1 || imageDirectoryPath == null) return null;
+    File file = _file('$rxcui.jpg');
     return file;
   }
 
@@ -116,26 +150,13 @@ class HomeViewModel extends ChangeNotifier with Logger {
     notifyListeners();
   }
 
-  double get errorMsgHeight => _addMedErrorMsgHeight;
-  String get errorMsg => _errorMsg;
-
   int get numberOfDoctors => _repository.numberOfDoctors;
   int get numberOfMeds => _repository.numberOfMeds;
 
   List<MedData> get medList => _repository.getAllMeds();
   List<DoctorData> get doctorList => _repository.getAllDoctors();
   int get size => _repository.numberOfMeds;
-  MedData get mtMedData => MedData(-1, '00000', 'MT MedData', '', '', [], [], doctorId: -1);
-
-  void showAddMedError() {
-    _setAddMedErrorHeight(_errorMsgMaxHeight);
-    Future.delayed(Duration(seconds: 4), () => {_setAddMedErrorHeight(0)});
-  }
-
-  void _setAddMedErrorHeight(double height) {
-    _addMedErrorMsgHeight = height;
-    notifyListeners();
-  }
+  MedData get mtMedData => MedData(_userModel.name, -1, '00000', 'MT MedData', '', '', [], [], doctorId: -1);
 
   void updateListData() async {
     log('Updating lists', linenumber: lineNumber(StackTrace.current));

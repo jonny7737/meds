@@ -13,10 +13,8 @@ class ErrorMsgWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddMedViewModel _model = Provider.of(context);
-    final ScreenInfoViewModel _s = locator<ScreenInfoViewModel>();
+    final ScreenInfoViewModel _s = locator();
 
-    double errorMsgHeight = _model.errorMsgHeight(error);
-    String errorMsg = _model.errorMsg(error);
     return Align(
       alignment: Alignment.topCenter,
       child: Material(
@@ -29,12 +27,12 @@ class ErrorMsgWidget extends StatelessWidget {
         child: AnimatedContainer(
           duration: Duration(milliseconds: 275),
           alignment: Alignment.center,
-          height: errorMsgHeight,
+          height: _model.errorMsgHeight(error),
           width: context.widthPct(0.75),
           color: Colors.transparent,
           padding: EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 2),
           child: Text(
-            errorMsg,
+            _model.errorMsg(error),
             softWrap: false,
             style: TextStyle(
               fontSize: _s.isiOS ? 16 : 18,

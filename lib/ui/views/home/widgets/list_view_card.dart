@@ -24,7 +24,7 @@ class ListViewCard extends StatelessWidget with Logger {
     HomeViewModel _model = Provider.of(context);
     MedData medData = _model.medList[index];
 
-    setDebug(true);
+    setDebug(false);
 
     return Card(
       margin: EdgeInsets.only(
@@ -110,6 +110,8 @@ class ListViewCard extends StatelessWidget with Logger {
 
   GestureDetector buildImageWidget(
       HomeViewModel _model, BuildContext context, MedData medData, ScreenInfoViewModel _s) {
+    bool goodToGo = _model.imageFile(medData.rxcui) != null || medData.imageURL != null;
+
     return GestureDetector(
       onTap: () {
         if (_model.detailCardVisible) {
@@ -135,17 +137,19 @@ class ListViewCard extends StatelessWidget with Logger {
         ),
         child: Hero(
           tag: 'medImage${medData.rxcui}',
-          child: Container(
-            height: context.heightPct(0.08),
-            child: Image(
-              image: NetworkToFileImage(
-                file: _model.imageFile(medData.rxcui),
-                url: medData.imageURL,
-                debug: isLogging,
-              ),
-              width: context.widthPct(_s.isLargeScreen ? 0.19 : 0.15),
-            ),
-          ),
+          child: !goodToGo
+              ? Container()
+              : Container(
+                  height: context.heightPct(0.08),
+                  child: Image(
+                    image: NetworkToFileImage(
+                      file: _model.imageFile(medData.rxcui),
+                      url: medData.imageURL,
+                      debug: isLogging,
+                    ),
+                    width: context.widthPct(_s.isLargeScreen ? 0.19 : 0.15),
+                  ),
+                ),
         ),
       ),
     );

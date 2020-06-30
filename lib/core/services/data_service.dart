@@ -12,7 +12,7 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
   DoctorDataRepository _doctorRepository;
 
   DataService() {
-    setDebug(true);
+    setDebug(false);
 
     _medRepository = locator<MedDataRepository>();
     _medRepository.addListener(() {

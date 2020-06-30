@@ -12,7 +12,7 @@ class DoctorErrorMsgWidget extends StatefulWidget {
 }
 
 class _DoctorErrorMsgWidgetState extends State<DoctorErrorMsgWidget> {
-  DoctorsViewModel _model = locator<DoctorsViewModel>();
+  DoctorsViewModel _model = locator();
   @override
   initState() {
     _model.addListener(update);

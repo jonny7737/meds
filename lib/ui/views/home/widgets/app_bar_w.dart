@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
+import 'package:meds/locator.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
 import 'package:meds/ui/views/home/custom_drawer.dart';
 import 'package:meds/ui/views/home/home_viewmodel.dart';
@@ -14,7 +15,7 @@ class HomeAppBar extends StatelessWidget with Logger implements PreferredSizeWid
   Widget build(BuildContext context) {
     setDebug(false);
     final ThemeDataProvider themeDataProvider = Provider.of(context, listen: false);
-    final UserViewModel userViewModel = Provider.of(context, listen: false);
+    final UserViewModel userViewModel = locator();
     final String userName = userViewModel.name;
 
     HomeViewModel _model = Provider.of(context);

@@ -38,7 +38,10 @@ class MedData extends HiveObject {
   @HiveField(9)
   final String frequency;
 
-  MedData(this.id, this.rxcui, this.name, this.mfg, this.imageURL, this.info, this.warnings,
+  @HiveField(10)
+  final String owner;
+
+  MedData(this.owner, this.id, this.rxcui, this.name, this.mfg, this.imageURL, this.info, this.warnings,
       {this.doctorId = -1, this.dose = '0 mg', this.frequency = 'daily'});
 
   int compareTo(MedData otherMed) => rxcui.compareTo(otherMed.rxcui);
@@ -50,6 +53,7 @@ class MedData extends HiveObject {
     if (frequency == null) frequency = this.frequency;
 
     MedData _medData = MedData(
+      this.owner,
       id,
       this.rxcui,
       this.name,

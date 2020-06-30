@@ -4,9 +4,7 @@ import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/hive_setup.dart';
 import 'package:meds/locator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'core/models/user_model.dart';
 import 'package:meds/ui/router.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
@@ -16,18 +14,11 @@ void main() async {
   setupLocator();
   HiveSetup();
 
-  final userViewModel = UserViewModel(
-    userModel: UserModel(
-      prefs: await SharedPreferences.getInstance(),
-    ),
-  );
+  UserViewModel userViewModel = locator();
   await userViewModel.init();
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<UserViewModel>.value(
-          value: userViewModel,
-        ),
         ChangeNotifierProvider<ThemeDataProvider>(
           create: (_) => ThemeDataProvider(),
         ),

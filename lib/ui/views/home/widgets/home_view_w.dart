@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class HomeViewWidget extends StatelessWidget with Logger {
   HomeViewWidget() {
-    setDebug(true);
+    setDebug(false);
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -21,6 +21,8 @@ class HomeViewWidget extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
     HomeViewModel _model = Provider.of(context);
+
+    log('Meds available: ${_model.numberOfMeds}', linenumber: lineNumber(StackTrace.current));
 
     if (!_model.bottomsSet) {
       _model.setBottoms(

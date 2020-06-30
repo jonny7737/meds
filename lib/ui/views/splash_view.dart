@@ -35,7 +35,7 @@ class _SplashViewState extends State<SplashView> {
               Fix IT!!
      */
     try {
-      var userViewModel = Provider.of<UserViewModel>(context, listen: false);
+      UserViewModel userViewModel = locator();
 
       widget.setDebug(false);
 
@@ -51,7 +51,7 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenInfoViewModel _screen = locator<ScreenInfoViewModel>();
+    ScreenInfoViewModel _screen = locator();
 
     bool _kbVisible = context.mq.viewInsets.bottom > 10;
     double _margin;

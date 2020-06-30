@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/user_model.dart';
+import 'package:meds/locator.dart';
 
-class UserViewModel with ChangeNotifier {
-  final UserModel userModel;
+class UserViewModel with ChangeNotifier, Logger {
+  final UserModel userModel = locator();
 
-  //TODO: Change this to use GetIt package.
-  UserViewModel({@required this.userModel});
+  UserViewModel() {
+    init();
+  }
 
   String _name;
   bool _isLoggedIn;
@@ -16,6 +19,7 @@ class UserViewModel with ChangeNotifier {
 
   init() async {
     await _refreshAllStates();
+    setDebug(false);
   }
 
   bool get isLoggedIn => _isLoggedIn;

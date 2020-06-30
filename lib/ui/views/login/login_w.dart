@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
+import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:meds/ui/views/login/widgets/login_button_w.dart';
 import 'package:meds/ui/views/login/widgets/logo_w.dart';
@@ -20,7 +21,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final Map<String, String> _formData = {'name': null};
 
   void loginButtonClicked() async {
-    var userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    UserViewModel userViewModel = locator();
 
     if (_formData['name'] != null && _formData['name'].length > 2) {
       _formKey.currentState.save();

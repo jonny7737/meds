@@ -3,7 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserModel {
   SharedPreferences prefs;
 
-  UserModel({this.prefs});
+  UserModel() {
+    init();
+  }
+
+  init() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   static const String _IS_LOGGED_IN = "is_logged_in";
   static const String _NAME = "name";
@@ -44,6 +50,7 @@ class UserModel {
   }
 
   Future<bool> isLoggedIn() async {
+    if (prefs == null) await init();
     var expirey = prefs.getInt(_EXPIRE);
     if (expirey == null) {
       logout();

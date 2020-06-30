@@ -18,7 +18,7 @@ class MedDrawer extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
     ScreenInfoViewModel _s = locator<ScreenInfoViewModel>();
-    UserViewModel userViewModel = Provider.of(context);
+    UserViewModel userViewModel = locator();
     HomeViewModel _model = Provider.of(context);
 
     double fontSize = context.heightPct(_s.isLargeScreen ? 0.023 : 0.025) * _s.fontScale;

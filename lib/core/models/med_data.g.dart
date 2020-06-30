@@ -17,6 +17,7 @@ class MedDataAdapter extends TypeAdapter<MedData> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MedData(
+      fields[10] as String,
       fields[0] as int,
       fields[1] as String,
       fields[2] as String,
@@ -33,7 +34,7 @@ class MedDataAdapter extends TypeAdapter<MedData> {
   @override
   void write(BinaryWriter writer, MedData obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -53,6 +54,8 @@ class MedDataAdapter extends TypeAdapter<MedData> {
       ..writeByte(8)
       ..write(obj.dose)
       ..writeByte(9)
-      ..write(obj.frequency);
+      ..write(obj.frequency)
+      ..writeByte(10)
+      ..write(obj.owner);
   }
 }

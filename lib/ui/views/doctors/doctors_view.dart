@@ -7,7 +7,7 @@ import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 
 class DoctorsView extends StatelessWidget with Logger {
-  final DoctorsViewModel _model = locator<DoctorsViewModel>();
+  final DoctorsViewModel _model = locator();
 
   @override
   Widget build(BuildContext context) {

@@ -8,11 +8,13 @@ import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/models/temp_med.dart';
 import 'package:meds/core/services/repository_service.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class AddMedViewModel extends ChangeNotifier with Logger {
   String imageDirectoryPath;
+  UserViewModel _userModel = locator();
 
   AddMedViewModel() {
     setDebug(true);
@@ -156,6 +158,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   void saveSelectedMed(int index) {
     _selectedMed = MedData(
+      _userModel.name,
       -1,
       _tempMed.rxcui,
       _tempMed.imageInfo.names[index],
@@ -171,6 +174,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   Future saveMedNoMfg() async {
     _selectedMed = MedData(
+      _userModel.name,
       -1,
       _tempMed.rxcui,
       _tempMed.imageInfo.names[0],
