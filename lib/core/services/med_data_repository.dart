@@ -13,6 +13,7 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
   Box _box;
   Stream _boxStream;
   List<MedData> _meds = [];
+  int _numUsers = 0;
 
   MedDataRepository() {
     setDebug(false);
@@ -20,6 +21,12 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     _userModel.addListener(_refreshMeds);
     _initialize();
   }
+
+  /*
+   *   FIXME: This doesn't work because it only counts a user with medications
+        Currently no way to count users
+  */
+  bool get onlyOneUser => _numUsers == 1;
 
   void _refreshMeds() async {
     _meds = await _getAll();
@@ -83,6 +90,7 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
   ///   Sorting is based on medication name field.
   ///   The list is filtered by the current logged-in user.
   Future<List<MedData>> _getAll() async {
+    _numUsers = _countUniqueUsers();
     List<MedData> _medData;
     _medData = _box.values.toList().where((med) => med.owner == _userModel.name).toList();
 
@@ -92,6 +100,19 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
 
     notifyListeners();
     return _medData;
+  }
+
+  /*
+   *   FIXME: This doesn't work because it only counts a user with medications
+        Currently no way to count users
+  */
+  int _countUniqueUsers() {
+    List _userList = [];
+    List<MedData> _medData = _box.values.toList();
+    _medData.forEach((med) {
+      if (!_userList.contains(med.owner)) _userList.add(med.owner);
+    });
+    return _userList.length;
   }
 
   @override
@@ -119,14 +140,16 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
 
   @override
   Future<void> delete(MedData objectToDelete) async {
-//    final _box = await _medDataBox.box;
+    log('Deleting ${objectToDelete.name}', linenumber: lineNumber(StackTrace.current));
     await _box.delete(objectToDelete.key);
   }
 
   @override
   Future<void> deleteAll() async {
-//    final _box = await _medDataBox.box;
-    await _box.clear();
+//    await _box.clear();
+    _meds.forEach((med) {
+      if (med.owner == _userModel.name) delete(med);
+    });
   }
 
   @override

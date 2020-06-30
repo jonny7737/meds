@@ -29,6 +29,9 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
   }
 
   @override
+  bool get onlyOneUser => _medRepository.onlyOneUser;
+
+  @override
   int get numberOfMeds => _medRepository.size();
   MedData getMedAtIndex(int index) => _medRepository.getAtIndex(index);
 
@@ -62,7 +65,6 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
 
   Future clearAllMeds() async {
     await _medRepository.deleteAll();
-    // TODO: Delete all RXCUI.jpg from medImages directory.
   }
 
   Future clearAllDoctors() async {

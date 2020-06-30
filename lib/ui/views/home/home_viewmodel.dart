@@ -165,7 +165,8 @@ class HomeViewModel extends ChangeNotifier with Logger {
 
   void clearListData() async {
     await _repository.clearAllMeds();
-    await _repository.clearAllDoctors();
+    log('Only One User: ${_repository.onlyOneUser}', linenumber: lineNumber(StackTrace.current));
+    if (_repository.onlyOneUser) await _repository.clearAllDoctors();
     modelDirty(true);
   }
 
