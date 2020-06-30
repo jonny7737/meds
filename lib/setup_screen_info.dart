@@ -19,27 +19,24 @@ class SetupScreenInfo extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
     ScreenInfoViewModel _s = locator();
+    setDebug(false);
 
-    if (!_s.isSetup) {
-      setDebug(false);
-      //  This is the first 'context' with a MediaQuery, therefore,
-      //  this is the first opportunity to set these values.
-      Provider.of<ThemeDataProvider>(context, listen: false).setAppMargin(context.widthPct(0.10));
+    if (_s.isSetup) return SafeArea(child: Material(color: Colors.yellow[300]));
 
-      _s.setPlatform(Theme.of(context).platform);
-      double screenSize = context.diagonalInches;
-      _s.setScreenSize(screenSize);
+    //  This is the first 'context' with a MediaQuery, therefore,
+    //  this is the first opportunity to set these values.
+    Provider.of<ThemeDataProvider>(context, listen: false).setAppMargin(context.widthPct(0.10));
 
-      log('${context.pixelsPerInch}, ${context.mq.size}, ${context.mq.devicePixelRatio}');
-      log('Screen size: ${screenSize.toStringAsFixed(2)}');
+    _s.setPlatform(Theme.of(context).platform);
+    double screenSize = context.diagonalInches;
+    _s.setScreenSize(screenSize);
 
-      bool _kbVisible = context.mq.viewInsets.bottom > 10;
-      if (_kbVisible) {
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
-      }
+    bool _kbVisible = context.mq.viewInsets.bottom > 10;
+    if (_kbVisible) {
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
     }
 
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 50), () {
       navigateToSplashScreen(context);
     });
 

@@ -8,14 +8,15 @@ import 'package:meds/ui/views/widgets/stack_modal_blur.dart';
 import 'package:sized_context/sized_context.dart';
 import 'package:flutter/material.dart';
 import 'package:meds/core/mixins/logger.dart';
-import 'package:meds/core/models/med_data.dart';
 import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class HomeViewWidget extends StatelessWidget with Logger {
   HomeViewWidget() {
-    setDebug(false);
+    setDebug(true);
   }
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class HomeViewWidget extends StatelessWidget with Logger {
       child: Material(
         elevation: 10,
         child: Scaffold(
+          key: _scaffoldKey,
           appBar: HomeAppBar(),
           body: Stack(
             children: <Widget>[
@@ -46,8 +48,6 @@ class HomeViewWidget extends StatelessWidget with Logger {
               ListView.builder(
                 itemCount: _model.numberOfMeds,
                 itemBuilder: (context, index) {
-                  MedData medData = _model.medList[index];
-                  log('Item # : $index', linenumber: lineNumber(StackTrace.current));
                   return GestureDetector(
                     onTap: () {
                       _model.setActiveMedIndex(index);
@@ -56,39 +56,15 @@ class HomeViewWidget extends StatelessWidget with Logger {
                     child: Dismissible(
                       key: UniqueKey(),
                       dismissThresholds: const {
-                        DismissDirection.endToStart: 0.7,
+                        DismissDirection.endToStart: 0.6,
                         DismissDirection.startToEnd: 0.6,
                       },
-                      background: Container(
-                          alignment: Alignment.centerLeft,
-                          color: Colors.purple,
-                          child: ListTile(
-                            leading: Icon(Icons.edit),
-                            title: Text(
-                              'Edit',
-                              style: TextStyle(),
-                            ),
-                          )),
-                      secondaryBackground: Container(
-                          alignment: Alignment.centerRight,
-                          color: Colors.red,
-                          child: ListTile(
-                            trailing: Icon(Icons.delete_forever),
-                            title: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                'Delete',
-                                style: TextStyle(),
-                              ),
-                            ),
-                          )),
+                      background: const Background(),
+                      secondaryBackground: const SecondaryBackground(),
                       confirmDismiss: (direction) async {
                         if (direction == DismissDirection.startToEnd) {
                           /// Start edit process here and return false to not dismiss
                           ///
-                          /// navigateToAddMed is done this way to eliminate an exception.
-                          ///   If the navigation is done here, the Dismissible AnimationController
-                          ///   throws an exception for calling reverse() after dispose()
                           navigateToAddMed(context, index, _model);
                           return false;
                         }
@@ -97,15 +73,7 @@ class HomeViewWidget extends StatelessWidget with Logger {
                         return true;
                       },
                       onDismissed: (DismissDirection direction) {
-                        if (direction == DismissDirection.endToStart) {
-                          /// Handle delete operations here
-                          _model.delete(medData);
-                          log('Deleted from model: ${medData.name}');
-                        } else if (direction == DismissDirection.startToEnd) {
-                          /// This never happens because confirmDismiss returns false
-                          /// for startToEnd swipe, therefore the item is not dismissed
-                          print('EDIT');
-                        }
+                        return handleDismiss(_model, direction, index);
                       },
                       child: Container(
                         width: context.widthPx,
@@ -126,10 +94,102 @@ class HomeViewWidget extends StatelessWidget with Logger {
     );
   }
 
+  /// navigateToAddMed is done this way to eliminate an exception.
+  ///   If the navigation is not done here, the Dismissible AnimationController
+  ///   throws an exception for calling reverse() after dispose()
+  ///
   Future navigateToAddMed(BuildContext context, int index, HomeViewModel _model) async {
     bool result = await Navigator.pushNamed<bool>(context, addMedRoute, arguments: AddMedArguments(editIndex: index));
     if (result != null && result) {
       _model.modelDirty(true);
     }
+  }
+
+  handleDismiss(HomeViewModel model, DismissDirection direction, int index) {
+    // Get a reference to the swiped item
+    //model.setActiveMedIndex(index);
+    final swipedMed = model.getMedAt(index);
+
+    // Remove it from the list
+    model.delete(swipedMed);
+
+    String action;
+    if (direction == DismissDirection.endToStart)
+      action = "Deleted";
+    else
+      action = "Edited";
+
+    _scaffoldKey.currentState
+        .showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(_scaffoldKey.currentContext).primaryColor,
+            content: Text(
+              '$action. Do you want to undo?',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            duration: Duration(seconds: 5),
+            action: SnackBarAction(
+                label: "Undo",
+                textColor: Colors.yellowAccent,
+                onPressed: () async {
+                  // Deep copy the deleted medication
+                  final newMed = swipedMed.copyWith();
+                  // Save the newly created medication
+                  log('${newMed.mfg}', linenumber: lineNumber(StackTrace.current));
+                  if (newMed.mfg.contains('Unknown')) await model.setDefaultMedImage(newMed.rxcui);
+                  model.save(newMed);
+                }),
+          ),
+        )
+        .closed
+        .then((reason) {
+      if (reason != SnackBarClosedReason.action) {
+        // The SnackBar was dismissed by some other means
+        // other than clicking of action button
+      }
+    });
+  }
+}
+
+class Background extends StatelessWidget {
+  const Background({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        alignment: Alignment.centerLeft,
+        color: Colors.purple,
+        child: ListTile(
+          leading: Icon(Icons.edit),
+          title: Text(
+            'Edit',
+            style: TextStyle(),
+          ),
+        ));
+  }
+}
+
+class SecondaryBackground extends StatelessWidget {
+  const SecondaryBackground({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        alignment: Alignment.centerRight,
+        color: Colors.red,
+        child: ListTile(
+          trailing: Icon(Icons.delete_forever),
+          title: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              'Delete',
+              style: TextStyle(),
+            ),
+          ),
+        ));
   }
 }

@@ -87,8 +87,13 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
           }
         });
       }
+      if (matchId == -1)
+        _action = 'ADDED';
+      else
+        _action = 'UPDATED';
+
       await _medRepository.save(newObject, index: matchId);
-      log('Medication added(updated) - ${newObject.name} [$matchId]');
+      log('Medication $_action - ${newObject.name} [$matchId]');
     } else if (newObject is DoctorData) {
       var doctorList = getAllDoctors();
       int index = 0;

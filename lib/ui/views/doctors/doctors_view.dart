@@ -71,10 +71,6 @@ class _DoctorListViewState extends State<DoctorListView> {
     setState(() {});
   }
 
-  void _showSnackBar(BuildContext context, String text) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(text)));
-  }
-
   DoctorData getDoctorByName(String name) {
     _model.getDoctorByName(name);
     return null;

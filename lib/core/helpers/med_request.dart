@@ -49,7 +49,7 @@ class MedRequest with Logger {
   TempMed med(int index) => meds[index];
 
   Future<bool> medInfoByName(String medName) async {
-    setDebug(true);
+    setDebug(false);
 
     int medCount = 0;
     _rxCUIList = null;

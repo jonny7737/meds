@@ -14,18 +14,24 @@ class MedsLoaded extends StatelessWidget with Logger {
     log('${_model.numMedsFound} meds found', linenumber: lineNumber(StackTrace.current));
     return Stack(
       children: <Widget>[
-        ListView.builder(
-          itemCount: _model.numMedsFound,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                log('TempMed clicked: $index', linenumber: lineNumber(StackTrace.current));
-                _model.setSelectedMed(index);
-                _model.clearTempMeds();
-              },
-              child: ListViewCard(index: index),
-            );
-          },
+        Positioned(
+          top: 2,
+          left: 10,
+          right: 10,
+          bottom: 80,
+          child: ListView.builder(
+            itemCount: _model.numMedsFound,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  log('TempMed clicked: $index', linenumber: lineNumber(StackTrace.current));
+                  _model.saveSelectedMed(index);
+                  _model.clearTempMeds();
+                },
+                child: ListViewCard(index: index),
+              );
+            },
+          ),
         ),
         Positioned(
           bottom: 20,
@@ -40,7 +46,10 @@ class MedsLoaded extends StatelessWidget with Logger {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              await _model.saveMedNoMfg();
+              _model.clearTempMeds();
+            },
           ),
         ),
       ],

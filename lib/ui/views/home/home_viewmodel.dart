@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class HomeViewModel extends ChangeNotifier with Logger {
     if (_activeMedIndex == -1) {
       return mtMedData;
     } else
-      return _repository.getAllMeds()[_activeMedIndex];
+      return _repository.getMedAtIndex(_activeMedIndex);
   }
 
   File get activeImageFile => imageFile(activeMed.rxcui);
@@ -74,6 +75,17 @@ class HomeViewModel extends ChangeNotifier with Logger {
     if (ndx == -1) return null;
     File file = _file('${_meds[ndx].rxcui}.jpg');
     return file;
+  }
+
+  setDefaultMedImage(String rxcui) async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    var iPath = p.join(directory.path, 'medImages/$rxcui.jpg');
+    if (FileSystemEntity.typeSync(iPath) == FileSystemEntityType.notFound) {
+      ByteData data = await rootBundle.load('assets/drug.jpg');
+      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(iPath).writeAsBytes(bytes);
+      log('Default image set: $iPath', linenumber: lineNumber(StackTrace.current));
+    }
   }
 
   bool get bottomsSet => _bottomSet;
@@ -108,10 +120,7 @@ class HomeViewModel extends ChangeNotifier with Logger {
   String get errorMsg => _errorMsg;
 
   int get numberOfDoctors => _repository.numberOfDoctors;
-  int get numberOfMeds {
-    log('${_repository.numberOfMeds}', linenumber: lineNumber(StackTrace.current));
-    return _repository.numberOfMeds;
-  }
+  int get numberOfMeds => _repository.numberOfMeds;
 
   List<MedData> get medList => _repository.getAllMeds();
   List<DoctorData> get doctorList => _repository.getAllDoctors();
@@ -155,6 +164,10 @@ class HomeViewModel extends ChangeNotifier with Logger {
 
   MedData getMedByRxcui(String rxcui) {
     return _repository.getMedByRxcui(rxcui);
+  }
+
+  MedData getMedAt(int index) {
+    return _repository.getMedAtIndex(index);
   }
 
   void delete(Object objectToDelete) async {

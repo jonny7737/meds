@@ -41,7 +41,7 @@ void main() async {
 class MedsApp extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
-    ThemeDataProvider themeDataProvider = Provider.of<ThemeDataProvider>(context);
+    ThemeDataProvider themeDataProvider = Provider.of(context);
     bool isDarkTheme = themeDataProvider.isDarkTheme;
 
     setDebug(false);

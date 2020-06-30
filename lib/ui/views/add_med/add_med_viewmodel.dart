@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:meds/core/helpers/med_request.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/med_data.dart';
@@ -153,7 +154,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   String get rxcuiComment => _rxcuiComment;
   MedData get selectedMed => _selectedMed;
 
-  void setSelectedMed(int index) {
+  void saveSelectedMed(int index) {
     _selectedMed = MedData(
       -1,
       _tempMed.rxcui,
@@ -165,6 +166,29 @@ class AddMedViewModel extends ChangeNotifier with Logger {
       dose: _newMedDose,
       frequency: _newMedFrequency,
     );
+    saveMed(_selectedMed);
+  }
+
+  Future saveMedNoMfg() async {
+    _selectedMed = MedData(
+      -1,
+      _tempMed.rxcui,
+      _tempMed.imageInfo.names[0],
+      'Manufacture Unknown',
+      null,
+      _tempMed.info,
+      _tempMed.warnings,
+      dose: _newMedDose,
+      frequency: _newMedFrequency,
+    );
+
+    Directory directory = await getApplicationDocumentsDirectory();
+    var dbPath = p.join(directory.path, 'medImages/${_tempMed.rxcui}.jpg');
+    if (FileSystemEntity.typeSync(dbPath) == FileSystemEntityType.notFound) {
+      ByteData data = await rootBundle.load('assets/drug.jpg');
+      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(dbPath).writeAsBytes(bytes);
+    }
     saveMed(_selectedMed);
   }
 

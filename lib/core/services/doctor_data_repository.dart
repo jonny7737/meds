@@ -84,9 +84,7 @@ class DoctorDataRepository with Logger implements Repository<DoctorData> {
   }
 
   @override
-  int size() {
-    return _doctors.length;
-  }
+  int size() => _doctors.length;
 
   @override
   Future deleteBox() async {

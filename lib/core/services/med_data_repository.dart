@@ -45,7 +45,7 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
 
     _boxStream = _box.watch();
     _boxStream.listen((event) async {
-      log('BoxEvent occurred: reload MedData');
+      log('BoxEvent occurred: reloading MedData');
       _meds = await _getAll();
     });
     log('...complete');
@@ -71,10 +71,17 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     return _meds[index];
   }
 
+  /// Refresh the repository list with sorted data from the box
+  ///   Sorting is based on medication name field.
+  ///
   Future<List<MedData>> _getAll() async {
     final _box = await _medDataBox.box;
     notifyListeners();
-    return _box.values.toList();
+    List<MedData> _medData = _box.values.toList()
+      ..sort(
+        (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+      );
+    return _medData;
   }
 
   @override
@@ -102,20 +109,18 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
 
   @override
   Future<void> delete(MedData objectToDelete) async {
-    final _box = await _medDataBox.box;
+//    final _box = await _medDataBox.box;
     await _box.delete(objectToDelete.key);
   }
 
   @override
   Future<void> deleteAll() async {
-    final _box = await _medDataBox.box;
+//    final _box = await _medDataBox.box;
     await _box.clear();
   }
 
   @override
-  int size() {
-    return _meds.length;
-  }
+  int size() => _meds.length;
 
   @override
   Future deleteBox() async {

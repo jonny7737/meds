@@ -86,7 +86,4 @@ class MedData extends HiveObject {
 
     return info;
   }
-
-//TODO: add a method to retrieve med details (minus info and warnings)
-//      OR NOT
 }
