@@ -1,8 +1,3 @@
-//import 'dart:io';
-
-//import 'package:path/path.dart';
-//import 'package:path_provider/path_provider.dart';
-
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:meds/core/constants.dart';
@@ -22,17 +17,6 @@ class HiveSetup with Logger {
   }
   void _initializeHive({bool purge = false}) async {
     log('Initializing Hive, Purge All Data: $purge');
-
-//    Directory dir = await getApplicationDocumentsDirectory();
-//    String dirPath = join(dir.path, kHiveDirectory);
-//    bool _dirExists = Directory(dirPath).existsSync();
-//    if (_dirExists)
-//      log('Whoop!  $dirPath');
-//    else {
-//      log('Damn-it!!!  $dirPath');
-//      Directory("$dirPath").createSync(recursive: true);
-//    }
-
     await Hive.initFlutter(kHiveDirectory);
 
     Hive.registerAdapter(MedDataAdapter());
