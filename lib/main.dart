@@ -28,7 +28,6 @@ void main() async {
   );
 }
 
-// ignore: must_be_immutable
 class MedsApp extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
