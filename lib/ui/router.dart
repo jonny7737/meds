@@ -12,8 +12,22 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case setupRoute:
-        return MaterialPageRoute(
-          builder: (_) => SetupScreenInfo(),
+        return PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 1000),
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return Align(
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+          pageBuilder: (_, __, ___) => SetupScreenInfo(),
         );
       case splashRoute:
         return PageRouteBuilder(
