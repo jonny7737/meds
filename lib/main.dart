@@ -38,7 +38,7 @@ class MedsApp extends StatelessWidget with Logger {
     log('build execution');
 
     final ThemeData currentTheme = themeDataProvider.themeData.copyWith(
-      scaffoldBackgroundColor: isDarkTheme ? Colors.yellow[700] : Colors.yellow[300],
+      scaffoldBackgroundColor: isDarkTheme ? Colors.yellow[600] : Colors.yellow[200],
     );
     return MaterialApp(
       color: Colors.yellow[100],
