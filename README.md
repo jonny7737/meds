@@ -1,6 +1,6 @@
 # meds
 
-Rewrite of the Meds application for code reorganization.
+Medication list application written in Flutter.  The purpose is to explore Flutter UI development, state management, dependency injection, network IO (REST) and anything else I could think of for this applicatipon.
 
 ## Getting Started
 
