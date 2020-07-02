@@ -28,25 +28,17 @@ class _SplashViewState extends State<SplashView> {
   }
 
   doneLoading() async {
-    /**
-     * TODO: try{} was necessary because the context was null
-              after adding SetupScreenInfo as the home route.
-              the reason for the null context is still unknown.
-              Fix IT!!
-     */
-    try {
-      UserViewModel userViewModel = locator();
+    UserViewModel userViewModel = locator();
 
-      widget.setDebug(false);
+    widget.setDebug(false);
 
-      if (userViewModel.shouldLogin) {
-        widget.log('Executing Login Route');
-        Navigator.pushReplacementNamed(context, loginRoute);
-      } else {
-        widget.log('Executing Home Route');
-        Navigator.pushReplacementNamed(context, homeRoute);
-      }
-    } catch (e) {}
+    if (userViewModel.shouldLogin) {
+      widget.log('Executing Login Route');
+      Navigator.pushReplacementNamed(context, loginRoute);
+    } else {
+      widget.log('Executing Home Route');
+      Navigator.pushReplacementNamed(context, homeRoute);
+    }
   }
 
   @override
@@ -66,9 +58,11 @@ class _SplashViewState extends State<SplashView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.symmetric(horizontal: _margin),
-                child: Image.asset("assets/meds.png"),
-              ),
+                  decoration: null,
+                  margin: EdgeInsets.symmetric(horizontal: _margin),
+                  child: Image.asset(
+                    "assets/meds.png",
+                  )),
               SizedBox(
                 height: 10,
               ),

@@ -106,10 +106,6 @@ class MedDrawer extends StatelessWidget with Logger {
                 style: TextStyle(fontSize: fontSize),
               ),
               onTap: () {
-                /**
-                * TODO: I need to add an Alert here to ensure
-                    the user actually wants to delete all data.
-                */
                 _model.clearListData();
               },
             ),

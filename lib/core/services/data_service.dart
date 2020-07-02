@@ -135,20 +135,17 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
 
   @override
   Future deleteMedBox() async {
-    // TODO: Delete all RXCUI.jpg from medImages directory.
     _medRepository.deleteBox();
     return null;
   }
 
   @override
   Future initializeDoctorData() {
-    // TODO: implement initializeDoctorData
     throw UnimplementedError();
   }
 
   @override
   Future initializeMedData() {
-    // TODO: implement initializeMedData
     throw UnimplementedError();
   }
 }

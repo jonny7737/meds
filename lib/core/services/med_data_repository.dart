@@ -113,8 +113,7 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     return _meds;
   }
 
-  /** // ignore: slash_for_doc_comments
-   *
+  /*
    * TODO: Update save method to support additional parameters
       doctorId, dose and frequency
    */

@@ -17,7 +17,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   UserViewModel _userModel = locator();
 
   AddMedViewModel() {
-    setDebug(true);
+    setDebug(false);
     _setImageDirectory();
   }
 

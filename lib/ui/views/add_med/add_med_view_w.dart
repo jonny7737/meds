@@ -12,7 +12,7 @@ class AddMedWidget extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    setDebug(true);
+    setDebug(false);
 
     AddMedViewModel _model = Provider.of(context, listen: false);
     _model.setEditIndex(editIndex);

@@ -20,7 +20,6 @@ class MedDataBox with Logger, ChangeNotifier {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
