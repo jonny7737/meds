@@ -19,14 +19,14 @@ mixin Logger {
     return CustomTrace(trace).lineNumber;
   }
 
-  void log(String msg, {int linenumber = -1}) {
-    if (_debug.value && DEBUGGING_APP) {
-      String source = this.runtimeType.toString();
-      if (linenumber < 0)
-        print('[$source]-> $msg');
-      else
-        print('[$source.$linenumber]-> $msg');
-    }
+  void log(String msg, {int linenumber = -1, bool always = false}) {
+    if (!always && (!_debug.value || !DEBUGGING_APP)) return;
+
+    String source = this.runtimeType.toString();
+    if (linenumber < 0)
+      print('[$source]-> $msg');
+    else
+      print('[$source.$linenumber]-> $msg');
   }
 }
 

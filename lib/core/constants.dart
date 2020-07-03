@@ -17,3 +17,10 @@ const bool PURGE_ALL_DATA = false;
 const bool NETWORK_AVAILABLE = true;
 
 const bool DEBUGGING_APP = true;
+const bool ADDMED_DEBUG = false;
+const bool HOME_DEBUG = false;
+const bool LOGIN_DEBUG = false;
+const bool DOCTOR_DEBUG = false;
+const bool MED_REPOSITORY_DEBUG = false;
+const bool DOCTOR_REPOSITORY_DEBUG = false;
+const bool NETWORK_DEBUG = false;
