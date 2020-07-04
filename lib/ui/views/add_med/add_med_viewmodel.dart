@@ -153,9 +153,9 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   List<String> get doctorNames {
     List<String> _doctorNames = [];
     List<DoctorData> _dd = _repository.getAllDoctors();
-    _dd.forEach((element) {
+    for (var element in _dd) {
       _doctorNames.add('Dr. ' + element.name);
-    });
+    }
     return _doctorNames;
   }
 

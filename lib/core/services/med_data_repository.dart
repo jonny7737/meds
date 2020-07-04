@@ -110,9 +110,9 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     List _userList = [];
     _userList.add(_userModel.name);
     List<MedData> _medData = _box.values.toList();
-    _medData.forEach((med) {
+    for (var med in _medData) {
       if (!_userList.contains(med.owner)) _userList.add(med.owner);
-    });
+    }
     return _userList.length;
   }
 
@@ -148,10 +148,9 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
 
   @override
   Future<void> deleteAll() async {
-//    await _box.clear();
-    _meds.forEach((med) {
+    for (var med in _meds) {
       if (med.owner == _userModel.name) delete(med);
-    });
+    }
   }
 
   @override

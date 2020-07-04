@@ -201,14 +201,14 @@ class HomeViewModel extends ChangeNotifier with Logger {
     final dir = Directory(imageDirectoryPath);
     if (dir.existsSync()) {
       var files = dir.listSync().toList();
-      files.forEach((i) {
+      for (var i in files) {
         String _rxcui = p.basename(i.path).split(".")[0];
         if (getMedByRxcui(_rxcui) == null) {
           log('Deleting: ${i.path}', linenumber: lineNumber(StackTrace.current));
           File(i.path).deleteSync();
           log('Deleted: $_rxcui', linenumber: lineNumber(StackTrace.current));
         }
-      });
+      }
     }
   }
 }

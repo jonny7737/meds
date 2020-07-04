@@ -85,14 +85,14 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
     if (newObject is MedData) {
       if (!fakeData) {
         List<MedData> medList = getAllMeds();
-        medList.forEach((med) {
+        for (var med in medList) {
           if (med.compareTo(newObject) == 0) {
             _exists = true;
           }
           if (_exists) {
             matchId = med.id;
           }
-        });
+        }
       }
       if (matchId == -1)
         _action = 'ADDED';
@@ -104,14 +104,14 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
     } else if (newObject is DoctorData) {
       var doctorList = getAllDoctors();
       int index = 0;
-      doctorList.forEach((doctor) {
+      for (var doctor in doctorList) {
         log('[${doctor.name}] == [${newObject.name}] : ${doctor.name == newObject.name}');
         if (doctor.name == newObject.name) {
           log('DoctorId: ${doctor.id}');
           if (matchId == -1) matchId = index;
         }
         index++;
-      });
+      }
       await _doctorRepository.save(newObject, index: matchId);
       if (matchId == -1)
         _action = 'ADDED';
