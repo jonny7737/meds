@@ -49,7 +49,7 @@ class MedRequest with Logger {
   TempMed med(int index) => meds[index];
 
   Future<bool> medInfoByName(String medName) async {
-    setDebug(false);
+    setDebug(NETWORK_DEBUG);
 
     int medCount = 0;
     _rxCUIList = null;
@@ -62,14 +62,14 @@ class MedRequest with Logger {
 
     _medName = medName;
 
-    log('Med request for: $_medName');
+    log('Med request for: $_medName', linenumber: lineNumber(StackTrace.current));
 
     meds = [];
 
     try {
       _rxCUIList = await _rxCUIbyName(_medName);
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), linenumber: lineNumber(StackTrace.current), always: true);
       return _isDataLoaded; // false
     }
 
@@ -80,17 +80,17 @@ class MedRequest with Logger {
     String rxcui;
     while (rxcuiIterator.moveNext()) {
       rxcui = rxcuiIterator.current;
-      log(rxcui);
+      log(rxcui, linenumber: lineNumber(StackTrace.current));
       _isDataLoaded = await nextMedInfo(rxcui);
       log('\tGot nextMedInfo', linenumber: lineNumber(StackTrace.current));
       if (_isDataLoaded) {
         meds.add(TempMed(medCount, rxcui, _medName, _medDetails, _medWarning, _imageInfo));
         medCount++;
-        log('Med added: $medCount');
+        log('Med added: $medCount', linenumber: lineNumber(StackTrace.current));
       } else
         break;
     }
-    log('Med request complete [$_isDataLoaded]: $_medName');
+    log('Med request complete [$_isDataLoaded]: $_medName', linenumber: lineNumber(StackTrace.current));
     return _isDataLoaded;
   }
 
@@ -101,20 +101,20 @@ class MedRequest with Logger {
 
     try {
       _moreInfoUrl = await _getMedLineLink(rxcui);
-      log('Got MedLine link');
+      log('Got MedLine link', linenumber: lineNumber(StackTrace.current));
     } on Exception catch (_) {
       return false;
     }
     if (_moreInfoUrl == null) {
-      log('Get MedLine Link FAILED!!');
+      log('Get MedLine Link FAILED!!', linenumber: lineNumber(StackTrace.current));
       return false;
     }
     Document html = await _getMedDetailsHTML(_moreInfoUrl);
-    log('Got med details html');
+    log('Got med details html', linenumber: lineNumber(StackTrace.current));
     _medDetails = _getMedDetails(html);
     _medWarning = _getMedWarningDetails(html);
     _imageInfo = await _getMedImageInfo(rxcui);
-    log('Got med image info');
+    log('Got med image info', linenumber: lineNumber(StackTrace.current));
     return true;
   }
 
@@ -151,13 +151,13 @@ class MedRequest with Logger {
 
     final Uri uri = Uri.parse(url);
 
-    log('URI: $uri');
+    log('URI: $uri', linenumber: lineNumber(StackTrace.current));
 
     http.Response response;
     try {
       response = await http.get(uri).timeout(Duration(seconds: 15));
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), linenumber: lineNumber(StackTrace.current), always: true);
       throw Exception('Did not retrieve RXCUI XML');
     }
 
@@ -195,7 +195,7 @@ class MedRequest with Logger {
     try {
       response = await http.get(url).timeout(Duration(seconds: 10));
     } on Exception catch (e) {
-      log(e.toString());
+      log(e.toString(), linenumber: lineNumber(StackTrace.current), always: true);
       throw Exception('Failed to load MedLine XML');
     }
 
@@ -205,7 +205,7 @@ class MedRequest with Logger {
 
       var entries = respXML.findAllElements('entry');
       if (entries.length == 0) {
-        log('No entry found for $rxCUI');
+        log('No entry found for $rxCUI', linenumber: lineNumber(StackTrace.current));
         return null;
       }
       String link;
@@ -231,7 +231,7 @@ class MedRequest with Logger {
         throw Exception('Failed to load Detail HTML');
       }
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), linenumber: lineNumber(StackTrace.current), always: true);
       throw Exception('Failed to load Detail HTML');
     }
   }
@@ -276,10 +276,10 @@ class MedRequest with Logger {
 
     if (response.statusCode == 200) {
       var decodedJson = json.decode(response.body);
-      log('$decodedJson');
+      log('$decodedJson', linenumber: lineNumber(StackTrace.current));
       var rxImageInfo = decodedJson['nlmRxImages'];
       for (var rx in rxImageInfo) {
-        log("${rx['imageUrl'].toString()}");
+        log("${rx['imageUrl'].toString()}", linenumber: lineNumber(StackTrace.current));
         names.add(rx['name'].toString());
         urls.add(rx['imageUrl'].toString());
         mfgs.add(rx['labeler'].toString());

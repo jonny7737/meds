@@ -13,7 +13,7 @@ import 'package:meds/ui/view_model/user_viewmodel.dart';
 class HomeAppBar extends StatelessWidget with Logger implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
-    setDebug(false);
+    setDebug(HOME_DEBUG);
     final ThemeDataProvider themeDataProvider = Provider.of(context, listen: false);
     final UserViewModel userViewModel = locator();
     final String userName = userViewModel.name;

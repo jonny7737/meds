@@ -23,11 +23,11 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
     AddMedViewModel _model = Provider.of(context, listen: false);
     ScreenInfoViewModel _s = locator<ScreenInfoViewModel>();
 
-    setDebug(true);
+    setDebug(ADDMED_DEBUG);
     return Positioned(
       left: context.widthPct(0.30),
       right: context.widthPct(0.30),
-      top: _s.isLargeScreen ? context.heightPct(0.35) : context.heightPct(0.50),
+      top: _s.isLargeScreen ? context.heightPct(0.45) : context.heightPct(0.60),
       child: RaisedButton(
         elevation: 30,
         color: Theme.of(context).primaryColor,

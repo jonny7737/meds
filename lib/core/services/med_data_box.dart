@@ -13,7 +13,7 @@ class MedDataBox with Logger, ChangeNotifier {
   bool _lockCheck = false;
 
   MedDataBox() {
-    setDebug(false);
+    setDebug(MED_REPOSITORY_DEBUG);
     _init();
     log('constructor completed');
   }

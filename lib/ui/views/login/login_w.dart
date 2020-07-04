@@ -39,7 +39,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-    widget.setDebug(false);
+    widget.setDebug(LOGIN_DEBUG);
     return Container(
       height: context.heightPx,
       child: Stack(

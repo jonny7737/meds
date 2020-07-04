@@ -20,7 +20,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
     DoctorsViewModel _model = locator<DoctorsViewModel>();
     ScreenInfoViewModel _screen = locator<ScreenInfoViewModel>();
 
-    setDebug(false);
+    setDebug(DOCTOR_DEBUG);
     return Positioned(
       left: context.widthPct(0.30),
       right: context.widthPct(0.30),

@@ -12,7 +12,7 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
   DoctorDataRepository _doctorRepository;
 
   DataService() {
-    setDebug(false);
+    setDebug(MED_REPOSITORY_DEBUG || DOCTOR_REPOSITORY_DEBUG);
 
     _medRepository = locator<MedDataRepository>();
     _medRepository.addListener(() {
@@ -61,6 +61,11 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
   @override
   DoctorData getDoctorByName(String name) {
     return _doctorRepository.getByName(name);
+  }
+
+  @override
+  DoctorData getDoctorById(int id) {
+    return _doctorRepository.getById(id);
   }
 
   Future clearAllMeds() async {
@@ -112,7 +117,7 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
         _action = 'ADDED';
       else
         _action = 'UPDATED';
-      log('Doctor $_action - ${newObject.name} [$matchId]');
+      log('Doctor $_action - ${newObject.name} [$matchId][${newObject.id}]');
     }
   }
 

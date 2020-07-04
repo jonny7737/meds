@@ -19,6 +19,12 @@ class DoctorData extends HiveObject {
 
   DoctorData(this.id, this.name, this.phone);
 
+  DoctorData copyWith({int id}) {
+    if (id == null) id = this.id;
+    DoctorData _copy = DoctorData(id, this.name, this.phone);
+    return _copy;
+  }
+
   int compareTo(DoctorData otherDoctor) => name.compareTo(otherDoctor.name);
 
   String toString() {

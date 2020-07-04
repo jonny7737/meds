@@ -21,22 +21,23 @@ class AddMedField extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    setDebug(false);
-    log('Re-Building');
+    setDebug(ADDMED_DEBUG);
+    log('Re-Building', linenumber: lineNumber(StackTrace.current));
     return Positioned(
       top: _index,
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.grey[100],
-            shape: BoxShape.rectangle,
-            boxShadow: [
-              BoxShadow(
-                offset: const Offset(0.0, 5.0),
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(15)),
+          color: Colors.grey[100],
+          shape: BoxShape.rectangle,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0.0, 5.0),
+              blurRadius: 10.0,
+              spreadRadius: 2.0,
+            ),
+          ],
+          borderRadius: BorderRadius.circular(15),
+        ),
         margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.10)),
         alignment: Alignment.center,
         width: context.widthPct(0.80),

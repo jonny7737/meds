@@ -10,7 +10,7 @@ import 'package:meds/ui/views/home/custom_drawer.dart';
 class HomeView extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
-    setDebug(false);
+    setDebug(HOME_DEBUG);
 
     Widget screen = HomeViewWidget();
     screen = CustomDrawer(child: screen);

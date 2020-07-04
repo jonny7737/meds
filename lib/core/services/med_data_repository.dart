@@ -16,7 +16,8 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
   int _numUsers = 0;
 
   MedDataRepository() {
-    setDebug(false);
+    setDebug(MED_REPOSITORY_DEBUG);
+
     _medDataBox.addListener(boxOpened);
     _userModel.addListener(_refreshMeds);
     _initialize();
@@ -82,6 +83,13 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     return _meds[index];
   }
 
+  @override
+  MedData getById(int id) {
+    int index = _meds.indexWhere((element) => element.id == id);
+    if (index == -1) return null;
+    return _meds[index];
+  }
+
   /// Refresh the repository list with sorted data from the box
   ///   Sorting is based on medication name field.
   ///   The list is filtered by the current logged-in user.
@@ -119,15 +127,17 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
    */
   @override
   Future<void> save(MedData newObject, {int index = -1}) async {
-    final _box = await _medDataBox.box;
+    int _doctorId;
     if (index == -1) {
       if (newObject.id == -1) {
-        newObject = newObject.copyWith(id: _box.length);
+        if (newObject.doctorId == -1) _doctorId = 0;
+        newObject = newObject.copyWith(id: _box.length, doctorId: _doctorId);
       }
       _box.add(newObject);
     } else {
       _box.putAt(index, newObject);
     }
+    log('MedData saved: Doctor ID: ${newObject.doctorId}', linenumber: lineNumber(StackTrace.current));
   }
 
   @override

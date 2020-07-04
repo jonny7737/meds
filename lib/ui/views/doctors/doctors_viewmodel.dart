@@ -7,7 +7,7 @@ import 'package:meds/locator.dart';
 
 class DoctorsViewModel extends ChangeNotifier with Logger {
   DoctorsViewModel() {
-    setDebug(false);
+    setDebug(DOCTOR_DEBUG);
     log('DoctorViewModel instantiated.');
     setModelDirty(dirty: true);
 //    updateDoctorList();
@@ -165,7 +165,7 @@ class DoctorsViewModel extends ChangeNotifier with Logger {
   bool get isModelDirty => _modelDirty;
   void setModelDirty({bool dirty}) {
     _modelDirty = dirty;
-    if (_modelDirty) notifyListeners();
+    notifyListeners();
   }
 
 //  void updateDoctorList({bool force = false}) async {
@@ -203,5 +203,6 @@ class DoctorsViewModel extends ChangeNotifier with Logger {
 //    updateDoctorList(force: true);
     setActiveDoctor(-1);
     _doctorAdded = true;
+    setModelDirty(dirty: true);
   }
 }

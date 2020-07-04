@@ -12,11 +12,14 @@ class AddMedWidget extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    setDebug(false);
-
     AddMedViewModel _model = Provider.of(context, listen: false);
-    _model.setEditIndex(editIndex);
+
+    setDebug(ADDMED_DEBUG);
+
+    _model.setMedForEditing(editIndex);
     _model.logEditIndex();
+
+    log('Rebuilding [Edit Index: $editIndex]', linenumber: lineNumber(StackTrace.current));
 
     return SafeArea(
       child: Scaffold(

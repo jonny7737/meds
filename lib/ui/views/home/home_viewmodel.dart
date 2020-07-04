@@ -13,7 +13,7 @@ import 'package:path_provider/path_provider.dart';
 
 class HomeViewModel extends ChangeNotifier with Logger {
   HomeViewModel() {
-    setDebug(false);
+    setDebug(HOME_DEBUG);
     _init();
     log('Constructor complete');
   }
@@ -174,9 +174,10 @@ class HomeViewModel extends ChangeNotifier with Logger {
     List<DoctorData> _doctors = _repository.getAllDoctors();
     int ndx = _doctors.indexWhere((element) => id == element.id);
     if (ndx == -1) {
-      return DoctorData(id, 'Doctor not configured', '');
-    } else
-      return _doctors[ndx];
+      ndx = 0;
+      //return DoctorData(id, 'Doctor not configured', '');
+    } //else
+    return _doctors[ndx];
   }
 
   void save(Object newObject) async {

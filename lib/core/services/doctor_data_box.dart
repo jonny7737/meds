@@ -12,7 +12,7 @@ class DoctorDataBox with Logger {
   bool _lockCheck = false;
 
   DoctorDataBox() {
-    setDebug(false);
+    setDebug(DOCTOR_REPOSITORY_DEBUG);
     _init();
     log('constructor completed');
   }

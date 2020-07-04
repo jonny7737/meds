@@ -11,7 +11,7 @@ class DoctorsView extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    setDebug(false);
+    setDebug(DOCTOR_DEBUG);
     log('Building');
     return SafeArea(
       child: Scaffold(
@@ -43,7 +43,7 @@ class DoctorsView extends StatelessWidget with Logger {
 class DoctorListView extends StatefulWidget with Logger {
   @override
   _DoctorListViewState createState() {
-    setDebug(false);
+    setDebug(DOCTOR_DEBUG);
     return _DoctorListViewState();
   }
 }
@@ -143,7 +143,7 @@ class _DoctorListViewState extends State<DoctorListView> {
                 child: Image.asset('assets/doctor.png'),
               ),
               title: Text(
-                '${doctorData.name}',
+                '${doctorData.name}: ${doctorData.id}',
                 style: TextStyle(color: Colors.black),
               ),
               trailing: Text(

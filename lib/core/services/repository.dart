@@ -18,6 +18,8 @@ abstract class Repository<T> {
 
   T getByName(String name);
 
+  T getById(int id);
+
   /// ***
   /// *** CAUTION ***
   ///

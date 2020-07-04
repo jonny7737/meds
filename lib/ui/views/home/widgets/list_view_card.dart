@@ -24,7 +24,7 @@ class ListViewCard extends StatelessWidget with Logger {
     HomeViewModel _model = Provider.of(context);
     MedData medData = _model.medList[index];
 
-    setDebug(false);
+    setDebug(HOME_DEBUG);
 
     return Card(
       margin: EdgeInsets.only(
@@ -64,7 +64,7 @@ class ListViewCard extends StatelessWidget with Logger {
       left: context.widthPct(_s.isLargeScreen ? 0.28 : 0.23),
       bottom: _s.isiOS ? 2.0 : 0.0,
       child: Text(
-        'Dr. ${_model.getDoctorById(medData.doctorId).name}',
+        'Dr. ${_model.getDoctorById(medData.doctorId).name}: ${medData.doctorId}',
         style: TextStyle(
           color: Colors.black,
           fontSize: context.heightPct(_s.isLargeScreen ? 0.020 : 0.024) * _s.fontScale * 1.1,

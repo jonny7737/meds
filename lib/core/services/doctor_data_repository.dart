@@ -15,7 +15,8 @@ class DoctorDataRepository with Logger implements Repository<DoctorData> {
   List<DoctorData> _doctors = [];
 
   DoctorDataRepository() {
-    setDebug(false);
+    setDebug(DOCTOR_REPOSITORY_DEBUG);
+
     _doctorDataBox = locator<DoctorDataBox>();
     _initialize();
   }
@@ -56,6 +57,13 @@ class DoctorDataRepository with Logger implements Repository<DoctorData> {
   }
 
   @override
+  DoctorData getById(int id) {
+    int index = _doctors.indexWhere((element) => element.id == id);
+    if (index == -1) return null;
+    return _doctors[index];
+  }
+
+  @override
   List<DoctorData> getAll() {
     return _doctors;
   }
@@ -67,9 +75,10 @@ class DoctorDataRepository with Logger implements Repository<DoctorData> {
   @override
   Future<void> save(DoctorData newObject, {int index = -1}) async {
     if (index == -1) {
-      _box.add(newObject);
+      DoctorData _dd = newObject.copyWith(id: _box.length);
+      _box.add(_dd);
     } else {
-      _box.putAt(index, newObject);
+      _box.putAt(newObject.id, newObject);
     }
   }
 

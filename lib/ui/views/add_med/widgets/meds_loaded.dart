@@ -9,7 +9,7 @@ class MedsLoaded extends StatelessWidget with Logger {
   Widget build(BuildContext context) {
     AddMedViewModel _model = Provider.of(context, listen: false);
 
-    setDebug(false);
+    setDebug(ADDMED_DEBUG);
 
     log('${_model.numMedsFound} meds found', linenumber: lineNumber(StackTrace.current));
     return Stack(

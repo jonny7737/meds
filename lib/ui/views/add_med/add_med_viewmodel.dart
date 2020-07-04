@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:meds/core/helpers/med_request.dart';
 import 'package:meds/core/mixins/logger.dart';
+import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/models/temp_med.dart';
 import 'package:meds/core/services/repository_service.dart';
@@ -17,13 +18,14 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   UserViewModel _userModel = locator();
 
   AddMedViewModel() {
-    setDebug(false);
+    setDebug(ADDMED_DEBUG);
     _setImageDirectory();
   }
 
   RepositoryService _repository = locator();
 
   bool _isDisposed = false;
+  int _editIndex;
 
   @override
   void dispose() {
@@ -33,15 +35,131 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     super.dispose();
   }
 
-  int _editIndex;
-  int get editIndex => _editIndex;
-  void setEditIndex(int i) => _editIndex = i;
-  MedData get medAtEditIndex => _repository.getMedAtIndex(_editIndex);
-  void logEditIndex() {
-    if (_editIndex != null)
-      log('$_editIndex: ${_repository.getMedAtIndex(_editIndex).name}', linenumber: lineNumber(StackTrace.current));
+  /// **********************************************************************
+  String _newMedName;
+  String _newMedDose;
+  String _newMedFrequency;
+  String _newMedDoctorName;
+  int _newMedDoctorId;
+
+  String get newMedName => _newMedName;
+  String get newMedDose => _newMedDose;
+  String get newMedFrequency => _newMedFrequency;
+  String get newMedDoctorName => _newMedDoctorName;
+  String get fancyDoctorName {
+    String _name;
+
+    log('[$_editIndex][$_newMedDoctorName]', linenumber: lineNumber(StackTrace.current));
+
+    if (_editIndex == null) {
+      if (_newMedDoctorName == null)
+        _name = doctorNames[0];
+      else
+        _name = 'Dr. ' + _newMedDoctorName;
+    } else
+      _name = 'Dr. ' + _newMedDoctorName;
+
+    log('$_name', linenumber: lineNumber(StackTrace.current));
+    return _name;
   }
 
+  int get newMedDoctorId => _newMedDoctorId;
+  int get editIndex => _editIndex;
+
+  String reformatMedName(String medName, String dose) {
+    String _newName = '';
+    List<String> _nameSplit = medName.split(' ');
+    for (int i = 0; i < _nameSplit.length; i++) {
+      if (dose.startsWith(_nameSplit[i])) {
+        for (int j = 0; j < i; j++) {
+          _newName = _newName + _nameSplit[j] + ' ';
+        }
+        break;
+      }
+    }
+    return _newName;
+  }
+
+  void setMedForEditing(int index) {
+    if (index == null) {
+      clearNewMed();
+      return;
+    }
+    _editIndex = index;
+    MedData _md = medAtEditIndex;
+    _setMedName(reformatMedName(_md.name, _md.dose));
+    _setMedDose(_md.dose);
+    _setMedFrequency(_md.frequency);
+    _newMedDoctorId = _md.doctorId;
+    _newMedDoctorName = getDoctorById(_newMedDoctorId).name;
+  }
+
+  MedData get medAtEditIndex => _editIndex != null ? _repository.getMedAtIndex(_editIndex) : null;
+
+  void _setMedName(String name) => _newMedName = name;
+  void _setMedDose(String dose) => _newMedDose = dose;
+  void _setMedFrequency(String frequency) => _newMedFrequency = frequency;
+  void _setMedDoctorId(String name) {
+//    log('$name', linenumber: lineNumber(StackTrace.current));
+    if (name.toLowerCase().startsWith('dr.')) {
+      int i = name.indexOf(' ') + 1;
+      name = name.substring(i);
+    }
+    log('$name', linenumber: lineNumber(StackTrace.current));
+    _newMedDoctorName = name;
+    _newMedDoctorId = _repository.getDoctorByName(name).id;
+  }
+
+  void onFormSave(String formField, String value) {
+    if (value == null || value.isEmpty) {
+      showError(formField);
+      setFormError(true);
+    } else {
+      setFormError(false);
+      if (formField == 'name') _setMedName(value);
+      if (formField == 'dose') _setMedDose(value);
+      if (formField == 'frequency') _setMedFrequency(value);
+      if (formField == 'doctor') {
+        if (value.toLowerCase().startsWith('dr.')) {
+          int i = value.indexOf(' ') + 1;
+          value = value.substring(i);
+        }
+        _setMedDoctorId(value);
+        notifyListeners();
+      }
+    }
+  }
+
+  void clearNewMed() {
+    _editIndex = null;
+    _newMedName = null;
+    _newMedDose = null;
+    _newMedFrequency = null;
+    _newMedDoctorName = null;
+    _newMedDoctorId = null;
+  }
+
+  void logEditIndex() {
+    if (_editIndex == null) return;
+    MedData _md = _repository.getMedAtIndex(_editIndex);
+    log(
+      '$_editIndex: ${_md.name} : ${_md.doctorId}',
+      linenumber: lineNumber(StackTrace.current),
+    );
+  }
+
+  DoctorData getDoctorById(int id) => _repository.getDoctorById(id);
+
+  List<String> get doctorNames {
+    List<String> _doctorNames = [];
+    List<DoctorData> _dd = _repository.getAllDoctors();
+    _dd.forEach((element) {
+      _doctorNames.add('Dr. ' + element.name);
+    });
+    return _doctorNames;
+  }
+
+  /// **********************************************************************
   bool _busy = false;
   bool _medsLoaded = false;
   bool _medsAdded = false;
@@ -60,25 +178,11 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   String _frequencyErrorMsg = 'This information is required.';
   Duration _secondsToDisplayErrorMsg = Duration(seconds: 4);
 
-  String _newMedName;
-  String _newMedDose;
-  String _newMedFrequency;
-
   bool get hasNewMed {
     log('$_newMedName : $_newMedDose', linenumber: lineNumber(StackTrace.current));
     if (_newMedName == null || _newMedDose == null || _newMedFrequency == null) return false;
     if (_newMedName.length > 2 && _newMedDose.length > 2 && _newMedFrequency.length > 3) return true;
     return false;
-  }
-
-  String get newMedDose => _newMedDose;
-
-  void setMedName(String name) => _newMedName = name;
-  void setMedDose(String dose) => _newMedDose = dose;
-  void setMedFrequency(String frequency) => _newMedFrequency = frequency;
-  void clearNewMed() {
-    _newMedName = null;
-    _newMedDose = null;
   }
 
   bool get formHasErrors {
@@ -101,18 +205,6 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   String get nameErrorMsg => _medNameErrorMsg;
   String get doseErrorMsg => _medDoseErrorMsg;
   String get frequencyErrorMsg => _frequencyErrorMsg;
-
-  void onFormSave(String formField, String value) {
-    if (value == null || value.isEmpty) {
-      showError(formField);
-      setFormError(true);
-    } else {
-      setFormError(false);
-      if (formField == 'name') setMedName(value);
-      if (formField == 'dose') setMedDose(value);
-      if (formField == 'frequency') setMedFrequency(value);
-    }
-  }
 
   double errorMsgHeight(String error) {
     if (error == 'name') return nameErrorMsgHeight;
@@ -166,6 +258,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
       _tempMed.imageInfo.urls[index],
       _tempMed.info,
       _tempMed.warnings,
+      doctorId: _newMedDoctorId,
       dose: _newMedDose,
       frequency: _newMedFrequency,
     );
@@ -182,6 +275,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
       null,
       _tempMed.info,
       _tempMed.warnings,
+      doctorId: _newMedDoctorId,
       dose: _newMedDose,
       frequency: _newMedFrequency,
     );

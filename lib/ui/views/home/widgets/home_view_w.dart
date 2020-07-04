@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class HomeViewWidget extends StatelessWidget with Logger {
   HomeViewWidget() {
-    setDebug(false);
+    setDebug(HOME_DEBUG);
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();

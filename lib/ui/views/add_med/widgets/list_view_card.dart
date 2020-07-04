@@ -24,7 +24,7 @@ class ListViewCard extends StatelessWidget with Logger {
     AddMedViewModel _model = Provider.of(context, listen: false);
     TempMed tempMed = _model.medFound;
 
-    setDebug(true);
+    setDebug(ADDMED_DEBUG);
     return Card(
       margin: EdgeInsets.only(
         top: context.heightPct(0.014),
