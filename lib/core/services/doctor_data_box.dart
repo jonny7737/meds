@@ -2,8 +2,12 @@ import 'package:hive/hive.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
+import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 
 class DoctorDataBox with Logger {
+  DebugViewModel _debug = locator();
+
   static const int retryTime = 100; // milliseconds to wait for !_initializing
 
   Box<DoctorData> _box;
@@ -12,7 +16,8 @@ class DoctorDataBox with Logger {
   bool _lockCheck = false;
 
   DoctorDataBox() {
-    setDebug(DOCTOR_REPOSITORY_DEBUG);
+    setDebug(_debug.isDebugging(DOCTOR_REPOSITORY_DEBUG));
+
     _init();
     log('constructor completed');
   }

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:meds/core/models/debug_model.dart';
 import 'package:meds/core/models/user_model.dart';
 import 'package:meds/core/services/doctor_data_box.dart';
 import 'package:meds/core/services/doctor_data_repository.dart';
@@ -6,6 +7,7 @@ import 'package:meds/core/services/data_service.dart';
 import 'package:meds/core/services/med_data_box.dart';
 import 'package:meds/core/services/med_data_repository.dart';
 import 'package:meds/core/services/repository_service.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
@@ -15,6 +17,9 @@ GetIt locator = GetIt.instance;
 void setupLocator() {
   locator.registerLazySingleton<UserModel>(() => UserModel());
   locator.registerLazySingleton<UserViewModel>(() => UserViewModel());
+
+  locator.registerLazySingleton<DebugModel>(() => DebugModel());
+  locator.registerLazySingleton<DebugViewModel>(() => DebugViewModel());
 
   locator.registerLazySingleton<MedDataBox>(() => MedDataBox());
   locator.registerLazySingleton<DoctorDataBox>(() => DoctorDataBox());

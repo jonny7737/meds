@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/core/models/med_data.dart';
@@ -6,13 +7,15 @@ import 'package:meds/core/services/doctor_data_repository.dart';
 import 'package:meds/core/services/med_data_repository.dart';
 import 'package:meds/core/services/repository_service.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 
 class DataService with Logger, ChangeNotifier implements RepositoryService {
+  DebugViewModel _debug = locator();
   MedDataRepository _medRepository;
   DoctorDataRepository _doctorRepository;
 
   DataService() {
-    setDebug(MED_REPOSITORY_DEBUG || DOCTOR_REPOSITORY_DEBUG);
+    setDebug(_debug.isDebugging(MED_REPOSITORY_DEBUG) || _debug.isDebugging(DOCTOR_REPOSITORY_DEBUG));
 
     _medRepository = locator<MedDataRepository>();
     _medRepository.addListener(() {

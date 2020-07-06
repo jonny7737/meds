@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/helpers/hero_dialog_route.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/temp_med.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/widgets/med_image_hero.dart';
@@ -11,6 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
 class ListViewCard extends StatelessWidget with Logger {
+  final DebugViewModel _debug = locator();
+
   ListViewCard({
     Key key,
     @required this.index,
@@ -22,9 +26,10 @@ class ListViewCard extends StatelessWidget with Logger {
   Widget build(BuildContext context) {
     ScreenInfoViewModel _s = locator();
     AddMedViewModel _model = Provider.of(context, listen: false);
+
     TempMed tempMed = _model.medFound;
 
-    setDebug(ADDMED_DEBUG);
+    setDebug(_debug.isDebugging(ADDMED_DEBUG));
     return Card(
       margin: EdgeInsets.only(
         top: context.heightPct(0.014),

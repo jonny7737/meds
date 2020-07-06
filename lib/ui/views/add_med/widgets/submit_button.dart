@@ -1,15 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
 class PositionedSubmitButton extends StatelessWidget with Logger {
+  final ScreenInfoViewModel _s = locator();
+  final DebugViewModel _debug = locator();
+
   PositionedSubmitButton({
     Key key,
     @required GlobalKey<FormState> formKey,
@@ -21,9 +26,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
     AddMedViewModel _model = Provider.of(context, listen: false);
-    ScreenInfoViewModel _s = locator<ScreenInfoViewModel>();
-
-    setDebug(ADDMED_DEBUG);
+    setDebug(_debug.isDebugging(ADDMED_DEBUG));
     return Positioned(
       left: context.widthPct(0.30),
       right: context.widthPct(0.30),

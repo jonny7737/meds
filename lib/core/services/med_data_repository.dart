@@ -1,22 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/services/med_data_box.dart';
 import 'package:meds/core/services/repository.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 
 class MedDataRepository with Logger, ChangeNotifier implements Repository<MedData> {
   UserViewModel _userModel = locator();
   MedDataBox _medDataBox = locator();
+  DebugViewModel _debug = locator();
+
   Box _box;
   Stream _boxStream;
   List<MedData> _meds = [];
   int _numUsers = 0;
 
   MedDataRepository() {
-    setDebug(MED_REPOSITORY_DEBUG);
+    setDebug(_debug.isDebugging(MED_REPOSITORY_DEBUG));
 
     _medDataBox.addListener(boxOpened);
     _userModel.addListener(_refreshMeds);

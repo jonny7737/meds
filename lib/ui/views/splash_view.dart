@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -10,19 +11,26 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
 
-// ignore: must_be_immutable
 class SplashView extends StatefulWidget with Logger {
+  final DebugViewModel _debug = locator();
+
   @override
   _SplashViewState createState() {
-    setDebug(false);
+    setDebug(_debug.isDebugging(SPLASH_DEBUG));
     log('createState executing');
     return _SplashViewState();
   }
 }
 
 class _SplashViewState extends State<SplashView> {
+  Function log;
+  Function lineNumber;
+
   @override
   void initState() {
+    log = widget.log;
+    lineNumber = widget.lineNumber;
+
     super.initState();
     Future.delayed(Duration(seconds: 2), doneLoading);
   }
@@ -30,13 +38,11 @@ class _SplashViewState extends State<SplashView> {
   doneLoading() async {
     UserViewModel userViewModel = locator();
 
-    widget.setDebug(false);
-
     if (userViewModel.shouldLogin) {
-      widget.log('Executing Login Route');
+      log('Executing Login Route');
       Navigator.pushReplacementNamed(context, loginRoute);
     } else {
-      widget.log('Executing Home Route');
+      log('Executing Home Route');
       Navigator.pushReplacementNamed(context, homeRoute);
     }
   }

@@ -3,14 +3,19 @@ import 'dart:convert';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as HTMLParser;
 import 'package:http/http.dart' as http;
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/temp_med.dart';
+import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:xml/xml.dart';
 
 ///    class MedRequest
 ///      Utility class to retrieve medication
 ///      information by medication name.
 class MedRequest with Logger {
+  DebugViewModel _debug = locator();
+
   List<String> _rxCUIList;
   String _moreInfoUrl;
   List<String> _medDetails;
@@ -49,7 +54,7 @@ class MedRequest with Logger {
   TempMed med(int index) => meds[index];
 
   Future<bool> medInfoByName(String medName) async {
-    setDebug(NETWORK_DEBUG);
+    setDebug(_debug.isDebugging(NETWORK_DEBUG));
 
     int medCount = 0;
     _rxCUIList = null;

@@ -1,4 +1,6 @@
 import 'package:meds/core/constants.dart';
+import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_view.dart';
 import 'package:meds/ui/views/home/widgets/app_bar_w.dart';
 import 'package:meds/ui/views/home/widgets/detail_card_w.dart';
@@ -12,8 +14,10 @@ import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class HomeViewWidget extends StatelessWidget with Logger {
+  final DebugViewModel _debug = locator();
+
   HomeViewWidget() {
-    setDebug(HOME_DEBUG);
+    setDebug(_debug.isDebugging(HOME_DEBUG));
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -162,12 +166,12 @@ class Background extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.centerLeft,
-        color: Colors.purple,
+        color: Theme.of(context).primaryColor,
         child: ListTile(
           leading: Icon(Icons.edit),
           title: Text(
             'Edit',
-            style: TextStyle(),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ));
   }
@@ -189,7 +193,7 @@ class SecondaryBackground extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               'Delete',
-              style: TextStyle(),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
         ));

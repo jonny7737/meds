@@ -4,14 +4,16 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 
 class DoctorsView extends StatelessWidget with Logger {
   final DoctorsViewModel _model = locator();
+  final DebugViewModel _debug = locator();
 
   @override
   Widget build(BuildContext context) {
-    setDebug(DOCTOR_DEBUG);
+    setDebug(_debug.isDebugging(DOCTOR_DEBUG));
     log('Building');
     return SafeArea(
       child: Scaffold(
@@ -41,15 +43,17 @@ class DoctorsView extends StatelessWidget with Logger {
 }
 
 class DoctorListView extends StatefulWidget with Logger {
+  final DebugViewModel _debug = locator();
+
   @override
   _DoctorListViewState createState() {
-    setDebug(DOCTOR_DEBUG);
+    setDebug(_debug.isDebugging(DOCTOR_DEBUG));
     return _DoctorListViewState();
   }
 }
 
 class _DoctorListViewState extends State<DoctorListView> {
-  DoctorsViewModel _model = locator<DoctorsViewModel>();
+  DoctorsViewModel _model = locator();
 
   @override
   initState() {

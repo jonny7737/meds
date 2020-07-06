@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 import 'package:sized_context/sized_context.dart';
@@ -14,13 +16,13 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
         super(key: key);
 
   final GlobalKey<FormState> _formKey;
+  final DoctorsViewModel _model = locator();
+  final ScreenInfoViewModel _screen = locator();
+  final DebugViewModel _debug = locator();
 
   @override
   Widget build(BuildContext context) {
-    DoctorsViewModel _model = locator<DoctorsViewModel>();
-    ScreenInfoViewModel _screen = locator<ScreenInfoViewModel>();
-
-    setDebug(DOCTOR_DEBUG);
+    setDebug(_debug.isDebugging(DOCTOR_DEBUG));
     return Positioned(
       left: context.widthPct(0.30),
       right: context.widthPct(0.30),

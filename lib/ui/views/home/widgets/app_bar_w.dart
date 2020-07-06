@@ -3,6 +3,7 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/views/home/custom_drawer.dart';
 import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -11,15 +12,15 @@ import 'package:sized_context/sized_context.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 
 class HomeAppBar extends StatelessWidget with Logger implements PreferredSizeWidget {
+  final UserViewModel userViewModel = locator();
+  final DebugViewModel _debug = locator();
   @override
   Widget build(BuildContext context) {
-    setDebug(HOME_DEBUG);
     final ThemeDataProvider themeDataProvider = Provider.of(context, listen: false);
-    final UserViewModel userViewModel = locator();
     final String userName = userViewModel.name;
+    final HomeViewModel _model = Provider.of(context);
 
-    HomeViewModel _model = Provider.of(context);
-
+    setDebug(_debug.isDebugging(HOME_DEBUG));
     return AppBar(
       backgroundColor: themeDataProvider.isDarkTheme ? Colors.black87 : null,
       leading: Builder(

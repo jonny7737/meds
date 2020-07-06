@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
+import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/list_view_card.dart';
 import 'package:provider/provider.dart';
 
 class MedsLoaded extends StatelessWidget with Logger {
+  final DebugViewModel _debug = locator();
+
   @override
   Widget build(BuildContext context) {
     AddMedViewModel _model = Provider.of(context, listen: false);
 
-    setDebug(ADDMED_DEBUG);
+    setDebug(_debug.isDebugging(ADDMED_DEBUG));
 
     log('${_model.numMedsFound} meds found', linenumber: lineNumber(StackTrace.current));
     return Stack(

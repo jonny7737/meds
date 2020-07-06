@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:meds/core/constants.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:path/path.dart' as p;
 
@@ -12,8 +14,10 @@ import 'package:meds/locator.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomeViewModel extends ChangeNotifier with Logger {
+  final DebugViewModel _debug = locator();
+
   HomeViewModel() {
-    setDebug(HOME_DEBUG);
+    setDebug(_debug.isDebugging(HOME_DEBUG));
     _init();
     log('Constructor complete');
   }

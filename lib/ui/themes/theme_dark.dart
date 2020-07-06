@@ -47,11 +47,12 @@ final ThemeData myThemeDark = ThemeData(
     height: 36,
     padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
     shape: StadiumBorder(
-        side: BorderSide(
-      color: Color(0xff000000),
-      width: 0,
-      style: BorderStyle.none,
-    )),
+      side: BorderSide(
+        color: Color(0xff000000),
+        width: 0,
+        style: BorderStyle.none,
+      ),
+    ),
     alignedDropdown: false,
     buttonColor: Color(0xff8e24aa),
     disabledColor: Color(0x61ffffff),

@@ -1,13 +1,17 @@
 import 'package:flutter/widgets.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/helpers/misc_utils.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/core/services/repository_service.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 
 class DoctorsViewModel extends ChangeNotifier with Logger {
+  final DebugViewModel _debug = locator();
+
   DoctorsViewModel() {
-    setDebug(DOCTOR_DEBUG);
+    setDebug(_debug.isDebugging(DOCTOR_DEBUG));
     log('DoctorViewModel instantiated.');
     setModelDirty(dirty: true);
 //    updateDoctorList();

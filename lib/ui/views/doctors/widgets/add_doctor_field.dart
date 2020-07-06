@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 import 'package:meds/ui/views/doctors/widgets/error_msg_w.dart';
 import 'package:sized_context/sized_context.dart';
@@ -23,7 +25,9 @@ class AddDoctorField extends StatefulWidget with Logger {
 }
 
 class _AddDoctorFieldState extends State<AddDoctorField> {
-  DoctorsViewModel _model = locator<DoctorsViewModel>();
+  final DoctorsViewModel _model = locator();
+  final DebugViewModel _debug = locator();
+
   final TextEditingController textEditingController = TextEditingController();
   List<MaskTextInputFormatter> maskTextInputFormatterList;
   TextInputType _keyboardType;
@@ -32,7 +36,7 @@ class _AddDoctorFieldState extends State<AddDoctorField> {
 
   @override
   void initState() {
-    widget.setDebug(DOCTOR_DEBUG);
+    widget.setDebug(_debug.isDebugging(DOCTOR_DEBUG));
     if (widget._fieldName == 'phone') {
       _initialValue = _model.activeDoctorPhone;
       maskTextInputFormatterList = [

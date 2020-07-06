@@ -110,6 +110,16 @@ class MedDrawer extends StatelessWidget with Logger {
               },
             ),
             ListTile(
+              leading: Icon(Icons.settings),
+              title: Text(
+                'Debug Options',
+                style: TextStyle(fontSize: fontSize),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, debugMenuRoute);
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.info),
               title: Text(
                 'About',
@@ -127,7 +137,7 @@ class MedDrawer extends StatelessWidget with Logger {
                     height: context.heightPct(0.15),
                   ),
                   applicationName: 'Meds',
-                  applicationVersion: 'v-0.4.8',
+                  applicationVersion: 'v-0.6.8',
                   children: [
                     Text(
                       'All drug information provided by U.S. National Institute of Health API.'

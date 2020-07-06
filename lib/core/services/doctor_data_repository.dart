@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:hive/hive.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/core/services/doctor_data_box.dart';
 import 'package:meds/core/services/repository.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 
 class DoctorDataRepository with Logger implements Repository<DoctorData> {
+  DebugViewModel _debug = locator();
+
   DoctorDataBox _doctorDataBox;
   Box _box;
   bool _initialized = false;
@@ -15,7 +19,7 @@ class DoctorDataRepository with Logger implements Repository<DoctorData> {
   List<DoctorData> _doctors = [];
 
   DoctorDataRepository() {
-    setDebug(DOCTOR_REPOSITORY_DEBUG);
+    setDebug(_debug.isDebugging(DOCTOR_REPOSITORY_DEBUG));
 
     _doctorDataBox = locator<DoctorDataBox>();
     _initialize();

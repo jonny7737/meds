@@ -1,46 +1,14 @@
 import 'dart:core';
 
 import 'package:meds/core/helpers/custom_trace.dart';
-
-/// Enable / disable debug logging everywhere.
-///
-const bool DEBUGGING_APP = true;
-
-/// These constants are application specific.  They allow me to
-/// enable / disable debugging on a per code section basis.
-///
-/// This enables / disables logging in the AddMed code group.
-///
-const bool ADDMED_DEBUG = false;
-
-/// This enables / disables logging in the Home code group.
-///
-const bool HOME_DEBUG = false;
-
-/// This enables / disables logging in the Login code group.
-///
-const bool LOGIN_DEBUG = false;
-
-/// This enables / disables logging in the Doctor code group.
-///
-const bool DOCTOR_DEBUG = false;
-
-/// This enables / disables logging in the MedRepository code group.
-///
-const bool MED_REPOSITORY_DEBUG = false;
-
-/// This enables / disables logging in the DoctorRepository code group.
-///
-const bool DOCTOR_REPOSITORY_DEBUG = false;
-
-/// This enables / disables logging in the general Networking code group.
-///
-const bool NETWORK_DEBUG = true;
+import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/debug_viewmodel.dart';
 
 mixin Logger {
+  final DebugViewModel _model = locator();
   final Boolean _debug = Boolean(false);
 
-  bool get isLogging => _debug.value;
+  bool get isLogging => _debug.value && _model.isDebugging('debugging_app');
 
   void setDebug(bool d) {
     _debug.value = d;
@@ -68,8 +36,9 @@ mixin Logger {
   /// ```
   ///
   void log(String msg, {int linenumber, bool always = false}) {
-    if (!always && (!_debug.value || !DEBUGGING_APP)) return;
+    if (!always && (!_debug.value || !_model.isDebugging('debugging_app'))) return;
 
+    /// This is to determine the calling Class type so it can be included in the output.
     String source = this.runtimeType.toString();
     if (linenumber == null)
       print('[$source]-> $msg');
