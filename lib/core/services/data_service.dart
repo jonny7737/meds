@@ -101,22 +101,22 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
         linenumber: lineNumber(StackTrace.current),
       );
     } else if (newObject is DoctorData) {
-      var doctorList = getAllDoctors();
-      int index = 0;
-      for (var doctor in doctorList) {
-        log('[${doctor.name}] == [${newObject.name}] : ${doctor.name == newObject.name}');
-        if (doctor.name == newObject.name) {
-          log('DoctorId: ${doctor.id}');
-          if (matchId == -1) matchId = index;
-        }
-        index++;
-      }
-      await _doctorRepository.save(newObject, index: matchId);
+//      var doctorList = getAllDoctors();
+//      int index = 0;
+//      for (var doctor in doctorList) {
+//        log('[${doctor.name}] == [${newObject.name}] : ${doctor.name == newObject.name}');
+//        if (doctor.name == newObject.name) {
+//          log('DoctorId: ${doctor.id}');
+//          if (matchId == -1) matchId = index;
+//        }
+//        index++;
+//      }
+      await _doctorRepository.save(newObject);
       if (matchId == -1)
         _action = 'ADDED';
       else
         _action = 'UPDATED';
-      log('Doctor $_action - ${newObject.name} [$matchId][${newObject.id}]');
+      log('Doctor $_action - ${newObject.name}');
     }
   }
 

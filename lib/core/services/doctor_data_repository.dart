@@ -77,13 +77,19 @@ class DoctorDataRepository with Logger implements Repository<DoctorData> {
   }
 
   @override
-  Future<void> save(DoctorData newObject, {int index = -1}) async {
-    if (index == -1) {
-      DoctorData _dd = newObject.copyWith(id: _box.length);
+  Future<void> save(DoctorData newObject) async {
+    DoctorData _dd = getById(newObject.id);
+    int key;
+
+    if (_dd == null) {
+      _dd = newObject.copyWith(id: _box.length);
       _box.add(_dd);
     } else {
-      _box.putAt(newObject.id, newObject);
+      key = _dd.key;
+      _dd = newObject.copyWith(id: key);
+      _box.put(key, _dd);
     }
+    log('DoctorData saved: DoctorId:${_dd.id}, DoctorName:${_dd.name}', linenumber: lineNumber(StackTrace.current));
   }
 
   @override
