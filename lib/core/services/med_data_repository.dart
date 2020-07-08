@@ -125,20 +125,28 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
     return _meds;
   }
 
-  /*
-   * TODO: Update save method to support additional parameters
-      doctorId, dose and frequency
-   */
   @override
   Future<void> save(MedData newObject) async {
     int key;
 
     MedData _md = getByRxcui(newObject.rxcui);
     if (_md == null) {
-      _md = newObject.copyWith(id: _box.length, doctorId: newObject.doctorId);
+      _md = newObject.copyWith(
+        id: _box.length,
+        mfg: newObject.mfg,
+        doctorId: newObject.doctorId,
+        dose: newObject.dose,
+        frequency: newObject.frequency,
+      );
     } else {
       key = _md.key;
-      _md = _md.copyWith(id: key, mfg: newObject.mfg, doctorId: newObject.doctorId);
+      _md = _md.copyWith(
+        id: key,
+        mfg: newObject.mfg,
+        doctorId: newObject.doctorId,
+        dose: newObject.dose,
+        frequency: newObject.frequency,
+      );
     }
 
     if (key == null)
