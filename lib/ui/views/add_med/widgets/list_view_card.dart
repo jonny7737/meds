@@ -66,7 +66,7 @@ class ListViewCard extends StatelessWidget with Logger {
                     image: NetworkToFileImage(
                       file: null, //_model.imageFile(tempMed.rxcui),
                       url: tempMed.imageInfo.urls[index],
-                      debug: isLogging,
+//                      debug: isLogging,
                     ),
                     width: context.widthPct(_s.isLargeScreen ? 0.19 : 0.15),
                   ),

@@ -130,17 +130,21 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
       doctorId, dose and frequency
    */
   @override
-  Future<void> save(MedData newObject, {int index = -1}) async {
-    int _doctorId;
-    if (index == -1) {
-      if (newObject.id == -1) {
-        if (newObject.doctorId == -1) _doctorId = 0;
-        newObject = newObject.copyWith(id: _box.length, doctorId: _doctorId);
-      }
-      _box.add(newObject);
+  Future<void> save(MedData newObject) async {
+    int key;
+
+    MedData _md = getByRxcui(newObject.rxcui);
+    if (_md == null) {
+      _md = newObject.copyWith(id: _box.length, doctorId: newObject.doctorId);
     } else {
-      _box.putAt(index, newObject);
+      key = _md.key;
+      _md = _md.copyWith(id: key, mfg: newObject.mfg, doctorId: newObject.doctorId);
     }
+
+    if (key == null)
+      _box.add(_md);
+    else
+      _box.put(key, _md);
     log('MedData saved: Doctor ID: ${newObject.doctorId}', linenumber: lineNumber(StackTrace.current));
   }
 

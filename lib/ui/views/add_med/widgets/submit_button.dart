@@ -27,6 +27,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
   Widget build(BuildContext context) {
     AddMedViewModel _model = Provider.of(context, listen: false);
     setDebug(_debug.isDebugging(ADDMED_DEBUG));
+
     return Positioned(
       left: context.widthPct(0.30),
       right: context.widthPct(0.30),
@@ -43,7 +44,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
           if (!_model.formHasErrors && _model.hasNewMed) {
             _model.clearTempMeds();
             if (await _model.getMedInfo()) {
-              _formKey.currentState.reset();
+              _formKey.currentState?.reset();
               log('Form Validated', linenumber: lineNumber(StackTrace.current));
             } else {
               if (_s.isAndroid) {

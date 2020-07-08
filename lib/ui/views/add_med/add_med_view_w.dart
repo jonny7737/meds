@@ -16,7 +16,7 @@ class AddMedWidget extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    AddMedViewModel _model = Provider.of(context, listen: false);
+    AddMedViewModel _model = Provider.of(context);
 
     setDebug(_debug.isDebugging(ADDMED_DEBUG));
 
@@ -30,7 +30,12 @@ class AddMedWidget extends StatelessWidget with Logger {
         appBar: AppBar(
           leading: BackButton(
             onPressed: () {
-              Navigator.pop(context, _model.wasMedAdded);
+              if (_model.medsLoaded) {
+                _model.formKey.currentState?.reset();
+                _model.clearTempMeds();
+                _model.setMedsLoaded(false);
+              } else
+                Navigator.pop(context, _model.wasMedAdded);
             },
           ),
           actions: <Widget>[

@@ -30,6 +30,9 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   bool _isDisposed = false;
   int editIndex;
 
+  var formKey;
+  void setFormKey(formKey) => this.formKey = formKey;
+
   @override
   void dispose() {
     if (_isDisposed) return;
@@ -45,10 +48,6 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   String newMedDoctorName;
   int newMedDoctorId;
 
-//  String get newMedName => _newMedName;
-//  String get newMedDose => _newMedDose;
-//  String get newMedFrequency => _newMedFrequency;
-//  String get newMedDoctorName => _newMedDoctorName;
   String get fancyDoctorName {
     String _name;
 
@@ -66,9 +65,6 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     return _name;
   }
 
-//  int get newMedDoctorId => _newMedDoctorId;
-//  int get editIndex => _editIndex;
-
   String reformatMedName(String medName, String dose) {
     String _newName = '';
     List<String> _nameSplit = medName.split(' ');
@@ -85,16 +81,29 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   void setMedForEditing(int index) {
     if (index == null) {
-      clearNewMed();
+//      clearNewMed();
       return;
     }
+
     editIndex = index;
     MedData _md = medAtEditIndex;
+
+    log('${_md.doctorId}', linenumber: lineNumber(StackTrace.current));
+
     newMedName = reformatMedName(_md.name, _md.dose);
     newMedDose = _md.dose;
     newMedFrequency = _md.frequency;
-    newMedDoctorId = _md.doctorId;
+    if (newMedDoctorId == null) newMedDoctorId = _md.doctorId;
     newMedDoctorName = getDoctorById(newMedDoctorId).name;
+
+    log('${_md.doctorId}', linenumber: lineNumber(StackTrace.current));
+  }
+
+  String formInitialValue(String fieldName) {
+    if (fieldName == 'name') return newMedName;
+    if (fieldName == 'dose') return newMedDose;
+    if (fieldName == 'frequency') return newMedFrequency;
+    return 'Error';
   }
 
   MedData get medAtEditIndex => editIndex != null ? _repository.getMedAtIndex(editIndex) : null;
@@ -108,9 +117,9 @@ class AddMedViewModel extends ChangeNotifier with Logger {
       int i = name.indexOf(' ') + 1;
       name = name.substring(i);
     }
-    log('$name', linenumber: lineNumber(StackTrace.current));
     newMedDoctorName = name;
     newMedDoctorId = _repository.getDoctorByName(name).id;
+    log('$newMedDoctorName:$newMedDoctorId', linenumber: lineNumber(StackTrace.current));
   }
 
   void onFormSave(String formField, String value) {
@@ -140,6 +149,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     newMedFrequency = null;
     newMedDoctorName = null;
     newMedDoctorId = null;
+    log('New Med Info cleared.', linenumber: lineNumber(StackTrace.current));
   }
 
   void logEditIndex() {
@@ -253,6 +263,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     notifyListeners();
   }
 
+  /// **********************************************************************
   bool get wasMedAdded => _medsAdded;
 
   bool get medsLoaded => _medsLoaded;
@@ -261,10 +272,14 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   String get rxcuiComment => _rxcuiComment;
   MedData get selectedMed => _selectedMed;
 
+  void setMedsLoaded(bool value) {
+    _medsLoaded = value;
+  }
+
   void saveSelectedMed(int index) {
     _selectedMed = MedData(
       _userModel.name,
-      -1,
+      editIndex,
       _tempMed.rxcui,
       _tempMed.imageInfo.names[index],
       _tempMed.imageInfo.mfgs[index],
@@ -281,10 +296,10 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   Future saveMedNoMfg() async {
     _selectedMed = MedData(
       _userModel.name,
-      -1,
+      editIndex ?? -1,
       _tempMed.rxcui,
       _tempMed.imageInfo.names[0],
-      'Manufacture Unknown',
+      'Unknown Manufacture',
       null,
       _tempMed.info,
       _tempMed.warnings,
@@ -352,6 +367,8 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     RepositoryService repository = locator();
     repository.save(_medData);
     _medsAdded = true;
+//    clearNewMed();
+    notifyListeners();
   }
 
   ///******************************************************************************

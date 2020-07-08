@@ -9,7 +9,7 @@ abstract class RepositoryService with ChangeNotifier {
 
   bool get onlyOneUser;
 
-  Future<void> save(Object newObject, {bool fakeData = false});
+  Future<void> save(Object newObject, {int editIndex});
 
   Future<void> delete(Object objectToDelete);
 

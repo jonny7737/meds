@@ -40,7 +40,7 @@ class ListViewCard extends StatelessWidget with Logger {
         children: <Widget>[
           buildImageWidget(_model, context, medData, _s),
           buildMedNameWidget(context, _s, medData),
-//          buildMedDoseWidget(context, medData, _s),
+          buildManufacturerWidget(context, medData, _s),
           buildDoctorNameWidget(context, _s, _model, medData),
           buildMedFrequencyWidget(context, _s, medData),
         ],
@@ -77,6 +77,19 @@ class ListViewCard extends StatelessWidget with Logger {
     );
   }
 
+  Positioned buildManufacturerWidget(BuildContext context, MedData medData, ScreenInfoViewModel _s) {
+    return Positioned(
+      right: context.widthPct(0.025),
+      child: Text(
+        medData.mfg.split(' ')[0],
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: context.heightPct(_s.isLargeScreen ? 0.020 : 0.025) * _s.fontScale,
+        ),
+      ),
+    );
+  }
+
   Positioned buildMedDoseWidget(BuildContext context, MedData medData, ScreenInfoViewModel _s) {
     return Positioned(
       right: context.widthPct(0.025),
@@ -98,7 +111,7 @@ class ListViewCard extends StatelessWidget with Logger {
       child: Container(
         width: context.widthPct(0.60),
         child: Text(
-          medData.name,
+          '${medData.name} ${medData.id}:${medData.key}',
           maxLines: 2,
           style: TextStyle(
             color: Colors.black,

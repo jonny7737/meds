@@ -18,17 +18,20 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
     setDebug(_debug.isDebugging(MED_REPOSITORY_DEBUG) || _debug.isDebugging(DOCTOR_REPOSITORY_DEBUG));
 
     _medRepository = locator<MedDataRepository>();
-    _medRepository.addListener(() {
-      log('Update Meds list', linenumber: lineNumber(StackTrace.current));
-      notifyListeners();
-    });
+    _medRepository.addListener(updatedMeds);
 
     _doctorRepository = locator<DoctorDataRepository>();
   }
 
   @override
   void dispose() {
+    _medRepository.removeListener(updatedMeds);
     super.dispose();
+  }
+
+  void updatedMeds() {
+    log('Updating Meds list', linenumber: lineNumber(StackTrace.current));
+    notifyListeners();
   }
 
   @override
@@ -80,30 +83,23 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
   }
 
   @override
-  Future<void> save(Object newObject, {bool fakeData = false}) async {
-    bool _exists = false;
-    int matchId = -1;
+  Future<void> save(Object newObject, {int editIndex}) async {
+    int matchId;
     String _action;
 
     if (newObject is MedData) {
-      if (!fakeData) {
-        List<MedData> medList = getAllMeds();
-        for (var med in medList) {
-          if (med.compareTo(newObject) == 0) {
-            _exists = true;
-          }
-          if (_exists) {
-            matchId = med.id;
-          }
-        }
-      }
-      if (matchId == -1)
+      MedData _md = _medRepository.getByRxcui(newObject.rxcui);
+
+      if (_md == null)
         _action = 'ADDED';
       else
         _action = 'UPDATED';
 
-      await _medRepository.save(newObject, index: matchId);
-      log('Medication $_action - ${newObject.name} [$matchId]');
+      await _medRepository.save(newObject);
+      log(
+        'Medication $_action - ${newObject.name} [$editIndex]',
+        linenumber: lineNumber(StackTrace.current),
+      );
     } else if (newObject is DoctorData) {
       var doctorList = getAllDoctors();
       int index = 0;

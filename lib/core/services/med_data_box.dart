@@ -11,6 +11,7 @@ class MedDataBox with Logger, ChangeNotifier {
   static const int retryTime = 100; // milliseconds to wait for !_initializing
 
   Box<MedData> _box;
+
   bool _initialized = false;
   bool _initializing = false;
   bool _lockCheck = false;
@@ -35,7 +36,7 @@ class MedDataBox with Logger, ChangeNotifier {
     notifyListeners();
   }
 
-  Future<MedData> getByKey(key) async {
+  MedData getByKey(key) {
     return _box.get(key);
   }
 

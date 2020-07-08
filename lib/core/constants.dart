@@ -8,6 +8,7 @@ const String addDoctorRoute = 'addDoctorRoute';
 const String debugMenuRoute = 'debugMenuRoute';
 
 const String DEBUGGING_APP = 'debugging_app';
+const String ROUTING_DEBUG = 'routing_debug';
 const String ADDMED_DEBUG = 'addmed_debug';
 const String HOME_DEBUG = 'home_debug';
 const String LOGIN_DEBUG = 'login_debug';

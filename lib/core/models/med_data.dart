@@ -42,13 +42,15 @@ class MedData extends HiveObject {
   final String owner;
 
   MedData(this.owner, this.id, this.rxcui, this.name, this.mfg, this.imageURL, this.info, this.warnings,
-      {this.doctorId = -1, this.dose = '0 mg', this.frequency = 'daily'});
+      {this.doctorId, this.dose = '0 mg', this.frequency = 'daily'});
 
   int compareTo(MedData otherMed) => rxcui.compareTo(otherMed.rxcui);
 
-  MedData copyWith({int id, int doctorId, String dose, String frequency}) {
+  MedData copyWith({int id, String mfg, int doctorId, String dose, String frequency}) {
     if (id == null) id = this.id;
+    if (mfg == null) mfg = this.mfg;
     if (doctorId == null) doctorId = this.doctorId;
+    if (doctorId == null) doctorId = 0;
     if (dose == null) dose = this.dose;
     if (frequency == null) frequency = this.frequency;
 
@@ -57,7 +59,7 @@ class MedData extends HiveObject {
       id,
       this.rxcui,
       this.name,
-      this.mfg,
+      mfg,
       this.imageURL,
       this.info,
       this.warnings,

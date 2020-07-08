@@ -39,14 +39,20 @@ class _DebugMenuWidgetState extends State<DebugMenuWidget> {
           color: Colors.grey,
           child: buildTile('Enable Debugging', DEBUGGING_APP),
         ),
-        buildTile('Splash Screen Debugging', SPLASH_DEBUG),
-        buildTile('Login Debugging', LOGIN_DEBUG),
-        buildTile('Home Debugging', HOME_DEBUG),
-        buildTile('Doctor Debugging', DOCTOR_DEBUG),
-        buildTile('Add Med Debugging', ADDMED_DEBUG),
-        buildTile('Med Repository Debugging', MED_REPOSITORY_DEBUG),
-        buildTile('Doctor Repository Debugging', DOCTOR_REPOSITORY_DEBUG),
-        buildTile('Network Debugging', NETWORK_DEBUG),
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              buildTile('Splash Screen Debugging', SPLASH_DEBUG),
+              buildTile('Login Debugging', LOGIN_DEBUG),
+              buildTile('Home Debugging', HOME_DEBUG),
+              buildTile('Doctor Debugging', DOCTOR_DEBUG),
+              buildTile('Add Med Debugging', ADDMED_DEBUG),
+              buildTile('Med Repository Debugging', MED_REPOSITORY_DEBUG),
+              buildTile('Doctor Repository Debugging', DOCTOR_REPOSITORY_DEBUG),
+              buildTile('Network Debugging', NETWORK_DEBUG),
+            ],
+          ),
+        ),
       ],
     );
   }

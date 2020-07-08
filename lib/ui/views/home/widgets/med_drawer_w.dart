@@ -116,6 +116,7 @@ class MedDrawer extends StatelessWidget with Logger {
                 style: TextStyle(fontSize: fontSize),
               ),
               onTap: () {
+                toggleDrawer();
                 Navigator.pushNamed(context, debugMenuRoute);
               },
             ),

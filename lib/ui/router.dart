@@ -12,6 +12,8 @@ import 'package:meds/ui/views/splash_view.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+//    print('[Router] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
+
     switch (settings.name) {
       case setupRoute:
         return PageRouteBuilder(

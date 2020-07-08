@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 
 class MedsLoaded extends StatelessWidget with Logger {
   final DebugViewModel _debug = locator();
+  final _formKey;
+//  = GlobalKey<FormState>()
+  MedsLoaded(this._formKey);
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +32,16 @@ class MedsLoaded extends StatelessWidget with Logger {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
+                  int editIndex = _model.editIndex;
                   log('TempMed clicked: $index', linenumber: lineNumber(StackTrace.current));
                   _model.saveSelectedMed(index);
                   _model.clearTempMeds();
+                  log('Edit Index: ${_model.editIndex}', linenumber: lineNumber(StackTrace.current));
+                  _model.clearNewMed();
+                  _formKey.currentState?.reset();
+                  if (editIndex != null) {
+                    Navigator.pop(context, _model.wasMedAdded);
+                  }
                 },
                 child: ListViewCard(index: index),
               );
@@ -52,8 +62,15 @@ class MedsLoaded extends StatelessWidget with Logger {
               ),
             ),
             onPressed: () async {
+              int editIndex = _model.editIndex;
               await _model.saveMedNoMfg();
               _model.clearTempMeds();
+              _model.clearNewMed();
+              _formKey.currentState?.reset();
+              log('Med saved, model meds cleared, form reset', linenumber: lineNumber(StackTrace.current));
+              if (editIndex != null) {
+                Navigator.pop(context, _model.wasMedAdded);
+              }
             },
           ),
         ),
