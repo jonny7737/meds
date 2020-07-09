@@ -13,7 +13,7 @@ import 'package:sized_context/sized_context.dart';
 import 'package:meds/core/models/med_data.dart';
 
 class ListViewCard extends StatelessWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
   final ScreenInfoViewModel _s = locator();
 
   ListViewCard({

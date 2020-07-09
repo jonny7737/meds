@@ -14,7 +14,7 @@ import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class HomeViewWidget extends StatelessWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   HomeViewWidget() {
     setDebug(_debug.isDebugging(HOME_DEBUG));

@@ -12,7 +12,7 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
 
 class SplashView extends StatefulWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   @override
   _SplashViewState createState() {

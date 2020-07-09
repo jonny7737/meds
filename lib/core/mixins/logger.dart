@@ -5,7 +5,7 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 mixin Logger {
-  final DebugViewModel _model = locator();
+  final LoggerViewModel _model = locator();
   final Boolean _debug = Boolean(false);
 
   bool get isLogging => _debug.value && _model.isDebugging('debugging_app');

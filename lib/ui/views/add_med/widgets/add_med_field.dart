@@ -10,7 +10,7 @@ import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/ui/views/add_med/widgets/error_msg_w.dart';
 
 class AddMedField extends StatelessWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   AddMedField({Key key, @required int index, Function onSave, String hint, String fieldName})
       : _index = 30 + index * 80.0,

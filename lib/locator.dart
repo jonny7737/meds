@@ -19,7 +19,7 @@ void setupLocator() {
   locator.registerLazySingleton<UserViewModel>(() => UserViewModel());
 
   locator.registerLazySingleton<LoggerModel>(() => LoggerModel());
-  locator.registerLazySingleton<DebugViewModel>(() => DebugViewModel());
+  locator.registerLazySingleton<LoggerViewModel>(() => LoggerViewModel());
 
   locator.registerLazySingleton<MedDataBox>(() => MedDataBox());
   locator.registerLazySingleton<DoctorDataBox>(() => DoctorDataBox());

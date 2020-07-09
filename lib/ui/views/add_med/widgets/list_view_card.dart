@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
 class ListViewCard extends StatelessWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   ListViewCard({
     Key key,

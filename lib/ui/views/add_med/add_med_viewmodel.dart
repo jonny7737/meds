@@ -18,7 +18,7 @@ import 'package:path/path.dart' as p;
 class AddMedViewModel extends ChangeNotifier with Logger {
   String imageDirectoryPath;
   final UserViewModel _userModel = locator();
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   AddMedViewModel() {
     setDebug(_debug.isDebugging(ADDMED_DEBUG));

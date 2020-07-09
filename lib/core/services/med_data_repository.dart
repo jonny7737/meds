@@ -12,7 +12,7 @@ import 'package:meds/ui/view_model/user_viewmodel.dart';
 class MedDataRepository with Logger, ChangeNotifier implements Repository<MedData> {
   UserViewModel _userModel = locator();
   MedDataBox _medDataBox = locator();
-  DebugViewModel _debug = locator();
+  LoggerViewModel _debug = locator();
 
   Box _box;
   Stream _boxStream;

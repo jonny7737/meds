@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:meds/ui/views/home/custom_drawer.dart';
 
 class HomeView extends StatelessWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   @override
   Widget build(BuildContext context) {

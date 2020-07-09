@@ -10,7 +10,7 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 class DoctorDataRepository with Logger implements Repository<DoctorData> {
-  DebugViewModel _debug = locator();
+  LoggerViewModel _debug = locator();
 
   DoctorDataBox _doctorDataBox;
   Box _box;

@@ -14,7 +14,7 @@ import 'package:xml/xml.dart';
 ///      Utility class to retrieve medication
 ///      information by medication name.
 class MedRequest with Logger {
-  DebugViewModel _debug = locator();
+  LoggerViewModel _debug = locator();
 
   List<String> _rxCUIList;
   String _moreInfoUrl;

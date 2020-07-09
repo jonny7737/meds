@@ -9,7 +9,7 @@ import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 
 class DoctorsView extends StatelessWidget with Logger {
   final DoctorsViewModel _model = locator();
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class DoctorsView extends StatelessWidget with Logger {
 }
 
 class DoctorListView extends StatefulWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   @override
   _DoctorListViewState createState() {

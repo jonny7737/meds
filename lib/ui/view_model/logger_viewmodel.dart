@@ -2,10 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:meds/core/models/logger_model.dart';
 import 'package:meds/locator.dart';
 
-class DebugViewModel with ChangeNotifier {
+class LoggerViewModel with ChangeNotifier {
   final LoggerModel _loggerModel = locator();
-
-  Map<String, bool> get settings => _loggerModel.debugSettings;
 
   bool isDebugging(String sectionName) => _loggerModel.isEnabled(sectionName);
 

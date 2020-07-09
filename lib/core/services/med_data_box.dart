@@ -7,7 +7,7 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 class MedDataBox with Logger, ChangeNotifier {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
   static const int retryTime = 100; // milliseconds to wait for !_initializing
 
   Box<MedData> _box;

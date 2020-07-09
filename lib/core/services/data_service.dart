@@ -10,7 +10,7 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 class DataService with Logger, ChangeNotifier implements RepositoryService {
-  DebugViewModel _debug = locator();
+  LoggerViewModel _debug = locator();
   MedDataRepository _medRepository;
   DoctorDataRepository _doctorRepository;
 

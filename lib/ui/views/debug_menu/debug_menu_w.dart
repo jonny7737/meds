@@ -10,7 +10,7 @@ class DebugMenuWidget extends StatefulWidget with Logger {
 }
 
 class _DebugMenuWidgetState extends State<DebugMenuWidget> {
-  final DebugViewModel _model = locator();
+  final LoggerViewModel _model = locator();
 
   Function log;
   Function lineNumber;

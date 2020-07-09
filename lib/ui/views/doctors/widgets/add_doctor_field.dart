@@ -26,7 +26,7 @@ class AddDoctorField extends StatefulWidget with Logger {
 
 class _AddDoctorFieldState extends State<AddDoctorField> {
   final DoctorsViewModel _model = locator();
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   final TextEditingController textEditingController = TextEditingController();
   List<MaskTextInputFormatter> maskTextInputFormatterList;

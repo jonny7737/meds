@@ -14,7 +14,7 @@ import 'package:meds/locator.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomeViewModel extends ChangeNotifier with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   HomeViewModel() {
     setDebug(_debug.isDebugging(HOME_DEBUG));

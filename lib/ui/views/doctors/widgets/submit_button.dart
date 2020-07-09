@@ -18,7 +18,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
   final GlobalKey<FormState> _formKey;
   final DoctorsViewModel _model = locator();
   final ScreenInfoViewModel _screen = locator();
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   @override
   Widget build(BuildContext context) {

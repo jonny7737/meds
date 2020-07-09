@@ -8,7 +8,7 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 class DoctorsViewModel extends ChangeNotifier with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   DoctorsViewModel() {
     setDebug(_debug.isDebugging(DOCTOR_DEBUG));

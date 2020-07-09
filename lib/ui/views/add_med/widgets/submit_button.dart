@@ -13,7 +13,7 @@ import 'package:sized_context/sized_context.dart';
 
 class PositionedSubmitButton extends StatelessWidget with Logger {
   final ScreenInfoViewModel _s = locator();
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   PositionedSubmitButton({
     Key key,

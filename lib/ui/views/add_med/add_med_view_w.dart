@@ -8,7 +8,7 @@ import 'package:meds/ui/views/add_med/widgets/add_med_form.dart';
 import 'package:provider/provider.dart';
 
 class AddMedWidget extends StatelessWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
 
   AddMedWidget({this.editIndex});
 

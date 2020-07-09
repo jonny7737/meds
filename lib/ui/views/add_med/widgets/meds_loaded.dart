@@ -8,7 +8,7 @@ import 'package:meds/ui/views/add_med/widgets/list_view_card.dart';
 import 'package:provider/provider.dart';
 
 class MedsLoaded extends StatelessWidget with Logger {
-  final DebugViewModel _debug = locator();
+  final LoggerViewModel _debug = locator();
   final _formKey;
 //  = GlobalKey<FormState>()
   MedsLoaded(this._formKey);

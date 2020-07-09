@@ -6,7 +6,7 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 class DoctorDataBox with Logger {
-  DebugViewModel _debug = locator();
+  LoggerViewModel _debug = locator();
 
   static const int retryTime = 100; // milliseconds to wait for !_initializing
 
