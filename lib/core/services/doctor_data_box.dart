@@ -3,7 +3,7 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 class DoctorDataBox with Logger {
   DebugViewModel _debug = locator();

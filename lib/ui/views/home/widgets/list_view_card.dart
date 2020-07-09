@@ -3,7 +3,7 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/core/helpers/hero_dialog_route.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:meds/ui/views/widgets/med_image_hero.dart';
@@ -68,7 +68,7 @@ class ListViewCard extends StatelessWidget with Logger {
       left: context.widthPct(_s.isLargeScreen ? 0.28 : 0.23),
       bottom: _s.isiOS ? 2.0 : 0.0,
       child: Text(
-        'Dr. ${_model.getDoctorById(medData.doctorId).name}: ${medData.doctorId}',
+        'Dr. ${_model.getDoctorById(medData.doctorId).name}',
         style: TextStyle(
           color: Colors.black,
           fontSize: context.heightPct(_s.isLargeScreen ? 0.020 : 0.024) * _s.fontScale * 1.1,

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:provider/provider.dart';

@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:meds/core/helpers/custom_trace.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 mixin Logger {
   final DebugViewModel _model = locator();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';

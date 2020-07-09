@@ -6,7 +6,7 @@ import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/services/med_data_box.dart';
 import 'package:meds/core/services/repository.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 
 class MedDataRepository with Logger, ChangeNotifier implements Repository<MedData> {

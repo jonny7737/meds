@@ -3,7 +3,7 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/home/custom_drawer.dart';
 import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';

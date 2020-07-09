@@ -4,7 +4,7 @@ import 'package:meds/core/helpers/hero_dialog_route.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/temp_med.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/widgets/med_image_hero.dart';

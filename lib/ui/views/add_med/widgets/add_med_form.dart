@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/add_med_field.dart';
 import 'package:meds/ui/views/add_med/widgets/meds_loaded.dart';

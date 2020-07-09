@@ -7,7 +7,7 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/temp_med.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:xml/xml.dart';
 
 ///    class MedRequest
@@ -169,7 +169,7 @@ class MedRequest with Logger {
     if (response.statusCode == 200) {
       List<String> rxcuiList = [];
 
-      XmlDocument respXML = parse(response.body.toString());
+      XmlDocument respXML = XmlDocument.parse(response.body.toString());
       var comment = respXML.findAllElements('comment').first.text;
       rxcuiList.add(comment);
       log('RXNav comment: $comment', linenumber: lineNumber(StackTrace.current));
@@ -206,7 +206,7 @@ class MedRequest with Logger {
 
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the XML.
-      XmlDocument respXML = parse(response.body.toString());
+      XmlDocument respXML = XmlDocument.parse(response.body.toString());
 
       var entries = respXML.findAllElements('entry');
       if (entries.length == 0) {

@@ -1,6 +1,6 @@
 import 'package:meds/core/constants.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_view.dart';
 import 'package:meds/ui/views/home/widgets/app_bar_w.dart';
 import 'package:meds/ui/views/home/widgets/detail_card_w.dart';
@@ -62,8 +62,8 @@ class HomeViewWidget extends StatelessWidget with Logger {
                     child: Dismissible(
                       key: UniqueKey(),
                       dismissThresholds: const {
-                        DismissDirection.endToStart: 0.6,
-                        DismissDirection.startToEnd: 0.6,
+                        DismissDirection.endToStart: 0.5,
+                        DismissDirection.startToEnd: 0.5,
                       },
                       background: const Background(),
                       secondaryBackground: const SecondaryBackground(),
@@ -141,7 +141,7 @@ class HomeViewWidget extends StatelessWidget with Logger {
                   // Deep copy the deleted medication
                   final newMed = swipedMed.copyWith();
                   // Save the newly created medication
-                  log('${newMed.mfg}', linenumber: lineNumber(StackTrace.current));
+//                  log('${newMed.mfg}', linenumber: lineNumber(StackTrace.current));
                   if (newMed.mfg.contains('Unknown')) await model.setDefaultMedImage(newMed.rxcui);
                   model.save(newMed);
                 }),

@@ -10,7 +10,7 @@ import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/models/temp_med.dart';
 import 'package:meds/core/services/repository_service.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;

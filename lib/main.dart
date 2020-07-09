@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
-import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/hive_setup.dart';
 import 'package:meds/locator.dart';
 import 'package:provider/provider.dart';
@@ -28,14 +27,11 @@ void main() async {
   );
 }
 
-class MedsApp extends StatelessWidget with Logger {
+class MedsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeDataProvider themeDataProvider = Provider.of(context);
     bool isDarkTheme = themeDataProvider.isDarkTheme;
-
-    setDebug(false);
-    log('build execution');
 
     final ThemeData currentTheme = themeDataProvider.themeData.copyWith(
       scaffoldBackgroundColor: isDarkTheme ? Colors.yellow[600] : Colors.yellow[200],

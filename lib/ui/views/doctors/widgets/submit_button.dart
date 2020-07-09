@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 import 'package:sized_context/sized_context.dart';

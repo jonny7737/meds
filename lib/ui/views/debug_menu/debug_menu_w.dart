@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/core/constants.dart';
 
 class DebugMenuWidget extends StatefulWidget with Logger {

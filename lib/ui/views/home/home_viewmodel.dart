@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:meds/core/constants.dart';
-import 'package:meds/ui/view_model/debug_viewmodel.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:path/path.dart' as p;
 
@@ -52,8 +52,12 @@ class HomeViewModel extends ChangeNotifier with Logger {
   bool _modelDirty = false;
   bool get isModelDirty => _modelDirty;
   void modelDirty(bool value) {
+    bool oldDirtyState = isModelDirty;
     _modelDirty = value;
-    log('Model Dirty: $isModelDirty');
+    log(
+      'Model Dirty: $isModelDirty <= $oldDirtyState',
+      linenumber: lineNumber(StackTrace.current),
+    );
     notifyListeners();
   }
 
