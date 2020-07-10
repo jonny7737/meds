@@ -17,7 +17,7 @@ class HomeViewModel extends ChangeNotifier with Logger {
   final LoggerViewModel _debug = locator();
 
   HomeViewModel() {
-    setDebug(_debug.isDebugging(HOME_DEBUG));
+    setLogging(_debug.isLogging(HOME_LOGS));
     _init();
     log('Constructor complete');
   }

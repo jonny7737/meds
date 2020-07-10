@@ -17,7 +17,7 @@ class HomeViewWidget extends StatelessWidget with Logger {
   final LoggerViewModel _debug = locator();
 
   HomeViewWidget() {
-    setDebug(_debug.isDebugging(HOME_DEBUG));
+    setLogging(_debug.isLogging(HOME_LOGS));
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -105,7 +105,11 @@ class HomeViewWidget extends StatelessWidget with Logger {
   ///   throws an exception for calling reverse() after dispose()
   ///
   Future navigateToAddMed(BuildContext context, int index, HomeViewModel _model) async {
-    bool result = await Navigator.pushNamed<bool>(context, addMedRoute, arguments: AddMedArguments(editIndex: index));
+    bool result = await Navigator.pushNamed<bool>(
+      context,
+      addMedRoute,
+      arguments: AddMedArguments(editIndex: index),
+    );
     if (result != null && result) {
       _model.modelDirty(true);
     }

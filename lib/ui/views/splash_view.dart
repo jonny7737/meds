@@ -16,7 +16,7 @@ class SplashView extends StatefulWidget with Logger {
 
   @override
   _SplashViewState createState() {
-    setDebug(_debug.isDebugging(SPLASH_DEBUG));
+    setLogging(_debug.isLogging(SPLASH_LOGS));
     log('createState executing');
     return _SplashViewState();
   }

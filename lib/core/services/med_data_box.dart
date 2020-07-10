@@ -17,7 +17,7 @@ class MedDataBox with Logger, ChangeNotifier {
   bool _lockCheck = false;
 
   MedDataBox() {
-    setDebug(_debug.isDebugging(MED_REPOSITORY_DEBUG));
+    setLogging(_debug.isLogging(MED_REPOSITORY_LOGS));
     _init();
     log('constructor completed');
   }

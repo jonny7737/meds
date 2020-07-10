@@ -112,12 +112,12 @@ class MedDrawer extends StatelessWidget with Logger {
             ListTile(
               leading: Icon(Icons.settings),
               title: Text(
-                'Debug Options',
+                'Log Options',
                 style: TextStyle(fontSize: fontSize),
               ),
               onTap: () {
                 toggleDrawer();
-                Navigator.pushNamed(context, debugMenuRoute);
+                Navigator.pushNamed(context, loggerMenuRoute);
               },
             ),
             ListTile(

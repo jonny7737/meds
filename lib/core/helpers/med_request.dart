@@ -54,7 +54,7 @@ class MedRequest with Logger {
   TempMed med(int index) => meds[index];
 
   Future<bool> medInfoByName(String medName) async {
-    setDebug(_debug.isDebugging(NETWORK_DEBUG));
+    setLogging(_debug.isLogging(NETWORK_LOGS));
 
     int medCount = 0;
     _rxCUIList = null;

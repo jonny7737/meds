@@ -9,7 +9,7 @@ import 'package:meds/locator.dart';
 
 class HiveSetup with Logger {
   HiveSetup({bool purge = false}) {
-    setDebug(false);
+    setLogging(false);
 
     log('HiveSetup started');
 

@@ -28,7 +28,7 @@ class AddMedField extends StatelessWidget with Logger {
   Widget build(BuildContext context) {
     final AddMedViewModel _model = Provider.of(context);
 
-    setDebug(_debug.isDebugging(ADDMED_DEBUG));
+    setLogging(_debug.isLogging(ADDMED_LOGS));
     log('Re-Building [$_fieldName = ${_model.formInitialValue(_fieldName)}]',
         linenumber: lineNumber(StackTrace.current));
 

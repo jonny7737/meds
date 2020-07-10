@@ -15,7 +15,7 @@ class DataService with Logger, ChangeNotifier implements RepositoryService {
   DoctorDataRepository _doctorRepository;
 
   DataService() {
-    setDebug(_debug.isDebugging(MED_REPOSITORY_DEBUG) || _debug.isDebugging(DOCTOR_REPOSITORY_DEBUG));
+    setLogging(_debug.isLogging(MED_REPOSITORY_LOGS) || _debug.isLogging(DOCTOR_REPOSITORY_LOGS));
 
     _medRepository = locator<MedDataRepository>();
     _medRepository.addListener(updatedMeds);

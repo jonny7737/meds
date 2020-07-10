@@ -20,7 +20,7 @@ class HomeAppBar extends StatelessWidget with Logger implements PreferredSizeWid
     final String userName = userViewModel.name;
     final HomeViewModel _model = Provider.of(context);
 
-    setDebug(_debug.isDebugging(HOME_DEBUG));
+    setLogging(_debug.isLogging(HOME_LOGS));
     return AppBar(
       backgroundColor: themeDataProvider.isDarkTheme ? Colors.black87 : null,
       leading: Builder(

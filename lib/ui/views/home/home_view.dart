@@ -15,7 +15,7 @@ class HomeView extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    setDebug(_debug.isDebugging(HOME_DEBUG));
+    setLogging(_debug.isLogging(HOME_LOGS));
 
     Widget screen = HomeViewWidget();
     screen = CustomDrawer(child: screen);

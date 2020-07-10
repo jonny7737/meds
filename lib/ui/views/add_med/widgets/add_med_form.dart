@@ -13,18 +13,21 @@ import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
 class AddMedForm extends StatelessWidget with Logger {
-  final LoggerViewModel _debug = locator();
+  final LoggerViewModel _logger = locator();
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    setDebug(_debug.isDebugging(ADDMED_DEBUG));
-    AddMedViewModel _model = Provider.of(context);
+    setLogging(_logger.isLogging(ADDMED_LOGS));
+    AddMedViewModel _model = Provider.of(context, listen: true);
 
     _model.setFormKey(_formKey);
 
-    log('Rebuilding Form [${_model.fancyDoctorName}]', linenumber: lineNumber(StackTrace.current));
+    log(
+      'Rebuilding Form [${_model.fancyDoctorName}]',
+      linenumber: lineNumber(StackTrace.current),
+    );
 
     return Form(
       key: _formKey,
@@ -99,8 +102,7 @@ class AddMedForm extends StatelessWidget with Logger {
             },
             onChanged: (value) {
               log('onChanged: $value', linenumber: lineNumber(StackTrace.current));
-              _formKey.currentState?.save();
-//              _model.onFormSave('doctor', value);
+              _model.onFormSave('doctor', value);
             },
             dataSource: _model.doctorsForDropDown(),
             textField: 'display',

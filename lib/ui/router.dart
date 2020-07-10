@@ -3,7 +3,7 @@ import 'package:flutter_page_transition/flutter_page_transition.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/setup_screen_info.dart';
 import 'package:meds/ui/views/add_med/add_med_view.dart';
-import 'package:meds/ui/views/debug_menu/debug_menu_view.dart';
+import 'package:meds/ui/views/logger_menu/logger_menu_view.dart';
 import 'package:meds/ui/views/doctors/doctors_view.dart';
 import 'package:meds/ui/views/doctors/widgets/add_doctor_form.dart';
 import 'package:meds/ui/views/home/home_view.dart';
@@ -51,9 +51,9 @@ class Router {
             );
           },
         );
-      case debugMenuRoute:
+      case loggerMenuRoute:
         return PageRouteBuilder(
-          pageBuilder: (_, __, ___) => DebugMenuView(),
+          pageBuilder: (_, __, ___) => LoggerMenuView(),
           transitionDuration: Duration(milliseconds: 500),
           transitionsBuilder: (
             BuildContext context,

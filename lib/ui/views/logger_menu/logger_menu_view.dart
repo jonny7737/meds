@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-import 'package:meds/ui/views/debug_menu/debug_menu_w.dart';
+import 'package:meds/ui/views/logger_menu/logger_menu_w.dart';
 
-class DebugMenuView extends StatelessWidget {
+class LoggerMenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Debug Options'),
+        title: Text('Log Options'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              print("meds: DebugMenu");
+              print("meds: LoggerMenu");
             },
           )
         ],
       ),
-      body: DebugMenuWidget(),
+      body: LoggerMenuWidget(),
     );
   }
 }

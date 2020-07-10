@@ -19,7 +19,7 @@ class UserViewModel with ChangeNotifier, Logger {
 
   init() async {
     await _refreshAllStates();
-    setDebug(false);
+    setLogging(false);
   }
 
   bool get isLoggedIn => _isLoggedIn;

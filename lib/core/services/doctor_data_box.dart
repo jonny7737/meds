@@ -16,7 +16,7 @@ class DoctorDataBox with Logger {
   bool _lockCheck = false;
 
   DoctorDataBox() {
-    setDebug(_debug.isDebugging(DOCTOR_REPOSITORY_DEBUG));
+    setLogging(_debug.isLogging(DOCTOR_REPOSITORY_LOGS));
 
     _init();
     log('constructor completed');

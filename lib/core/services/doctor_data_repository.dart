@@ -19,7 +19,7 @@ class DoctorDataRepository with Logger implements Repository<DoctorData> {
   List<DoctorData> _doctors = [];
 
   DoctorDataRepository() {
-    setDebug(_debug.isDebugging(DOCTOR_REPOSITORY_DEBUG));
+    setLogging(_debug.isLogging(DOCTOR_REPOSITORY_LOGS));
 
     _doctorDataBox = locator<DoctorDataBox>();
     _initialize();

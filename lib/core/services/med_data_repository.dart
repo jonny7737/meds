@@ -20,7 +20,7 @@ class MedDataRepository with Logger, ChangeNotifier implements Repository<MedDat
   int _numUsers = 0;
 
   MedDataRepository() {
-    setDebug(_debug.isDebugging(MED_REPOSITORY_DEBUG));
+    setLogging(_debug.isLogging(MED_REPOSITORY_LOGS));
 
     _medDataBox.addListener(boxOpened);
     _userModel.addListener(_refreshMeds);

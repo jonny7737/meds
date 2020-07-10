@@ -4,12 +4,12 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/core/constants.dart';
 
-class DebugMenuWidget extends StatefulWidget with Logger {
+class LoggerMenuWidget extends StatefulWidget with Logger {
   @override
-  _DebugMenuWidgetState createState() => _DebugMenuWidgetState();
+  _LoggerMenuWidgetState createState() => _LoggerMenuWidgetState();
 }
 
-class _DebugMenuWidgetState extends State<DebugMenuWidget> {
+class _LoggerMenuWidgetState extends State<LoggerMenuWidget> {
   final LoggerViewModel _model = locator();
 
   Function log;
@@ -37,19 +37,19 @@ class _DebugMenuWidgetState extends State<DebugMenuWidget> {
       children: <Widget>[
         Container(
           color: Colors.grey,
-          child: buildTile('Enable Debugging', DEBUGGING_APP),
+          child: buildTile('Enable Logging', LOGGING_APP),
         ),
         Expanded(
           child: ListView(
             children: <Widget>[
-              buildTile('Splash Screen Debugging', SPLASH_DEBUG),
-              buildTile('Login Debugging', LOGIN_DEBUG),
-              buildTile('Home Debugging', HOME_DEBUG),
-              buildTile('Doctor Debugging', DOCTOR_DEBUG),
-              buildTile('Add Med Debugging', ADDMED_DEBUG),
-              buildTile('Med Repository Debugging', MED_REPOSITORY_DEBUG),
-              buildTile('Doctor Repository Debugging', DOCTOR_REPOSITORY_DEBUG),
-              buildTile('Network Debugging', NETWORK_DEBUG),
+              buildTile('Splash Screen', SPLASH_LOGS),
+              buildTile('Login', LOGIN_LOGS),
+              buildTile('Home', HOME_LOGS),
+              buildTile('Doctor', DOCTOR_LOGS),
+              buildTile('Add Med', ADDMED_LOGS),
+              buildTile('Med Repository', MED_REPOSITORY_LOGS),
+              buildTile('Doctor Repository', DOCTOR_REPOSITORY_LOGS),
+              buildTile('Network', NETWORK_LOGS),
             ],
           ),
         ),
@@ -68,7 +68,7 @@ class _DebugMenuWidgetState extends State<DebugMenuWidget> {
       ),
       activeColor: Colors.red,
       checkColor: Colors.white,
-      value: _model.isDebugging(sectionName) ?? false,
+      value: _model.isLogging(sectionName) ?? false,
       onChanged: (bool value) {
         _model.setOption(sectionName, value);
       },

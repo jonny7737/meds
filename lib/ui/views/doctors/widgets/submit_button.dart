@@ -22,7 +22,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    setDebug(_debug.isDebugging(DOCTOR_DEBUG));
+    setLogging(_debug.isLogging(DOCTOR_LOGS));
     return Positioned(
       left: context.widthPct(0.30),
       right: context.widthPct(0.30),

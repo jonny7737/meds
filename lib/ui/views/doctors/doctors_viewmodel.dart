@@ -11,7 +11,7 @@ class DoctorsViewModel extends ChangeNotifier with Logger {
   final LoggerViewModel _debug = locator();
 
   DoctorsViewModel() {
-    setDebug(_debug.isDebugging(DOCTOR_DEBUG));
+    setLogging(_debug.isLogging(DOCTOR_LOGS));
     log('DoctorViewModel instantiated.');
     setModelDirty(dirty: true);
 //    updateDoctorList();

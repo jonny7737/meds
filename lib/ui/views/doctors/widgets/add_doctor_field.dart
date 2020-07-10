@@ -36,7 +36,7 @@ class _AddDoctorFieldState extends State<AddDoctorField> {
 
   @override
   void initState() {
-    widget.setDebug(_debug.isDebugging(DOCTOR_DEBUG));
+    widget.setLogging(_debug.isLogging(DOCTOR_LOGS));
     if (widget._fieldName == 'phone') {
       _initialValue = _model.activeDoctorPhone;
       maskTextInputFormatterList = [

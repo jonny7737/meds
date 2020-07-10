@@ -19,7 +19,7 @@ class SetupScreenInfo extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
     ScreenInfoViewModel _s = locator();
-    setDebug(false);
+    setLogging(false);
 
     if (_s.isSetup) return SafeArea(child: Material(color: Colors.yellow[300]));
 

@@ -11,10 +11,7 @@ import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
-class PositionedSubmitButton extends StatelessWidget with Logger {
-  final ScreenInfoViewModel _s = locator();
-  final LoggerViewModel _debug = locator();
-
+class PositionedSubmitButton extends StatefulWidget {
   PositionedSubmitButton({
     Key key,
     @required GlobalKey<FormState> formKey,
@@ -24,9 +21,30 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
   final GlobalKey<FormState> _formKey;
 
   @override
+  _PositionedSubmitButtonState createState() => _PositionedSubmitButtonState();
+}
+
+class _PositionedSubmitButtonState extends State<PositionedSubmitButton> with Logger {
+  final ScreenInfoViewModel _s = locator();
+
+  final LoggerViewModel _debug = locator();
+
+  bool isDisposed;
+
+  @override
+  void dispose() {
+    log('Disposed..', linenumber: lineNumber(StackTrace.current));
+    isDisposed = true;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     AddMedViewModel _model = Provider.of(context, listen: false);
-    setDebug(_debug.isDebugging(ADDMED_DEBUG));
+    setLogging(_debug.isLogging(ADDMED_LOGS));
+
+    log('Rebuilding button', linenumber: lineNumber(StackTrace.current));
+    isDisposed = false;
 
     return Positioned(
       left: context.widthPct(0.30),
@@ -38,15 +56,18 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
         onPressed: () async {
           SystemChannels.textInput.invokeMethod('TextInput.hide');
           // Check form for errors
-          _formKey.currentState.save();
+          widget._formKey.currentState.save();
 
           // If form has no errors AND form has a new med has been set
           if (!_model.formHasErrors && _model.hasNewMed) {
             _model.clearTempMeds();
+            log('#1', linenumber: lineNumber(StackTrace.current));
             if (await _model.getMedInfo()) {
-              _formKey.currentState?.reset();
+              log('#2', linenumber: lineNumber(StackTrace.current));
+              widget._formKey.currentState?.reset();
               log('Form Validated', linenumber: lineNumber(StackTrace.current));
             } else {
+//              if (isDisposed) return;
               if (_s.isAndroid) {
                 showDialog<void>(
                   context: context,
