@@ -5,7 +5,6 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/add_med_field.dart';
-import 'package:meds/ui/views/add_med/widgets/meds_loaded.dart';
 import 'package:meds/ui/views/add_med/widgets/submit_button.dart';
 import 'package:meds/ui/views/widgets/drop_down_formfield.dart';
 import 'package:meds/ui/views/widgets/stack_modal_blur.dart';
@@ -17,6 +16,12 @@ class AddMedForm extends StatelessWidget with Logger {
 
   final _formKey = GlobalKey<FormState>();
 
+  void navigateToMedsLoadedView(BuildContext context, _model) {
+    log('Navigating to MedsLoaded');
+//    var args = MedsLoadedArguments(model: _model);
+    Navigator.pushNamed(context, medsLoadedRoute);
+  }
+
   @override
   Widget build(BuildContext context) {
     setLogging(_logger.isLogging(ADDMED_LOGS));
@@ -24,8 +29,13 @@ class AddMedForm extends StatelessWidget with Logger {
 
     _model.setFormKey(_formKey);
 
+    if (_model.medsLoaded)
+      Future.delayed(Duration(milliseconds: 500), () {
+        navigateToMedsLoadedView(context, _model);
+      });
+
     log(
-      'Rebuilding Form [${_model.fancyDoctorName}]',
+      'Rebuilding Form [${_model.newMedName}] [FormKey ${_formKey != null}]',
       linenumber: lineNumber(StackTrace.current),
     );
 
@@ -62,8 +72,9 @@ class AddMedForm extends StatelessWidget with Logger {
           ),
           buildDoctorDropdown(context, _model),
           PositionedSubmitButton(formKey: _formKey),
-          if (_model.isBusy || _model.medsLoaded) const StackModalBlur(),
-          if (_model.medsLoaded) MedsLoaded(_formKey),
+          if (_model.isBusy || _model.medsLoaded)
+            const StackModalBlur(),
+//          if (_model.medsLoaded) ,
         ],
       ),
     );

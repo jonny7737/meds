@@ -8,14 +8,6 @@ class LoggerMenuView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Log Options'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              print("meds: LoggerMenu");
-            },
-          )
-        ],
       ),
       body: LoggerMenuWidget(),
     );

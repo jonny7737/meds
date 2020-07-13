@@ -111,7 +111,7 @@ class ListViewCard extends StatelessWidget with Logger {
       child: Container(
         width: context.widthPct(0.60),
         child: Text(
-          '${medData.name} ${medData.id}:${medData.key}',
+          '${medData.name}',
           maxLines: 2,
           style: TextStyle(
             color: Colors.black,

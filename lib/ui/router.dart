@@ -3,6 +3,7 @@ import 'package:flutter_page_transition/flutter_page_transition.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/setup_screen_info.dart';
 import 'package:meds/ui/views/add_med/add_med_view.dart';
+import 'package:meds/ui/views/add_med/meds_loaded_sub_view.dart';
 import 'package:meds/ui/views/logger_menu/logger_menu_view.dart';
 import 'package:meds/ui/views/doctors/doctors_view.dart';
 import 'package:meds/ui/views/doctors/widgets/add_doctor_form.dart';
@@ -83,6 +84,24 @@ class Router {
         if (args != null) _editIndex = args.editIndex;
         return MaterialPageRoute<bool>(
           builder: (_) => AddMedView(_editIndex),
+        );
+      case medsLoadedRoute:
+        return PageRouteBuilder(
+          pageBuilder: (_, __, ___) => MedsLoadedSubView(),
+          transitionDuration: Duration(milliseconds: 500),
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return effectMap[PageTransitionType.slideUp](
+              Curves.linear,
+              animation,
+              secondaryAnimation,
+              child,
+            );
+          },
         );
       case doctorRoute:
         return MaterialPageRoute<bool>(

@@ -26,7 +26,7 @@ class AddMedField extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    final AddMedViewModel _model = Provider.of(context);
+    final AddMedViewModel _model = Provider.of(context, listen: false);
 
     setLogging(_debug.isLogging(ADDMED_LOGS));
     log('Re-Building [$_fieldName = ${_model.formInitialValue(_fieldName)}]',
@@ -78,8 +78,14 @@ class AddMedField extends StatelessWidget with Logger {
             // The validator receives the text that the user has entered.
             //validator: _validator,
             onSaved: _onSave,
+//            onEditingComplete: () {
+//              log(
+//                'Editing completed [$_fieldName]',
+//                linenumber: lineNumber(StackTrace.current),
+//              );
+//            },
           ),
-          ErrorMsgWidget(error: _fieldName),
+          ErrorMsgWidget(fieldName: _fieldName),
         ]),
       ),
     );

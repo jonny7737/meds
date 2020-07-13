@@ -31,9 +31,9 @@ class AddMedWidget extends StatelessWidget with Logger {
           leading: BackButton(
             onPressed: () {
               if (_model.medsLoaded) {
-                _model.formKey.currentState?.reset();
                 _model.clearTempMeds();
                 _model.setMedsLoaded(false);
+                _model.formKey.currentState?.reset();
               } else
                 Navigator.pop(context, _model.wasMedAdded);
             },

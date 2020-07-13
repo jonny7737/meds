@@ -11,40 +11,23 @@ import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
-class PositionedSubmitButton extends StatefulWidget {
-  PositionedSubmitButton({
-    Key key,
-    @required GlobalKey<FormState> formKey,
-  })  : _formKey = formKey,
-        super(key: key);
+class PositionedSubmitButton extends StatelessWidget with Logger {
+  PositionedSubmitButton({this.formKey});
 
-  final GlobalKey<FormState> _formKey;
-
-  @override
-  _PositionedSubmitButtonState createState() => _PositionedSubmitButtonState();
-}
-
-class _PositionedSubmitButtonState extends State<PositionedSubmitButton> with Logger {
+  final GlobalKey<FormState> formKey;
   final ScreenInfoViewModel _s = locator();
-
   final LoggerViewModel _debug = locator();
-
-  bool isDisposed;
-
-  @override
-  void dispose() {
-    log('Disposed..', linenumber: lineNumber(StackTrace.current));
-    isDisposed = true;
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    AddMedViewModel _model = Provider.of(context, listen: false);
+    final AddMedViewModel _model = Provider.of(context, listen: false);
+
     setLogging(_debug.isLogging(ADDMED_LOGS));
 
-    log('Rebuilding button', linenumber: lineNumber(StackTrace.current));
-    isDisposed = false;
+    log(
+      'Rebuilding button, FormKey ${_model.formKey != null}',
+      linenumber: lineNumber(StackTrace.current),
+    );
 
     return Positioned(
       left: context.widthPct(0.30),
@@ -55,8 +38,9 @@ class _PositionedSubmitButtonState extends State<PositionedSubmitButton> with Lo
         color: Theme.of(context).primaryColor,
         onPressed: () async {
           SystemChannels.textInput.invokeMethod('TextInput.hide');
+
           // Check form for errors
-          widget._formKey.currentState.save();
+          formKey.currentState.save();
 
           // If form has no errors AND form has a new med has been set
           if (!_model.formHasErrors && _model.hasNewMed) {
@@ -64,7 +48,6 @@ class _PositionedSubmitButtonState extends State<PositionedSubmitButton> with Lo
             log('#1', linenumber: lineNumber(StackTrace.current));
             if (await _model.getMedInfo()) {
               log('#2', linenumber: lineNumber(StackTrace.current));
-              widget._formKey.currentState?.reset();
               log('Form Validated', linenumber: lineNumber(StackTrace.current));
             } else {
 //              if (isDisposed) return;

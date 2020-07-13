@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ErrorMsgWidget extends StatelessWidget {
-  final String error;
+  final String fieldName;
 
-  ErrorMsgWidget({@required this.error});
+  ErrorMsgWidget({@required this.fieldName});
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,12 @@ class ErrorMsgWidget extends StatelessWidget {
         child: AnimatedContainer(
           duration: Duration(milliseconds: 275),
           alignment: Alignment.center,
-          height: _model.errorMsgHeight(error),
+          height: _model.errorMsgHeight(fieldName),
           width: context.widthPct(0.75),
           color: Colors.transparent,
           padding: EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 2),
           child: Text(
-            _model.errorMsg(error),
+            _model.errorMsg(fieldName),
             softWrap: false,
             style: TextStyle(
               fontSize: _s.isiOS ? 16 : 18,

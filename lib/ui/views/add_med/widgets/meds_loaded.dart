@@ -5,21 +5,20 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/list_view_card.dart';
-import 'package:provider/provider.dart';
 
 class MedsLoaded extends StatelessWidget with Logger {
-  final LoggerViewModel _debug = locator();
-  final _formKey;
-//  = GlobalKey<FormState>()
-  MedsLoaded(this._formKey);
+  MedsLoaded(this.model);
+
+  final LoggerViewModel _logger = locator();
+  final AddMedViewModel model;
 
   @override
   Widget build(BuildContext context) {
-    AddMedViewModel _model = Provider.of(context, listen: false);
+//    AddMedViewModel _model = Provider.of(context, listen: false);
 
-    setLogging(_debug.isLogging(ADDMED_LOGS));
+    setLogging(_logger.isLogging(ADDMED_LOGS));
 
-    log('${_model.numMedsFound} meds found', linenumber: lineNumber(StackTrace.current));
+    log('${model.numMedsFound} meds found', linenumber: lineNumber(StackTrace.current));
     return Stack(
       children: <Widget>[
         Positioned(
@@ -28,19 +27,26 @@ class MedsLoaded extends StatelessWidget with Logger {
           right: 10,
           bottom: 80,
           child: ListView.builder(
-            itemCount: _model.numMedsFound,
+            itemCount: model.numMedsFound,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  int editIndex = _model.editIndex;
-                  log('TempMed clicked: $index', linenumber: lineNumber(StackTrace.current));
-                  _model.saveSelectedMed(index);
-                  _model.clearTempMeds();
-                  log('Edit Index: ${_model.editIndex}', linenumber: lineNumber(StackTrace.current));
-                  _model.clearNewMed();
-                  _formKey.currentState?.reset();
+                  int editIndex = model.editIndex;
+                  log(
+                    'TempMed clicked: $index',
+                    linenumber: lineNumber(StackTrace.current),
+                  );
+                  model.saveSelectedMed(index);
+                  model.clearTempMeds();
+                  model.clearNewMed();
+                  model.formKey.currentState.reset();
+                  model.setState();
+                  log(
+                    'Med saved, model meds cleared, form reset',
+                    linenumber: lineNumber(StackTrace.current),
+                  );
                   if (editIndex != null) {
-                    Navigator.pop(context, _model.wasMedAdded);
+                    Navigator.pop(context, model.wasMedAdded);
                   }
                 },
                 child: ListViewCard(index: index),
@@ -62,37 +68,23 @@ class MedsLoaded extends StatelessWidget with Logger {
               ),
             ),
             onPressed: () async {
-              int editIndex = _model.editIndex;
-              await _model.saveMedNoMfg();
-              _model.clearTempMeds();
-              _model.clearNewMed();
-              _formKey.currentState?.reset();
-              log('Med saved, model meds cleared, form reset', linenumber: lineNumber(StackTrace.current));
+              int editIndex = model.editIndex;
+              await model.saveMedNoMfg();
+              model.clearTempMeds();
+              model.clearNewMed();
+              model.formKey.currentState.reset();
+              model.setState();
+              log(
+                'Med saved, model meds cleared, form reset',
+                linenumber: lineNumber(StackTrace.current),
+              );
               if (editIndex != null) {
-                Navigator.pop(context, _model.wasMedAdded);
+                Navigator.pop(context, model.wasMedAdded);
               }
             },
           ),
         ),
       ],
-    );
-  }
-}
-
-class ListTileBuilder extends StatelessWidget {
-  ListTileBuilder(this.index);
-
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    final AddMedViewModel _model = Provider.of(context, listen: false);
-
-    return ListTile(
-      title: Text(
-        _model.medFound.imageInfo.mfgs[index],
-        style: TextStyle(color: Colors.black),
-      ),
     );
   }
 }

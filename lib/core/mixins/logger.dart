@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/helpers/custom_trace.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
@@ -8,7 +9,7 @@ mixin Logger {
   final LoggerViewModel _model = locator();
   final Boolean _logger = Boolean(false);
 
-  bool get isLogging => _logger.value && _model.isLogging('debugging_app');
+  bool get isLogging => _logger.value && _model.isLogging(LOGGING_APP);
 
   void setLogging(bool d) {
     _logger.value = d;
@@ -36,7 +37,7 @@ mixin Logger {
   /// ```
   ///
   void log(String msg, {int linenumber, bool always = false}) {
-    if (!always && (!_logger.value || !_model.isLogging('debugging_app'))) return;
+    if (!always && (!_logger.value || !_model.isLogging(LOGGING_APP))) return;
 
     /// This is to determine the calling Class type so it can be included in the output.
     String source = this.runtimeType.toString();
