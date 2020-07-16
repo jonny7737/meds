@@ -1,35 +1,29 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:meds/core/constants.dart';
-import 'package:meds/core/helpers/med_request.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/core/models/med_data.dart';
-import 'package:meds/core/models/temp_med.dart';
+import 'package:meds/core/services/med_lookup_service.dart';
 import 'package:meds/core/services/repository_service.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
-import 'package:meds/ui/view_model/user_viewmodel.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 
 class AddMedViewModel extends ChangeNotifier with Logger {
-  final UserViewModel _userModel = locator();
+//  final UserViewModel _userModel = locator();
   final LoggerViewModel _logs = locator();
+  final MedLookUpService _ls = locator();
 
   AddMedViewModel() {
     setLogging(_logs.isLogging(ADDMED_LOGS));
-    _setImageDirectory();
+//    _setImageDirectory();
+    _ls.addListener(setState);
   }
 
   RepositoryService _repository = locator();
-  String imageDirectoryPath;
+//  String imageDirectoryPath;
 
   bool _isDisposed = false;
-  int editIndex;
 
   GlobalKey<FormState> formKey;
   void setFormKey(formKey) {
@@ -41,27 +35,28 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   void dispose() {
     if (_isDisposed) return;
     _isDisposed = true;
+    _ls.removeListener(setState);
     log('Has been disposed.', linenumber: lineNumber(StackTrace.current));
     super.dispose();
   }
 
   /// **********************************************************************
-  String newMedName;
-  String newMedDose;
-  String newMedFrequency;
-  String newMedDoctorName;
-  int newMedDoctorId;
+  String get newMedName => _ls.newMedName;
+//  String get newMedDose => _ls.newMedDose;
+//  String get newMedFrequency => _ls.newMedFrequency;
+//  String get newMedDoctorName => _ls.newMedDoctorName;
+//  int get newMedDoctorId => _ls.newMedDoctorId;
 
   String get fancyDoctorName {
     String _name;
 
-    if (editIndex == null) {
-      if (newMedDoctorName == null)
+    if (_ls.editIndex == null) {
+      if (_ls.newMedDoctorName == null)
         _name = doctorNames[0];
       else
-        _name = 'Dr. ' + newMedDoctorName;
+        _name = 'Dr. ' + _ls.newMedDoctorName;
     } else
-      _name = 'Dr. ' + newMedDoctorName;
+      _name = 'Dr. ' + _ls.newMedDoctorName;
     return _name;
   }
 
@@ -84,44 +79,39 @@ class AddMedViewModel extends ChangeNotifier with Logger {
       return;
     }
 
-    editIndex = index;
+    _ls.editIndex = index;
     MedData _md = medAtEditIndex;
 
     log('${_md.doctorId}', linenumber: lineNumber(StackTrace.current));
 
-    newMedName = reformatMedName(_md.name, _md.dose);
-    newMedDose = _md.dose;
-    newMedFrequency = _md.frequency;
-    if (newMedDoctorId == null) newMedDoctorId = _md.doctorId;
-    newMedDoctorName = getDoctorById(newMedDoctorId).name;
+    _ls.newMedName = reformatMedName(_md.name, _md.dose);
+    _ls.newMedDose = _md.dose;
+    _ls.newMedFrequency = _md.frequency;
+    if (_ls.newMedDoctorId == null) _ls.newMedDoctorId = _md.doctorId;
+    _ls.newMedDoctorName = getDoctorById(_ls.newMedDoctorId).name;
 
     log('${_md.doctorId}', linenumber: lineNumber(StackTrace.current));
   }
 
   String formInitialValue(String fieldName) {
     String value;
-    if (fieldName == 'name') value = newMedName;
-    if (fieldName == 'dose') value = newMedDose;
-    if (fieldName == 'frequency') value = newMedFrequency;
-
-    log(
-      'Initial field value [$fieldName : $value]',
-      linenumber: lineNumber(StackTrace.current),
-    );
+    if (fieldName == 'name') value = _ls.newMedName;
+    if (fieldName == 'dose') value = _ls.newMedDose;
+    if (fieldName == 'frequency') value = _ls.newMedFrequency;
 
     return value;
   }
 
-  MedData get medAtEditIndex => editIndex != null ? _repository.getMedAtIndex(editIndex) : null;
+  MedData get medAtEditIndex => _ls.editIndex != null ? _repository.getMedAtIndex(_ls.editIndex) : null;
 
   void _setMedDoctorId(String name) {
     if (name.toLowerCase().startsWith('dr.')) {
       int i = name.indexOf(' ') + 1;
       name = name.substring(i);
     }
-    newMedDoctorName = name;
-    newMedDoctorId = _repository.getDoctorByName(name).id;
-    log('$newMedDoctorName:$newMedDoctorId', linenumber: lineNumber(StackTrace.current));
+    _ls.newMedDoctorName = name;
+    _ls.newMedDoctorId = _repository.getDoctorByName(name).id;
+    log('${_ls.newMedDoctorName}:${_ls.newMedDoctorId}', linenumber: lineNumber(StackTrace.current));
   }
 
   void onFormSave(String formField, String value) {
@@ -130,9 +120,9 @@ class AddMedViewModel extends ChangeNotifier with Logger {
       setFormError(true);
     } else {
       setFormError(false);
-      if (formField == 'name') newMedName = value;
-      if (formField == 'dose') newMedDose = value;
-      if (formField == 'frequency') newMedFrequency = value;
+      if (formField == 'name') _ls.newMedName = value;
+      if (formField == 'dose') _ls.newMedDose = value;
+      if (formField == 'frequency') _ls.newMedFrequency = value;
       if (formField == 'doctor') {
         if (value.toLowerCase().startsWith('dr.')) {
           int i = value.indexOf(' ') + 1;
@@ -144,22 +134,11 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     }
   }
 
-  void clearNewMed() {
-    editIndex = null;
-    newMedName = null;
-    newMedDose = null;
-    newMedFrequency = null;
-    newMedDoctorName = null;
-    newMedDoctorId = null;
-    notifyListeners();
-    log('New Med Info cleared.', linenumber: lineNumber(StackTrace.current));
-  }
-
   void logEditIndex() {
-    if (editIndex == null) return;
-    MedData _md = _repository.getMedAtIndex(editIndex);
+    if (_ls.editIndex == null) return;
+    MedData _md = _repository.getMedAtIndex(_ls.editIndex);
     log(
-      '$editIndex: ${_md.name} : ${_md.doctorId}',
+      '$_ls.editIndex: ${_md.name} : ${_md.doctorId}',
       linenumber: lineNumber(StackTrace.current),
     );
   }
@@ -186,14 +165,10 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   }
 
   /// **********************************************************************
-  bool _busy = false;
-  bool _medsLoaded = false;
-  bool _medsAdded = false;
   int _formErrors = 0;
-  int _numMedsFound = 0;
-  String _rxcuiComment;
-  TempMed _tempMed;
-  MedData _selectedMed;
+//  String _rxcuiComment;
+//  TempMed _tempMed;
+//  MedData _selectedMed;
 
   final double _errorMsgMaxHeight = 35;
   double nameErrorMsgHeight = 0;
@@ -203,13 +178,6 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   final String doseErrorMsg = 'Dosage information is required.';
   final String frequencyErrorMsg = 'This information is required.';
   final Duration _secondsToDisplayErrorMsg = Duration(seconds: 4);
-
-  bool get hasNewMed {
-    log('$newMedName : $newMedDose', linenumber: lineNumber(StackTrace.current));
-    if (newMedName == null || newMedDose == null || newMedFrequency == null) return false;
-    if (newMedName.length > 2 && newMedDose.length > 2 && newMedFrequency.length > 3) return true;
-    return false;
-  }
 
   bool get formHasErrors {
     if (_formErrors != 0) {
@@ -240,7 +208,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   }
 
   void showError(String error) {
-    log('$error requested', linenumber: lineNumber(StackTrace.current));
+//    log('$error requested', linenumber: lineNumber(StackTrace.current));
     _setErrorHeight(error: error, height: _errorMsgMaxHeight);
     Future.delayed(
       _secondsToDisplayErrorMsg,
@@ -263,135 +231,118 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   }
 
   /// **********************************************************************
-  bool get wasMedAdded => _medsAdded;
+  bool get wasMedAdded => _ls.medsAdded;
 
-  bool get medsLoaded => _medsLoaded;
-  int get numMedsFound => _numMedsFound;
-  TempMed get medFound => _tempMed;
-  String get rxcuiComment => _rxcuiComment;
-  MedData get selectedMed => _selectedMed;
+  bool get medsLoaded => _ls.medsLoaded;
+  int get numMedsFound => _ls.numMedsFound;
+//  TempMed get medFound => _tempMed;
+  String get rxcuiComment => _ls.rxcuiComment;
+//  MedData get selectedMed => _selectedMed;
+  bool get hasNewMed => _ls.hasNewMed;
 
   void setState() {
     notifyListeners();
   }
 
   void setMedsLoaded(bool value) {
-    _medsLoaded = value;
+    _ls.medsLoaded = value;
   }
 
   void saveMed(MedData _medData) {
     RepositoryService repository = locator();
     repository.save(_medData);
-    _medsAdded = true;
+    _ls.medsAdded = true;
 //    clearNewMed();
     notifyListeners();
   }
 
-  void saveSelectedMed(int index) {
-    _selectedMed = MedData(
-      _userModel.name,
-      editIndex,
-      _tempMed.rxcui,
-      _tempMed.imageInfo.names[index],
-      _tempMed.imageInfo.mfgs[index],
-      _tempMed.imageInfo.urls[index],
-      _tempMed.info,
-      _tempMed.warnings,
-      doctorId: newMedDoctorId,
-      dose: newMedDose,
-      frequency: newMedFrequency,
-    );
-    saveMed(_selectedMed);
-  }
+//  void saveSelectedMed(int index) {
+//    _selectedMed = MedData(
+//      _userModel.name,
+//      _ls.editIndex,
+//      _tempMed.rxcui,
+//      _tempMed.imageInfo.names[index],
+//      _tempMed.imageInfo.mfgs[index],
+//      _tempMed.imageInfo.urls[index],
+//      _tempMed.info,
+//      _tempMed.warnings,
+//      doctorId: _ls.newMedDoctorId,
+//      dose: _ls.newMedDose,
+//      frequency: _ls.newMedFrequency,
+//    );
+//    saveMed(_selectedMed);
+//  }
 
-  Future saveMedNoMfg() async {
-    _selectedMed = MedData(
-      _userModel.name,
-      editIndex,
-      _tempMed.rxcui,
-      _tempMed.imageInfo.names[0],
-      'Unknown Manufacture',
-      null,
-      _tempMed.info,
-      _tempMed.warnings,
-      doctorId: newMedDoctorId,
-      dose: newMedDose,
-      frequency: newMedFrequency,
-    );
+//  Future saveMedNoMfg() async {
+//    _selectedMed = MedData(
+//      _userModel.name,
+//      _ls.editIndex,
+//      _tempMed.rxcui,
+//      _tempMed.imageInfo.names[0],
+//      'Unknown Manufacture',
+//      null,
+//      _tempMed.info,
+//      _tempMed.warnings,
+//      doctorId: _ls.newMedDoctorId,
+//      dose: _ls.newMedDose,
+//      frequency: _ls.newMedFrequency,
+//    );
+//
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    var dbPath = p.join(directory.path, 'medImages/${_tempMed.rxcui}.jpg');
+//    if (FileSystemEntity.typeSync(dbPath) == FileSystemEntityType.notFound) {
+//      ByteData data = await rootBundle.load('assets/drug.jpg');
+//      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+//      await File(dbPath).writeAsBytes(bytes);
+//    }
+//    saveMed(_selectedMed);
+//  }
 
-    Directory directory = await getApplicationDocumentsDirectory();
-    var dbPath = p.join(directory.path, 'medImages/${_tempMed.rxcui}.jpg');
-    if (FileSystemEntity.typeSync(dbPath) == FileSystemEntityType.notFound) {
-      ByteData data = await rootBundle.load('assets/drug.jpg');
-      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await File(dbPath).writeAsBytes(bytes);
-    }
-    saveMed(_selectedMed);
-  }
+//  void clearTempMeds() {
+//    _ls.medsLoaded = false;
+//    _ls.numMedsFound = 0;
+//    _rxcuiComment = null;
+//    _tempMed = null;
+//    log('Temp Meds cleared.', linenumber: lineNumber(StackTrace.current));
+//    notifyListeners();
+//  }
 
-  void clearTempMeds() {
-    _medsLoaded = false;
-    _numMedsFound = 0;
-    _rxcuiComment = null;
-    _tempMed = null;
-    log('Temp Meds cleared.', linenumber: lineNumber(StackTrace.current));
-    notifyListeners();
-  }
-
-  bool get isBusy => _busy;
+  bool get isBusy => _ls.busy;
   void setBusy(bool loading) {
-    _busy = loading;
+    _ls.busy = loading;
     log('Loading Data: $isBusy', linenumber: lineNumber(StackTrace.current));
     notifyListeners();
   }
 
   Future<bool> getMedInfo() async {
     if (hasNewMed) {
-      _medsLoaded = false;
-      _selectedMed = null;
       setBusy(true);
-      MedRequest _medRequest = MedRequest();
-      bool gotMeds = await _medRequest.medInfoByName('$newMedName $newMedDose oral');
-
-      _rxcuiComment = _medRequest.rxcuiComment;
-
-      if (!gotMeds) {
-        setBusy(false);
-        return false;
-      }
-      log(
-        'MedRequest meds loaded: ${_medRequest.numMeds} '
-        '[${_medRequest.med(0).isValid()}]',
-        linenumber: lineNumber(StackTrace.current),
-      );
-      if (_medRequest.imageURLs.length > 0) {
-        _tempMed = _medRequest.meds[0];
-        _medsLoaded = true;
-        _numMedsFound = _tempMed.imageInfo.urls.length;
-      }
+      bool gotMeds = await _ls.getMedInfo();
       setBusy(false);
+      formKey.currentState.reset();
+      notifyListeners();
+
+      if (gotMeds) return true;
     }
-    return true;
+    return false;
   }
 
-  ///******************************************************************************
-  ///
-  void _setImageDirectory() async {
-    Directory imageDirectory = await getApplicationDocumentsDirectory();
-    Directory subDir = await Directory('${imageDirectory.path}/tempMedImages').create(recursive: true);
-    imageDirectoryPath = subDir.path;
-  }
-
-  File _file(String filename) {
-    String pathName = p.join(imageDirectoryPath, filename);
-    return File(pathName);
-  }
-
-  File imageFile(String rxcui) {
-    List<MedData> _meds = _repository.getAllMeds();
-    int ndx = _meds.indexWhere((element) => element.rxcui == rxcui);
-    if (ndx == -1) return null;
-    File file = _file('${_meds[ndx].rxcui}.jpg');
-    return file;
-  }
+//  void _setImageDirectory() async {
+//    Directory imageDirectory = await getApplicationDocumentsDirectory();
+//    Directory subDir = await Directory('${imageDirectory.path}/tempMedImages').create(recursive: true);
+//    imageDirectoryPath = subDir.path;
+//  }
+//
+//  File _file(String filename) {
+//    String pathName = p.join(imageDirectoryPath, filename);
+//    return File(pathName);
+//  }
+//
+//  File imageFile(String rxcui) {
+//    List<MedData> _meds = _repository.getAllMeds();
+//    int ndx = _meds.indexWhere((element) => element.rxcui == rxcui);
+//    if (ndx == -1) return null;
+//    File file = _file('${_meds[ndx].rxcui}.jpg');
+//    return file;
+//  }
 }

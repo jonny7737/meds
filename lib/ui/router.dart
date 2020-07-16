@@ -86,7 +86,7 @@ class Router {
           builder: (_) => AddMedView(_editIndex),
         );
       case medsLoadedRoute:
-        return PageRouteBuilder(
+        return PageRouteBuilder<bool>(
           pageBuilder: (_, __, ___) => MedsLoadedSubView(),
           transitionDuration: Duration(milliseconds: 500),
           transitionsBuilder: (

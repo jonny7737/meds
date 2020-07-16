@@ -16,10 +16,10 @@ class AddMedForm extends StatelessWidget with Logger {
 
   final _formKey = GlobalKey<FormState>();
 
-  void navigateToMedsLoadedView(BuildContext context, _model) {
+  void navigateToMedsLoadedView(BuildContext context, _model) async {
     log('Navigating to MedsLoaded');
-//    var args = MedsLoadedArguments(model: _model);
-    Navigator.pushNamed(context, medsLoadedRoute);
+    bool medAdded = await Navigator.pushNamed(context, medsLoadedRoute);
+    log('Med loading completed.. Med added: $medAdded', linenumber: lineNumber(StackTrace.current));
   }
 
   @override
@@ -29,10 +29,12 @@ class AddMedForm extends StatelessWidget with Logger {
 
     _model.setFormKey(_formKey);
 
-    if (_model.medsLoaded)
+    if (_model.medsLoaded) {
+      log('Meds Loaded...', linenumber: lineNumber(StackTrace.current));
       Future.delayed(Duration(milliseconds: 500), () {
         navigateToMedsLoadedView(context, _model);
       });
+    }
 
     log(
       'Rebuilding Form [${_model.newMedName}] [FormKey ${_formKey != null}]',

@@ -3,17 +3,18 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/core/helpers/hero_dialog_route.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/temp_med.dart';
+import 'package:meds/core/services/med_lookup_service.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
-import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/widgets/med_image_hero.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
-import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
 class ListViewCard extends StatelessWidget with Logger {
+  final ScreenInfoViewModel _s = locator();
   final LoggerViewModel _debug = locator();
+  final MedLookUpService _model = locator();
 
   ListViewCard({
     Key key,
@@ -24,13 +25,13 @@ class ListViewCard extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    ScreenInfoViewModel _s = locator();
-    AddMedViewModel _model = Provider.of(context, listen: false);
+//    AddMedViewModel _model = Provider.of(context, listen: false);
 
     TempMed tempMed = _model.medFound;
 
     setLogging(_debug.isLogging(ADDMED_LOGS));
     return Card(
+      key: UniqueKey(),
       margin: EdgeInsets.only(
         top: context.heightPct(0.014),
         left: context.widthPct(0.025),

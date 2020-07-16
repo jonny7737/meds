@@ -44,13 +44,12 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
 
           // If form has no errors AND form has a new med has been set
           if (!_model.formHasErrors && _model.hasNewMed) {
-            _model.clearTempMeds();
+//            _model.clearTempMeds();
             log('#1', linenumber: lineNumber(StackTrace.current));
             if (await _model.getMedInfo()) {
               log('#2', linenumber: lineNumber(StackTrace.current));
               log('Form Validated', linenumber: lineNumber(StackTrace.current));
             } else {
-//              if (isDisposed) return;
               if (_s.isAndroid) {
                 showDialog<void>(
                   context: context,

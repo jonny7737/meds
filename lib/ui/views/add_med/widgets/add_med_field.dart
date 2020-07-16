@@ -26,11 +26,14 @@ class AddMedField extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-    final AddMedViewModel _model = Provider.of(context, listen: false);
+    final AddMedViewModel _model = Provider.of(context, listen: true);
 
     setLogging(_debug.isLogging(ADDMED_LOGS));
-    log('Re-Building [$_fieldName = ${_model.formInitialValue(_fieldName)}]',
-        linenumber: lineNumber(StackTrace.current));
+
+    log(
+      'Re-Building [$_fieldName = ${_model.formInitialValue(_fieldName)}]',
+      linenumber: lineNumber(StackTrace.current),
+    );
 
     return Positioned(
       top: _index,
@@ -52,6 +55,7 @@ class AddMedField extends StatelessWidget with Logger {
         width: context.widthPct(0.80),
         child: Stack(children: <Widget>[
           TextFormField(
+            key: UniqueKey(),
             initialValue: _model.formInitialValue(_fieldName),
             enableSuggestions: true,
             style: TextStyle(

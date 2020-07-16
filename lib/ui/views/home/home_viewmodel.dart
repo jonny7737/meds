@@ -47,7 +47,7 @@ class HomeViewModel extends ChangeNotifier with Logger {
 
   String imageDirectoryPath;
 
-  int _activeMedIndex = -1;
+  int _activeMedIndex;
 
   bool _modelDirty = false;
   bool get isModelDirty => _modelDirty;
@@ -89,7 +89,7 @@ class HomeViewModel extends ChangeNotifier with Logger {
   }
 
   MedData get activeMed {
-    if (_activeMedIndex == -1) {
+    if (_activeMedIndex == null) {
       return mtMedData;
     } else
       return _repository.getMedAtIndex(_activeMedIndex);
