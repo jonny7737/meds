@@ -10,18 +10,14 @@ import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 
 class AddMedViewModel extends ChangeNotifier with Logger {
-//  final UserViewModel _userModel = locator();
   final LoggerViewModel _logs = locator();
   final MedLookUpService _ls = locator();
+  final RepositoryService _repository = locator();
 
   AddMedViewModel() {
     setLogging(_logs.isLogging(ADDMED_LOGS));
-//    _setImageDirectory();
     _ls.addListener(setState);
   }
-
-  RepositoryService _repository = locator();
-//  String imageDirectoryPath;
 
   bool _isDisposed = false;
 
@@ -42,11 +38,6 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   /// **********************************************************************
   String get newMedName => _ls.newMedName;
-//  String get newMedDose => _ls.newMedDose;
-//  String get newMedFrequency => _ls.newMedFrequency;
-//  String get newMedDoctorName => _ls.newMedDoctorName;
-//  int get newMedDoctorId => _ls.newMedDoctorId;
-
   String get fancyDoctorName {
     String _name;
 
@@ -73,6 +64,8 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     }
     return _newName;
   }
+
+  MedData get medAtEditIndex => _ls.editIndex != null ? _repository.getMedAtIndex(_ls.editIndex) : null;
 
   void setMedForEditing(int index) {
     if (index == null) {
@@ -101,8 +94,6 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
     return value;
   }
-
-  MedData get medAtEditIndex => _ls.editIndex != null ? _repository.getMedAtIndex(_ls.editIndex) : null;
 
   void _setMedDoctorId(String name) {
     if (name.toLowerCase().startsWith('dr.')) {
@@ -166,14 +157,11 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   /// **********************************************************************
   int _formErrors = 0;
-//  String _rxcuiComment;
-//  TempMed _tempMed;
-//  MedData _selectedMed;
-
-  final double _errorMsgMaxHeight = 35;
   double nameErrorMsgHeight = 0;
   double doseErrorMsgHeight = 0;
   double frequencyErrorMsgHeight = 0;
+
+  final double _errorMsgMaxHeight = 35;
   final String nameErrorMsg = 'Medication name is required.';
   final String doseErrorMsg = 'Dosage information is required.';
   final String frequencyErrorMsg = 'This information is required.';
@@ -235,9 +223,7 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   bool get medsLoaded => _ls.medsLoaded;
   int get numMedsFound => _ls.numMedsFound;
-//  TempMed get medFound => _tempMed;
   String get rxcuiComment => _ls.rxcuiComment;
-//  MedData get selectedMed => _selectedMed;
   bool get hasNewMed => _ls.hasNewMed;
 
   void setState() {
@@ -246,66 +232,8 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   void setMedsLoaded(bool value) {
     _ls.medsLoaded = value;
-  }
-
-  void saveMed(MedData _medData) {
-    RepositoryService repository = locator();
-    repository.save(_medData);
-    _ls.medsAdded = true;
-//    clearNewMed();
     notifyListeners();
   }
-
-//  void saveSelectedMed(int index) {
-//    _selectedMed = MedData(
-//      _userModel.name,
-//      _ls.editIndex,
-//      _tempMed.rxcui,
-//      _tempMed.imageInfo.names[index],
-//      _tempMed.imageInfo.mfgs[index],
-//      _tempMed.imageInfo.urls[index],
-//      _tempMed.info,
-//      _tempMed.warnings,
-//      doctorId: _ls.newMedDoctorId,
-//      dose: _ls.newMedDose,
-//      frequency: _ls.newMedFrequency,
-//    );
-//    saveMed(_selectedMed);
-//  }
-
-//  Future saveMedNoMfg() async {
-//    _selectedMed = MedData(
-//      _userModel.name,
-//      _ls.editIndex,
-//      _tempMed.rxcui,
-//      _tempMed.imageInfo.names[0],
-//      'Unknown Manufacture',
-//      null,
-//      _tempMed.info,
-//      _tempMed.warnings,
-//      doctorId: _ls.newMedDoctorId,
-//      dose: _ls.newMedDose,
-//      frequency: _ls.newMedFrequency,
-//    );
-//
-//    Directory directory = await getApplicationDocumentsDirectory();
-//    var dbPath = p.join(directory.path, 'medImages/${_tempMed.rxcui}.jpg');
-//    if (FileSystemEntity.typeSync(dbPath) == FileSystemEntityType.notFound) {
-//      ByteData data = await rootBundle.load('assets/drug.jpg');
-//      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-//      await File(dbPath).writeAsBytes(bytes);
-//    }
-//    saveMed(_selectedMed);
-//  }
-
-//  void clearTempMeds() {
-//    _ls.medsLoaded = false;
-//    _ls.numMedsFound = 0;
-//    _rxcuiComment = null;
-//    _tempMed = null;
-//    log('Temp Meds cleared.', linenumber: lineNumber(StackTrace.current));
-//    notifyListeners();
-//  }
 
   bool get isBusy => _ls.busy;
   void setBusy(bool loading) {
@@ -326,23 +254,4 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     }
     return false;
   }
-
-//  void _setImageDirectory() async {
-//    Directory imageDirectory = await getApplicationDocumentsDirectory();
-//    Directory subDir = await Directory('${imageDirectory.path}/tempMedImages').create(recursive: true);
-//    imageDirectoryPath = subDir.path;
-//  }
-//
-//  File _file(String filename) {
-//    String pathName = p.join(imageDirectoryPath, filename);
-//    return File(pathName);
-//  }
-//
-//  File imageFile(String rxcui) {
-//    List<MedData> _meds = _repository.getAllMeds();
-//    int ndx = _meds.indexWhere((element) => element.rxcui == rxcui);
-//    if (ndx == -1) return null;
-//    File file = _file('${_meds[ndx].rxcui}.jpg');
-//    return file;
-//  }
 }
