@@ -4,6 +4,7 @@ import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
+import 'package:meds/ui/views/add_med/error_message_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/add_med_field.dart';
 import 'package:meds/ui/views/add_med/widgets/submit_button.dart';
 import 'package:meds/ui/views/widgets/drop_down_formfield.dart';
@@ -22,10 +23,21 @@ class AddMedForm extends StatelessWidget with Logger {
     log('Med loading completed.. Med added: $medAdded', linenumber: lineNumber(StackTrace.current));
   }
 
+  setErrorMessage(ErrorMessageViewModel em, bool saved, String fieldName) {
+    if (saved)
+      em.setFormError(false);
+    else {
+      em.showError(fieldName);
+      em.setFormError(true);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     setLogging(_logger.isLogging(ADDMED_LOGS));
     AddMedViewModel _model = Provider.of(context, listen: true);
+    ErrorMessageViewModel _em = Provider.of(context, listen: true);
 
     _model.setFormKey(_formKey);
 
@@ -50,8 +62,7 @@ class AddMedForm extends StatelessWidget with Logger {
             hint: 'Enter medication name',
             fieldName: 'name',
             onSave: (value) {
-              _model.onFormSave('name', value);
-              return null;
+              return setErrorMessage(_em, _model.onFormSave('name', value), 'name');
             },
           ),
           AddMedField(
@@ -59,8 +70,7 @@ class AddMedForm extends StatelessWidget with Logger {
             hint: 'Enter medication dose (eg 10mg)',
             fieldName: 'dose',
             onSave: (value) {
-              _model.onFormSave('dose', value);
-              return null;
+              return setErrorMessage(_em, _model.onFormSave('dose', value), 'dose');
             },
           ),
           AddMedField(
@@ -68,8 +78,7 @@ class AddMedForm extends StatelessWidget with Logger {
             hint: 'How often to take this medication',
             fieldName: 'frequency',
             onSave: (value) {
-              _model.onFormSave('frequency', value);
-              return null;
+              return setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency');
             },
           ),
           buildDoctorDropdown(context, _model),

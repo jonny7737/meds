@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
+import 'package:meds/core/services/med_lookup_service.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 class AddMedWidget extends StatelessWidget with Logger {
   final LoggerViewModel _logs = locator();
+  final MedLookUpService _ml = locator();
 
   AddMedWidget({this.editIndex});
 
@@ -30,8 +32,9 @@ class AddMedWidget extends StatelessWidget with Logger {
         appBar: AppBar(
           leading: BackButton(
             onPressed: () {
+              _ml.clearTempMeds();
+              _ml.clearNewMed();
               if (_model.medsLoaded) {
-//                _model.clearTempMeds();
                 _model.setMedsLoaded(false);
                 _model.formKey.currentState?.reset();
               } else

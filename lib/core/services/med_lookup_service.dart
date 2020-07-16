@@ -14,16 +14,6 @@ import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:path_provider/path_provider.dart';
 
-/// Required functionality:
-///  Future<bool> getMedInfo() async {}
-///  numMedsFound
-///  editIndex
-///  saveSelectedMed(index)
-///  saveMedNoMfg()
-///  clearTempMeds()
-///  clearNewMed()
-///  wasMedAdded
-
 class MedLookUpService with Logger, ChangeNotifier {
   final UserViewModel _userModel = locator();
   final LoggerViewModel _logger = locator();
@@ -34,7 +24,7 @@ class MedLookUpService with Logger, ChangeNotifier {
 
   bool busy = false;
   bool medsLoaded = false;
-  bool medsAdded = false;
+  bool wasMedAdded = false;
   int numMedsFound = 0;
   String rxcuiComment;
   TempMed tempMed;
@@ -48,17 +38,14 @@ class MedLookUpService with Logger, ChangeNotifier {
   String newMedDoctorName;
   int newMedDoctorId;
 
-//  bool get medsLoaded => _medsLoaded;
-//  int get numMedsFound => _numMedsFound;
   TempMed get medFound => tempMed;
-//  String get rxcuiComment => _rxcuiComment;
   MedData get selectedMed => _selectedMed;
-  bool get wasMedAdded => medsAdded;
 
   void setBusy(bool b) => busy = b;
 
   bool get hasNewMed {
     log('$newMedName : $newMedDose', linenumber: lineNumber(StackTrace.current));
+
     if (newMedName == null || newMedDose == null || newMedFrequency == null) return false;
     if (newMedName.length > 2 && newMedDose.length > 2 && newMedFrequency.length > 3) return true;
     return false;
@@ -67,7 +54,7 @@ class MedLookUpService with Logger, ChangeNotifier {
   void saveMed(MedData _medData) {
     RepositoryService repository = locator();
     repository.save(_medData);
-    medsAdded = true;
+    wasMedAdded = true;
     clearNewMed();
     notifyListeners();
   }
@@ -104,6 +91,8 @@ class MedLookUpService with Logger, ChangeNotifier {
       frequency: newMedFrequency,
     );
 
+    /// All of this just to copy the 'Unknown  Manufacturer' image to the medImages directory.
+    ///
     Directory directory = await getApplicationDocumentsDirectory();
     var dbPath = p.join(directory.path, 'medImages/${tempMed.rxcui}.jpg');
     if (FileSystemEntity.typeSync(dbPath) == FileSystemEntityType.notFound) {
@@ -111,6 +100,7 @@ class MedLookUpService with Logger, ChangeNotifier {
       List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(dbPath).writeAsBytes(bytes);
     }
+
     saveMed(_selectedMed);
   }
 
@@ -147,9 +137,8 @@ class MedLookUpService with Logger, ChangeNotifier {
 
       rxcuiComment = _medRequest.rxcuiComment;
 
-      if (!gotMeds) {
-        return false;
-      }
+      if (!gotMeds) return false;
+
       log(
         'MedRequest meds loaded: ${_medRequest.numMeds} '
         '[${_medRequest.med(0).isValid()}]',

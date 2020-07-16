@@ -114,13 +114,24 @@ class MedRequest with Logger {
       log('Get MedLine Link FAILED!!', linenumber: lineNumber(StackTrace.current));
       return false;
     }
-    Document html = await _getMedDetailsHTML(_moreInfoUrl);
-    log('Got med details html', linenumber: lineNumber(StackTrace.current));
-    _medDetails = _getMedDetails(html);
-    _medWarning = _getMedWarningDetails(html);
-    _imageInfo = await _getMedImageInfo(rxcui);
-    log('Got med image info', linenumber: lineNumber(StackTrace.current));
-    return true;
+
+    Document html;
+    try {
+      html = await _getMedDetailsHTML(_moreInfoUrl);
+      log('Got med details html', linenumber: lineNumber(StackTrace.current));
+    } on Exception catch (_) {
+      return false;
+    }
+    if (html == null) return false;
+    try {
+      _medDetails = _getMedDetails(html);
+      _medWarning = _getMedWarningDetails(html);
+      _imageInfo = await _getMedImageInfo(rxcui);
+      log('Got med image info', linenumber: lineNumber(StackTrace.current));
+      return true;
+    } on Exception catch (_) {
+      return false;
+    }
   }
 
   Future<List<String>> _rxCUIbyName(String medName) async {
@@ -244,12 +255,14 @@ class MedRequest with Logger {
   List<String> _getMedDetails(Document html) {
     Element infoElement = html.getElementById('section-1');
     List<String> infoList = [];
-    for (var node in infoElement.nodes) {
-      String detail = node.nodes[0].toString();
-      //debugPrint(detail);
-      if (detail.startsWith("\"")) detail = detail.substring(1);
-      if (detail.endsWith("\"")) detail = detail.substring(0, detail.length - 1);
-      infoList.add(detail);
+    if (infoElement != null) {
+      for (var node in infoElement.nodes) {
+        String detail = node.nodes[0].toString();
+        //debugPrint(detail);
+        if (detail.startsWith("\"")) detail = detail.substring(1);
+        if (detail.endsWith("\"")) detail = detail.substring(0, detail.length - 1);
+        infoList.add(detail);
+      }
     }
 
     return infoList;

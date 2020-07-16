@@ -8,6 +8,7 @@ import 'package:meds/ui/themes/theme_data_provider.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
+import 'package:meds/ui/views/add_med/error_message_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
@@ -21,6 +22,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
     final AddMedViewModel _model = Provider.of(context, listen: false);
+    final ErrorMessageViewModel _em = Provider.of(context, listen: false);
 
     setLogging(_debug.isLogging(ADDMED_LOGS));
 
@@ -43,7 +45,7 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
           formKey.currentState.save();
 
           // If form has no errors AND form has a new med has been set
-          if (!_model.formHasErrors && _model.hasNewMed) {
+          if (!_em.formHasErrors && _model.hasNewMed) {
 //            _model.clearTempMeds();
             log('#1', linenumber: lineNumber(StackTrace.current));
             if (await _model.getMedInfo()) {
@@ -65,10 +67,10 @@ class PositionedSubmitButton extends StatelessWidget with Logger {
             // Else if form has errors OR no new med set
           } else {
             log(
-              'FormErrors: ${_model.formHasErrors}',
+              'FormErrors: ${_em.formHasErrors}',
               linenumber: lineNumber(StackTrace.current),
             );
-            _model.clearFormError();
+            _em.clearFormError();
           }
         },
         child: Text(
