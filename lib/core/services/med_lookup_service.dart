@@ -22,7 +22,7 @@ class MedLookUpService with Logger, ChangeNotifier {
     setLogging(_logger.isLogging(ADDMED_LOGS));
   }
 
-  bool busy = false;
+  bool isBusy = false;
   bool medsLoaded = false;
   bool wasMedAdded = false;
   int numMedsFound = 0;
@@ -41,7 +41,7 @@ class MedLookUpService with Logger, ChangeNotifier {
   TempMed get medFound => tempMed;
   MedData get selectedMed => _selectedMed;
 
-  void setBusy(bool b) => busy = b;
+  void setBusy(bool b) => isBusy = b;
 
   bool get hasNewMed {
     log('$newMedName : $newMedDose', linenumber: lineNumber(StackTrace.current));
@@ -114,7 +114,7 @@ class MedLookUpService with Logger, ChangeNotifier {
   }
 
   void clearNewMed() {
-    busy = false;
+    isBusy = false;
     medsLoaded = false;
     editIndex = null;
     newMedName = null;

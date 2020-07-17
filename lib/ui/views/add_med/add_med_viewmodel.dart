@@ -173,9 +173,9 @@ class AddMedViewModel extends ChangeNotifier with Logger {
     notifyListeners();
   }
 
-  bool get isBusy => _ls.busy;
+  bool get isBusy => _ls.isBusy;
   void setBusy(bool loading) {
-    _ls.busy = loading;
+    _ls.isBusy = loading;
     log('Loading Data: $isBusy', linenumber: lineNumber(StackTrace.current));
     notifyListeners();
   }

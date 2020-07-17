@@ -26,7 +26,7 @@ class AddDoctorField extends StatefulWidget with Logger {
 
 class _AddDoctorFieldState extends State<AddDoctorField> {
   final DoctorsViewModel _model = locator();
-  final LoggerViewModel _debug = locator();
+  final LoggerViewModel _logger = locator();
 
   final TextEditingController textEditingController = TextEditingController();
   List<MaskTextInputFormatter> maskTextInputFormatterList;
@@ -36,7 +36,7 @@ class _AddDoctorFieldState extends State<AddDoctorField> {
 
   @override
   void initState() {
-    widget.setLogging(_debug.isLogging(DOCTOR_LOGS));
+    widget.setLogging(_logger.isLogging(DOCTOR_LOGS));
     if (widget._fieldName == 'phone') {
       _initialValue = _model.activeDoctorPhone;
       maskTextInputFormatterList = [
@@ -61,7 +61,7 @@ class _AddDoctorFieldState extends State<AddDoctorField> {
 
   @override
   Widget build(BuildContext context) {
-    widget.log('Executing build: field # ${widget._index}');
+    widget.log('Executing build: field # ${widget._fieldName}', linenumber: widget.lineNumber(StackTrace.current));
 
     return Positioned(
       top: widget._index,
@@ -77,9 +77,7 @@ class _AddDoctorFieldState extends State<AddDoctorField> {
               ),
             ],
             borderRadius: BorderRadius.circular(15)),
-        margin: EdgeInsets.symmetric(
-          horizontal: context.widthPct(0.10),
-        ),
+        margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.10)),
         alignment: Alignment.center,
         width: context.widthPct(0.80),
         child: Stack(children: <Widget>[
