@@ -17,15 +17,15 @@ dependencies:
   flutter_spinkit: ^4.1.2+1
   shared_preferences: ^0.5.8
   sized_context: ^0.2.1+1
-  get_it: ^4.0.2
+  get_it: ^4.0.4
   network_to_file_image: ^2.3.1
   path_provider: ^1.6.11
   drop_cap_text: ^1.0.7
   google_fonts: ^1.1.0
-  # Removed the version spec for xml due to conflict with flutter_launcher_icon
   xml: ^4.2.0
   mask_text_input_formatter: ^1.0.7
   flutter_page_transition: ^0.1.6
+  dropdown_suggestions_form_field: ^1.0.3
 
 dev_dependencies:
 #  flutter_test:

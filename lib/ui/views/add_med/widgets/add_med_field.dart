@@ -53,44 +53,47 @@ class AddMedField extends StatelessWidget with Logger {
         margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.10)),
         alignment: Alignment.center,
         width: context.widthPct(0.80),
-        child: Stack(children: <Widget>[
-          TextFormField(
-            key: UniqueKey(),
-            initialValue: _model.formInitialValue(_fieldName),
-            enableSuggestions: true,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: _hint,
-              hintStyle: TextStyle(color: Colors.grey[700]),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(25.0),
+        child: Stack(
+          children: <Widget>[
+            TextFormField(
+              key: UniqueKey(),
+              textInputAction: TextInputAction.next,
+              initialValue: _model.formInitialValue(_fieldName),
+              enableSuggestions: true,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(25.0),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: _hint,
+                hintStyle: TextStyle(color: Colors.grey[700]),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
               ),
-            ),
-            // The validator receives the text that the user has entered.
-            //validator: _validator,
-            onSaved: _onSave,
+              // The validator receives the text that the user has entered.
+              //validator: _validator,
+              onSaved: _onSave,
 //            onEditingComplete: () {
 //              log(
 //                'Editing completed [$_fieldName]',
 //                linenumber: lineNumber(StackTrace.current),
 //              );
 //            },
-          ),
-          ErrorMsgWidget(fieldName: _fieldName),
-        ]),
+            ),
+            ErrorMsgWidget(fieldName: _fieldName),
+          ],
+        ),
       ),
     );
   }

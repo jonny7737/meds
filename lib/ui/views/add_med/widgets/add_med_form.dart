@@ -6,6 +6,7 @@ import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/add_med/error_message_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/add_med_field.dart';
+import 'package:meds/ui/views/add_med/widgets/editable_dropdown.dart';
 import 'package:meds/ui/views/add_med/widgets/submit_button.dart';
 import 'package:meds/ui/views/widgets/drop_down_formfield.dart';
 import 'package:meds/ui/views/widgets/stack_modal_blur.dart';
@@ -53,40 +54,50 @@ class AddMedForm extends StatelessWidget with Logger {
       linenumber: lineNumber(StackTrace.current),
     );
 
-    return Form(
-      key: _formKey,
-      child: Stack(
-        children: <Widget>[
-          AddMedField(
-            index: 0,
-            hint: 'Enter medication name',
-            fieldName: 'name',
-            onSave: (value) {
-              return setErrorMessage(_em, _model.onFormSave('name', value), 'name');
-            },
-          ),
-          AddMedField(
-            index: 1,
-            hint: 'Enter medication dose (eg 10mg)',
-            fieldName: 'dose',
-            onSave: (value) {
-              return setErrorMessage(_em, _model.onFormSave('dose', value), 'dose');
-            },
-          ),
-          AddMedField(
-            index: 2,
-            hint: 'How often to take this medication',
-            fieldName: 'frequency',
-            onSave: (value) {
-              return setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency');
-            },
-          ),
-          buildDoctorDropdown(context, _model),
-          PositionedSubmitButton(formKey: _formKey),
-          if (_model.isBusy || _model.medsLoaded)
-            const StackModalBlur(),
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Stack(
+          children: <Widget>[
+            Container(height: context.heightPct(1)),
+            AddMedField(
+              index: 0,
+              hint: 'Enter medication name',
+              fieldName: 'name',
+              onSave: (value) {
+                return setErrorMessage(_em, _model.onFormSave('name', value), 'name');
+              },
+            ),
+            AddMedField(
+              index: 1,
+              hint: 'Enter medication dose (eg 10mg)',
+              fieldName: 'dose',
+              onSave: (value) {
+                return setErrorMessage(_em, _model.onFormSave('dose', value), 'dose');
+              },
+            ),
+            EditableDropdownWidget(
+              index: 2,
+              fieldName: 'frequency',
+              onSave: (value) {
+                return setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency');
+              },
+            ),
+//          AddMedField(
+//            index: 2,
+//            hint: 'How often to take this medication',
+//            fieldName: 'frequency',
+//            onSave: (value) {
+//              return setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency');
+//            },
+//          ),
+            buildDoctorDropdown(context, _model),
+            PositionedSubmitButton(formKey: _formKey),
+            if (_model.isBusy || _model.medsLoaded)
+              const StackModalBlur(),
 //          if (_model.medsLoaded) ,
-        ],
+          ],
+        ),
       ),
     );
   }
