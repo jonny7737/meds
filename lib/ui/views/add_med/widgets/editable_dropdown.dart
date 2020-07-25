@@ -33,25 +33,25 @@ class EditableDropdownWidget extends StatelessWidget {
 
   Widget buildFormField(BuildContext context) {
     ViewModel model = context.watch();
-    return Stack(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            shape: BoxShape.rectangle,
-            boxShadow: [
-              BoxShadow(
-                offset: const Offset(0.0, 5.0),
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(15),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        shape: BoxShape.rectangle,
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(0.0, 5.0),
+            blurRadius: 10.0,
+            spreadRadius: 2.0,
           ),
-          margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.10)),
-          alignment: Alignment.center,
-          width: context.widthPct(0.80),
-          child: DropdownSuggestionsFormField<String>(
+        ],
+        borderRadius: BorderRadius.circular(15),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.10)),
+      alignment: Alignment.center,
+      width: context.widthPct(0.80),
+      child: Stack(
+        children: <Widget>[
+          DropdownSuggestionsFormField<String>(
             cardShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.zero),
             ),
@@ -74,6 +74,7 @@ class EditableDropdownWidget extends StatelessWidget {
               return ItemBuilder(model: model, index: index, onSave: onSave, suggestion: suggestion);
             },
             onSelected: (String suggestion) => {},
+            onSaved: onSave,
             textStyle: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -92,11 +93,9 @@ class EditableDropdownWidget extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        // TODO: The error message is not displayed due to scoping issues.
-        // FIXME:
-        ErrorMsgWidget(fieldName: _fieldName),
-      ],
+          ErrorMsgWidget(fieldName: _fieldName),
+        ],
+      ),
     );
   }
 }
