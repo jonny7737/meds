@@ -3,6 +3,7 @@ import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
+import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/add_med/error_message_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/add_med_field.dart';
@@ -15,6 +16,9 @@ import 'package:sized_context/sized_context.dart';
 
 class AddMedForm extends StatelessWidget with Logger {
   final LoggerViewModel _logger = locator();
+  final ScreenInfoViewModel _s = locator();
+
+  final ScrollController _scrollController = ScrollController(initialScrollOffset: 0.0);
 
   static final _formKey = GlobalKey<FormState>();
 //  final FocusNode f1 = FocusNode();
@@ -44,6 +48,7 @@ class AddMedForm extends StatelessWidget with Logger {
     ErrorMessageViewModel _em = context.watch();
 
     _model.setFormKey(_formKey);
+    if (_s.isSmallScreen) _model.formScrollController = _scrollController;
 
     if (_model.medsLoaded) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -59,6 +64,7 @@ class AddMedForm extends StatelessWidget with Logger {
     );
 
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Form(
         key: _formKey,
         child: Stack(

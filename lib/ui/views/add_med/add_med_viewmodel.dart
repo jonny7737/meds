@@ -22,7 +22,14 @@ class AddMedViewModel extends ChangeNotifier with Logger {
   bool _isDisposed = false;
 
   bool kbVisible;
+
+  ScrollController formScrollController;
   void wasTapped(String fieldName) {
+    if (formScrollController == null) return;
+    if (fieldName == 'frequency')
+      formScrollController.animateTo(150.0, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+    else
+      formScrollController.animateTo(0.0, duration: Duration(milliseconds: 200), curve: Curves.easeOut);
     log('$fieldName was tapped', linenumber: lineNumber(StackTrace.current));
   }
 
