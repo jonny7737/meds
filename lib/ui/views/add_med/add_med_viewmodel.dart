@@ -21,6 +21,11 @@ class AddMedViewModel extends ChangeNotifier with Logger {
 
   bool _isDisposed = false;
 
+  bool kbVisible;
+  void wasTapped(String fieldName) {
+    log('$fieldName was tapped', linenumber: lineNumber(StackTrace.current));
+  }
+
   GlobalKey<FormState> formKey;
   void setFormKey(formKey) {
     this.formKey = formKey;

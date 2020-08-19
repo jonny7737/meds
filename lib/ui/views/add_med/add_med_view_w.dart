@@ -16,6 +16,10 @@ class AddMedWidget extends StatelessWidget with Logger {
 
   final int editIndex;
 
+  void setKbVisibility(BuildContext context, AddMedViewModel model) {
+//    model.kbVisible = MediaQuery.of(context).viewInsets.bottom > 50.0;
+  }
+
   @override
   Widget build(BuildContext context) {
     AddMedViewModel _model = Provider.of(context, listen: false);
@@ -27,8 +31,15 @@ class AddMedWidget extends StatelessWidget with Logger {
 
     log('Rebuilding [Edit Index: $editIndex]', linenumber: lineNumber(StackTrace.current));
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setKbVisibility(context, _model);
+    });
+
     return SafeArea(
       child: Scaffold(
+        key: GlobalKey(),
+//        resizeToAvoidBottomPadding: true,
+//        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           leading: BackButton(
             onPressed: () {

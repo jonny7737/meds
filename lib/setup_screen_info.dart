@@ -36,8 +36,13 @@ class SetupScreenInfo extends StatelessWidget with Logger {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     }
 
-    Future.delayed(Duration(milliseconds: 50), () {
-      navigateToSplashScreen(context);
+//    Future.delayed(Duration(milliseconds: 50), () {
+//      navigateToSplashScreen(context);
+//    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      log('Navigating to SplashPage');
+      Navigator.pushReplacementNamed(context, splashRoute);
     });
 
     return SafeArea(child: Material(color: Colors.yellow[300]));

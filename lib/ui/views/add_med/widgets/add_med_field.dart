@@ -12,21 +12,23 @@ import 'package:meds/ui/views/add_med/widgets/error_msg_w.dart';
 class AddMedField extends StatelessWidget with Logger {
   final LoggerViewModel _debug = locator();
 
-  AddMedField({Key key, @required int index, Function onSave, String hint, String fieldName})
+  AddMedField({Key key, @required int index, FocusNode focusNode, Function onSave, String hint, String fieldName})
       : _index = 30 + index * 80.0,
+        fn = focusNode,
         _onSave = onSave,
         _hint = hint,
         _fieldName = fieldName,
         super(key: key);
 
   final double _index;
+  final FocusNode fn;
   final Function _onSave;
   final String _hint;
   final String _fieldName;
 
   @override
   Widget build(BuildContext context) {
-    final AddMedViewModel _model = Provider.of(context, listen: true);
+    final AddMedViewModel _model = context.watch();
 
     setLogging(_debug.isLogging(ADDMED_LOGS));
 
@@ -57,6 +59,9 @@ class AddMedField extends StatelessWidget with Logger {
           children: <Widget>[
             TextFormField(
               key: UniqueKey(),
+              onTap: () {
+                _model.wasTapped(_fieldName);
+              },
               textInputAction: TextInputAction.next,
               initialValue: _model.formInitialValue(_fieldName),
               enableSuggestions: true,

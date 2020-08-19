@@ -28,12 +28,8 @@ class HomeViewWidget extends StatelessWidget with Logger {
 
     log('Meds available: ${_model.numberOfMeds}', linenumber: lineNumber(StackTrace.current));
 
-    if (!_model.bottomsSet) {
-      _model.setBottoms(
-        cardUp: context.heightPct(0.14),
-        cardDn: -(context.heightPct(1.0) + context.heightPct(0.14)),
-      );
-    }
+    _model.setBottoms(context);
+
     return SafeArea(
       child: Material(
         elevation: 10,

@@ -1,20 +1,27 @@
 import 'package:dropdown_suggestions_form_field/dropdown_suggestions_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
 import 'package:meds/ui/views/add_med/widgets/error_msg_w.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sized_context/sized_context.dart';
 
 class EditableDropdownWidget extends StatelessWidget {
-  EditableDropdownWidget({Key key, @required int index, @required String fieldName, Function onSave})
+  EditableDropdownWidget(
+      {Key key, @required int index, FocusNode focusNode, @required String fieldName, Function onSave})
       : _index = 30 + index * 80.0,
+        fn = focusNode,
         onSave = onSave,
         _fieldName = fieldName,
         super(key: key);
 
   final double _index;
+  final FocusNode fn;
   final Function onSave;
   final String _fieldName;
+
+  final GlobalKey<DropdownSuggestionsFormFieldState> dropDownSuggestionKey =
+      GlobalKey<DropdownSuggestionsFormFieldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +40,10 @@ class EditableDropdownWidget extends StatelessWidget {
 
   Widget buildFormField(BuildContext context) {
     ViewModel model = context.watch();
+    AddMedViewModel _vm = context.watch();
+
+    model.dropDownSuggestionKey = dropDownSuggestionKey;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[100],
@@ -52,11 +63,16 @@ class EditableDropdownWidget extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           DropdownSuggestionsFormField<String>(
-            cardShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.zero),
-            ),
-            key: model.dropDownSuggestionKey,
+            cardShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
+            key: dropDownSuggestionKey,
+            onTap: () {
+              _vm.wasTapped(_fieldName);
+              if (_vm.kbVisible != null && _vm.kbVisible)
+                print('Keyboard is visible');
+              else if (_vm.kbVisible != null && !_vm.kbVisible) print('Keyboard is not visible');
+            },
             onFieldSubmitted: model.onSubmitted,
+            initialValue: _vm.formInitialValue(_fieldName),
             suggestionNotMatch: null,
             suggestionNotMatchMessage: ' ',
             suggestionMaxHeight: 150,
@@ -64,7 +80,7 @@ class EditableDropdownWidget extends StatelessWidget {
               if (value == '?') return model.suggestions;
               List<String> filtered = [];
               for (String v in model.suggestions) {
-                if (v.contains(value)) filtered.add(v);
+                if (v.contains(value.trim())) filtered.add(v.trim());
               }
               return filtered;
             },
@@ -74,7 +90,10 @@ class EditableDropdownWidget extends StatelessWidget {
               return ItemBuilder(model: model, index: index, onSave: onSave, suggestion: suggestion);
             },
             onSelected: (String suggestion) => {},
-            onSaved: onSave,
+            onSaved: (value) {
+              model.setCurrentValue(null);
+              onSave(value);
+            },
             textStyle: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -152,13 +171,18 @@ class ViewModel extends ChangeNotifier {
     prefs.setStringList('suggestions', suggestions);
   }
 
+  GlobalKey<DropdownSuggestionsFormFieldState> dropDownSuggestionKey;
+
   String title = 'Editable DropDown List';
 
-  GlobalKey<DropdownSuggestionsFormFieldState> dropDownSuggestionKey = GlobalKey<DropdownSuggestionsFormFieldState>();
-
   List<String> suggestions = ['daily', 'twice daily', 'before bed'];
-  String currentValue;
-  int selectedIndex;
+  String _currentValue;
+
+  String get currentValue => _currentValue;
+  void setCurrentValue(String value) {
+    _currentValue = value;
+    notifyListeners();
+  }
 
   void onDismissed(String suggestion) {
     suggestions.removeAt(suggestions.indexOf(suggestion));
@@ -168,8 +192,7 @@ class ViewModel extends ChangeNotifier {
 
   void onSelected(String value) {
     dropDownSuggestionKey.currentState.onSelect(value);
-    if (value == currentValue) return;
-    currentValue = value;
+    setCurrentValue(value);
   }
 
   void onSubmitted(String value) {
@@ -177,8 +200,8 @@ class ViewModel extends ChangeNotifier {
     if (!suggestions.contains(value)) {
       suggestions.add(value);
       saveSuggestions();
-      currentValue = value;
-      notifyListeners();
+      setCurrentValue(value);
+//      notifyListeners();
     }
   }
 }

@@ -5,6 +5,8 @@ import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:path/path.dart' as p;
 
+import 'package:sized_context/sized_context.dart';
+
 import 'package:flutter/material.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
@@ -91,8 +93,15 @@ class HomeViewModel extends ChangeNotifier with Logger {
   MedData get activeMed {
     if (_activeMedIndex == null) {
       return mtMedData;
-    } else
-      return _repository.getMedAtIndex(_activeMedIndex);
+    } else {
+      log('activeMedIndex = $_activeMedIndex', linenumber: lineNumber(StackTrace.current));
+      MedData md = _repository.getMedAtIndex(_activeMedIndex);
+      if (md == null) {
+        setActiveMedIndex(null);
+        return mtMedData;
+      }
+      return md;
+    }
   }
 
   File get activeImageFile => imageFile(activeMed.rxcui);
@@ -131,9 +140,10 @@ class HomeViewModel extends ChangeNotifier with Logger {
   }
 
   bool get bottomsSet => _bottomSet;
-  void setBottoms({double cardUp, double cardDn}) {
-    _bottomCardUp = cardUp;
-    _bottomCardDn = cardDn;
+  void setBottoms(BuildContext context) {
+    if (_bottomSet) return;
+    _bottomCardUp = context.heightPct(0.14);
+    _bottomCardDn = -(context.heightPct(1.0) + context.heightPct(0.14));
     _bottomSet = true;
   }
 

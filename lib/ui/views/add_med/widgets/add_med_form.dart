@@ -16,7 +16,10 @@ import 'package:sized_context/sized_context.dart';
 class AddMedForm extends StatelessWidget with Logger {
   final LoggerViewModel _logger = locator();
 
-  final _formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
+//  final FocusNode f1 = FocusNode();
+//  final FocusNode f2 = FocusNode();
+//  final FocusNode f3 = FocusNode();
 
   void navigateToMedsLoadedView(BuildContext context, _model) async {
     log('Navigating to MedsLoaded');
@@ -37,16 +40,17 @@ class AddMedForm extends StatelessWidget with Logger {
   @override
   Widget build(BuildContext context) {
     setLogging(_logger.isLogging(ADDMED_LOGS));
-    AddMedViewModel _model = Provider.of(context, listen: true);
-    ErrorMessageViewModel _em = Provider.of(context, listen: true);
+    AddMedViewModel _model = context.watch();
+    ErrorMessageViewModel _em = context.watch();
 
     _model.setFormKey(_formKey);
 
     if (_model.medsLoaded) {
-      log('Meds Loaded...', linenumber: lineNumber(StackTrace.current));
-      Future.delayed(Duration(milliseconds: 500), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         navigateToMedsLoadedView(context, _model);
       });
+
+      log('Meds Loaded...', linenumber: lineNumber(StackTrace.current));
     }
 
     log(
@@ -62,39 +66,27 @@ class AddMedForm extends StatelessWidget with Logger {
             Container(height: context.heightPct(1)),
             AddMedField(
               index: 0,
+//              focusNode: f1,
               hint: 'Enter medication name',
               fieldName: 'name',
-              onSave: (value) {
-                return setErrorMessage(_em, _model.onFormSave('name', value), 'name');
-              },
+              onSave: (value) => setErrorMessage(_em, _model.onFormSave('name', value), 'name'),
             ),
             AddMedField(
               index: 1,
+//              focusNode: f2,
               hint: 'Enter medication dose (eg 10mg)',
               fieldName: 'dose',
-              onSave: (value) {
-                return setErrorMessage(_em, _model.onFormSave('dose', value), 'dose');
-              },
+              onSave: (value) => setErrorMessage(_em, _model.onFormSave('dose', value), 'dose'),
             ),
             EditableDropdownWidget(
               index: 2,
+//              focusNode: f3,
               fieldName: 'frequency',
-              onSave: (value) {
-                return setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency');
-              },
+              onSave: (value) => setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency'),
             ),
-//          AddMedField(
-//            index: 2,
-//            hint: 'How often to take this medication',
-//            fieldName: 'frequency',
-//            onSave: (value) {
-//              return setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency');
-//            },
-//          ),
             buildDoctorDropdown(context, _model),
             PositionedSubmitButton(formKey: _formKey),
-            if (_model.isBusy || _model.medsLoaded)
-              const StackModalBlur(),
+            if (_model.isBusy || _model.medsLoaded) const StackModalBlur(),
 //          if (_model.medsLoaded) ,
           ],
         ),

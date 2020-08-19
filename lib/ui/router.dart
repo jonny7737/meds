@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_page_transition/flutter_page_transition.dart';
 import 'package:meds/core/constants.dart';
+import 'package:meds/core/models/logger_model.dart';
+import 'package:meds/locator.dart';
 import 'package:meds/setup_screen_info.dart';
 import 'package:meds/ui/views/add_med/add_med_view.dart';
 import 'package:meds/ui/views/add_med/meds_loaded_sub_view.dart';
@@ -13,7 +15,9 @@ import 'package:meds/ui/views/splash_view.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-//    print('[Router] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
+    LoggerModel _model = locator();
+    bool isLogging = _model.isEnabled(ROUTING_LOGS);
+    if (isLogging) print('[Router] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
 
     switch (settings.name) {
       case setupRoute:

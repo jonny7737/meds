@@ -42,6 +42,7 @@ class _LoggerMenuWidgetState extends State<LoggerMenuWidget> {
         Expanded(
           child: ListView(
             children: <Widget>[
+              buildTile('Router', ROUTING_LOGS),
               buildTile('Splash Screen', SPLASH_LOGS),
               buildTile('Login', LOGIN_LOGS),
               buildTile('Home', HOME_LOGS),
