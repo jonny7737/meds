@@ -21,25 +21,9 @@ class AddMedForm extends StatelessWidget with Logger {
   final ScrollController _scrollController = ScrollController(initialScrollOffset: 0.0);
 
   static final _formKey = GlobalKey<FormState>();
-//  final FocusNode f1 = FocusNode();
-//  final FocusNode f2 = FocusNode();
-//  final FocusNode f3 = FocusNode();
-
-  void navigateToMedsLoadedView(BuildContext context, _model) async {
-    log('Navigating to MedsLoaded');
-    bool medAdded = await Navigator.pushNamed(context, medsLoadedRoute);
-    log('Med loading completed.. Med added: $medAdded', linenumber: lineNumber(StackTrace.current));
-  }
-
-  setErrorMessage(ErrorMessageViewModel em, bool saved, String fieldName) {
-    if (saved)
-      em.setFormError(false);
-    else {
-      em.showError(fieldName);
-      em.setFormError(true);
-    }
-    return null;
-  }
+  final FocusNode f1 = FocusNode();
+  final FocusNode f2 = FocusNode();
+  final FocusNode f3 = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -72,21 +56,21 @@ class AddMedForm extends StatelessWidget with Logger {
             Container(height: context.heightPct(1)),
             AddMedField(
               index: 0,
-//              focusNode: f1,
+              focusNode: f1,
               hint: 'Enter medication name',
               fieldName: 'name',
               onSave: (value) => setErrorMessage(_em, _model.onFormSave('name', value), 'name'),
             ),
             AddMedField(
               index: 1,
-//              focusNode: f2,
+              focusNode: f2,
               hint: 'Enter medication dose (eg 10mg)',
               fieldName: 'dose',
               onSave: (value) => setErrorMessage(_em, _model.onFormSave('dose', value), 'dose'),
             ),
             EditableDropdownWidget(
               index: 2,
-//              focusNode: f3,
+              focusNode: f3,
               fieldName: 'frequency',
               onSave: (value) => setErrorMessage(_em, _model.onFormSave('frequency', value), 'frequency'),
             ),
@@ -98,6 +82,33 @@ class AddMedForm extends StatelessWidget with Logger {
         ),
       ),
     );
+  }
+
+  void navigateToMedsLoadedView(BuildContext context, _model) async {
+    log('Navigating to MedsLoaded');
+    bool medAdded = await Navigator.pushNamed(context, medsLoadedRoute);
+    log('Med loading completed.. Med added: $medAdded', linenumber: lineNumber(StackTrace.current));
+  }
+
+  nextButtonPressed(String fieldName) {
+    switch (fieldName) {
+      case 'name':
+        break;
+      case 'dose':
+        break;
+      case 'frequency':
+        break;
+    }
+  }
+
+  setErrorMessage(ErrorMessageViewModel em, bool saved, String fieldName) {
+    if (saved)
+      em.setFormError(false);
+    else {
+      em.showError(fieldName);
+      em.setFormError(true);
+    }
+    return null;
   }
 
   Positioned buildDoctorDropdown(BuildContext context, AddMedViewModel _model) {

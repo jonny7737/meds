@@ -63,8 +63,18 @@ class EditableDropdownWidget extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           DropdownSuggestionsFormField<String>(
+            cardColor: Theme.of(context).scaffoldBackgroundColor,
+            cardBorderOnForeground: true,
+            separatorBuilder: (BuildContext context, int index) {
+              return Divider(color: Colors.grey);
+            },
+            cardElevation: 20,
             cardShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
             key: dropDownSuggestionKey,
+            onEditingComplete: () {
+              FocusScope.of(context).unfocus();
+              _vm.wasTapped('');
+            },
             onTap: () {
               _vm.wasTapped(_fieldName);
               if (_vm.kbVisible != null && _vm.kbVisible)
@@ -140,6 +150,7 @@ class ItemBuilder extends StatelessWidget {
       background: Container(color: Colors.red),
       onDismissed: (direction) => model.onDismissed(suggestion),
       child: ListTile(
+        focusColor: Colors.grey,
         dense: true,
         onTap: () {
           onSave(suggestion);

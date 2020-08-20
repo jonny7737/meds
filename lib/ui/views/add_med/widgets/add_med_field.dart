@@ -59,6 +59,7 @@ class AddMedField extends StatelessWidget with Logger {
           children: <Widget>[
             TextFormField(
               key: UniqueKey(),
+              focusNode: fn,
               onTap: () {
                 _model.wasTapped(_fieldName);
               },
@@ -89,12 +90,14 @@ class AddMedField extends StatelessWidget with Logger {
               // The validator receives the text that the user has entered.
               //validator: _validator,
               onSaved: _onSave,
-//            onEditingComplete: () {
-//              log(
-//                'Editing completed [$_fieldName]',
-//                linenumber: lineNumber(StackTrace.current),
-//              );
-//            },
+              onFieldSubmitted: _onSave,
+              onEditingComplete: () {
+                log(
+                  'Editing completed [$_fieldName]',
+                  linenumber: lineNumber(StackTrace.current),
+                );
+                FocusScope.of(context).nextFocus();
+              },
             ),
             ErrorMsgWidget(fieldName: _fieldName),
           ],
