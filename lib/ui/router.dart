@@ -16,7 +16,7 @@ import 'package:meds/ui/views/splash_view.dart';
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     LoggerModel _model = locator();
-    bool isLogging = _model.isEnabled(ROUTING_LOGS);
+    bool isLogging = _model.isEnabled(ROUTING_LOGS) && _model.isEnabled(LOGGING_APP);
     if (isLogging) print('[Router] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
 
     switch (settings.name) {
