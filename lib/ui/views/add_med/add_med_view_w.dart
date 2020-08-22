@@ -38,8 +38,6 @@ class AddMedWidget extends StatelessWidget with Logger {
     return SafeArea(
       child: Scaffold(
         key: GlobalKey(),
-//        resizeToAvoidBottomPadding: true,
-//        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           leading: BackButton(
             onPressed: () {

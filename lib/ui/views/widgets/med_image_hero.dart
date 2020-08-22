@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:sized_context/sized_context.dart';
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
+import 'package:sized_context/sized_context.dart';
 
 class MedImageHero extends StatelessWidget {
   final String id;
@@ -18,22 +18,24 @@ class MedImageHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Center(
-          child: Hero(
-            tag: id,
-            child: Container(
-              child: Image(
-                image: NetworkToFileImage(
-                  file: imageFile,
-                  url: imageUrl,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Center(
+            child: Hero(
+              tag: id,
+              child: Container(
+                child: Image(
+                  image: NetworkToFileImage(
+                    file: imageFile,
+                    url: imageUrl,
+                  ),
+                  width: context.widthPct(0.85),
                 ),
-                width: context.widthPct(0.85),
               ),
             ),
           ),

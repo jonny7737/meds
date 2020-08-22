@@ -23,6 +23,9 @@ const String kHiveDirectory = 'hiveboxes';
 const String kMedHiveBox = 'med_data';
 const String kDoctorHiveBox = 'doctor_data';
 
+const double kFieldWidthPercent = 0.80;
+const double kErrorMsgWidthPercent = 0.75;
+
 const bool USE_FAKE_MED_DATA = false;
 
 const bool PURGE_ALL_DATA = false;

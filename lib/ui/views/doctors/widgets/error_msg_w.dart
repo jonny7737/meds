@@ -1,32 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 import 'package:sized_context/sized_context.dart';
-import 'package:flutter/material.dart';
 
 class DoctorErrorMsgWidget extends StatefulWidget {
   final String error;
+
   DoctorErrorMsgWidget({@required this.error});
+
   @override
   _DoctorErrorMsgWidgetState createState() => _DoctorErrorMsgWidgetState();
 }
 
 class _DoctorErrorMsgWidgetState extends State<DoctorErrorMsgWidget> {
   DoctorsViewModel _model = locator();
+  
   @override
   initState() {
     _model.addListener(update);
     super.initState();
   }
-
+  
   @override
   void dispose() {
     _model.removeListener(update);
     super.dispose();
   }
-
+  
   update() => setState(() => {});
-
+  
   @override
   Widget build(BuildContext context) {
     ScreenInfoViewModel _s = locator<ScreenInfoViewModel>();
@@ -45,7 +49,7 @@ class _DoctorErrorMsgWidgetState extends State<DoctorErrorMsgWidget> {
           duration: Duration(milliseconds: 300),
           alignment: Alignment.center,
           height: errorMsgHeight,
-          width: context.widthPct(0.75),
+          width: context.widthPct(kErrorMsgWidthPercent),
           color: Colors.transparent,
           padding: EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 2),
           child: Text(

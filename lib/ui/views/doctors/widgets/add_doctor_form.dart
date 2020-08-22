@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:meds/ui/views/doctors/widgets/add_doctor_field.dart';
 import 'package:meds/ui/views/doctors/widgets/submit_button.dart';
 

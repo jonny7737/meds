@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:meds/core/constants.dart';
+import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 import 'package:meds/ui/views/doctors/widgets/error_msg_w.dart';
 import 'package:sized_context/sized_context.dart';
 
-import 'package:meds/core/mixins/logger.dart';
+//TODO: Consider restructuring this file
 
 class AddDoctorField extends StatefulWidget with Logger {
   AddDoctorField({Key key, @required int index, String hint, String fieldName})
@@ -79,7 +80,7 @@ class _AddDoctorFieldState extends State<AddDoctorField> {
             borderRadius: BorderRadius.circular(15)),
         margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.10)),
         alignment: Alignment.center,
-        width: context.widthPct(0.80),
+        width: context.widthPct(kFieldWidthPercent),
         child: Stack(children: <Widget>[
           TextFormField(
             controller: textEditingController,

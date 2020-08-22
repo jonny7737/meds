@@ -62,24 +62,24 @@ class UserViewModel with ChangeNotifier, Logger {
 //    print(loggedInTimer.tick);
 //  }
 
-  void stopLoggedInTimer() {
-    if (loggedInTimer != null && loggedInTimer.isActive) {
-      loggedInTimer.cancel();
-      print("LoggedInTimer canceled.");
-    }
-  }
-
-  void startLoggedInTimer() async {
-    stopLoggedInTimer();
-    const to = const Duration(seconds: 20);
-    loggedInTimer = Timer.periodic(to, (Timer t) async {
-      //tikTok();
-      if (!await userModel.isLoggedIn()) {
-        print("Automatic logout triggered.");
-        logout();
-      }
-    });
-  }
+//  void stopLoggedInTimer() {
+//    if (loggedInTimer != null && loggedInTimer.isActive) {
+//      loggedInTimer.cancel();
+//      print("LoggedInTimer canceled.");
+//    }
+//  }
+//
+//  void startLoggedInTimer() async {
+//    stopLoggedInTimer();
+//    const to = const Duration(seconds: 20);
+//    loggedInTimer = Timer.periodic(to, (Timer t) async {
+//      //tikTok();
+//      if (!await userModel.isLoggedIn()) {
+//        print("Automatic logout triggered.");
+//        logout();
+//      }
+//    });
+//  }
 
   @override
   void dispose() {

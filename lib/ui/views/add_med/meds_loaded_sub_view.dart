@@ -35,8 +35,6 @@ class MedsLoadedSubView extends StatelessWidget with Logger {
                       model.saveSelectedMed(index);
                       model.clearTempMeds();
                       model.clearNewMed();
-//                      model.formKey.currentState.reset();
-//                      model.setState();
                       log(
                         'Med saved, model meds cleared, form reset',
                         linenumber: lineNumber(StackTrace.current),
@@ -70,8 +68,6 @@ class MedsLoadedSubView extends StatelessWidget with Logger {
                   await model.saveMedNoMfg();
                   model.clearTempMeds();
                   model.clearNewMed();
-//                  model.formKey.currentState.reset();
-//                  model.setState();
                   log(
                     'Med saved, model meds cleared, form reset',
                     linenumber: lineNumber(StackTrace.current),

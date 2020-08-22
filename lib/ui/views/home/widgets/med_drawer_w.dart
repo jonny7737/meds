@@ -138,10 +138,10 @@ class MedDrawer extends StatelessWidget with Logger {
                     height: context.heightPct(0.15),
                   ),
                   applicationName: 'Meds',
-                  applicationVersion: 'v-0.6.8',
+                  applicationVersion: 'v-0.9.8',
                   children: [
                     Text(
-                      'All drug information provided by U.S. National Institute of Health API.'
+                      'All drug information is provided by U.S. National Institute of Health API.'
                       '  Not appropriate for use with non-U.S. drugs.\n',
                       style: TextStyle(
                         fontSize: context.heightPct(0.020),

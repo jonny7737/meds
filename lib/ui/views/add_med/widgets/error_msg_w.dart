@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/add_med/error_message_viewmodel.dart';
-import 'package:sized_context/sized_context.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sized_context/sized_context.dart';
 
 class ErrorMsgWidget extends StatelessWidget {
   final String fieldName;
@@ -14,7 +15,7 @@ class ErrorMsgWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ErrorMessageViewModel _model = Provider.of(context);
     final ScreenInfoViewModel _s = locator();
-
+    
     return Align(
       alignment: Alignment.topCenter,
       child: Material(
@@ -28,7 +29,7 @@ class ErrorMsgWidget extends StatelessWidget {
           duration: Duration(milliseconds: 275),
           alignment: Alignment.center,
           height: _model.errorMsgHeight(fieldName),
-          width: context.widthPct(0.75),
+          width: context.widthPct(kErrorMsgWidthPercent),
           color: Colors.transparent,
           padding: EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 2),
           child: Text(

@@ -79,11 +79,6 @@ class DropDownFormField extends FormField<dynamic> {
                       ),
                     ),
                   ),
-//                  SizedBox(height: state.hasError ? 5.0 : 0.0),
-//                  Text(
-//                    state.hasError ? state.errorText : '',
-//                    style: TextStyle(color: Colors.black, fontSize: state.hasError ? 12.0 : 0.0),
-//                  ),
                 ],
               ),
             );

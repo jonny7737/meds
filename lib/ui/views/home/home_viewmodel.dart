@@ -1,21 +1,20 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
-import 'package:meds/core/constants.dart';
-import 'package:meds/ui/view_model/logger_viewmodel.dart';
-import 'package:meds/ui/view_model/user_viewmodel.dart';
-import 'package:path/path.dart' as p;
-
-import 'package:sized_context/sized_context.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:meds/core/constants.dart';
 import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/core/models/doctor_data.dart';
 import 'package:meds/core/models/med_data.dart';
 import 'package:meds/core/services/repository_service.dart';
 import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/logger_viewmodel.dart';
+import 'package:meds/ui/view_model/user_viewmodel.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:sized_context/sized_context.dart';
 
-class HomeViewModel extends ChangeNotifier with Logger {
+class HomeViewModel with ChangeNotifier, Logger {
   final LoggerViewModel _debug = locator();
 
   HomeViewModel() {

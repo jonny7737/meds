@@ -1,7 +1,8 @@
-import 'package:meds/ui/views/home/home_viewmodel.dart';
-import 'package:sized_context/sized_context.dart';
 import 'package:flutter/material.dart';
+import 'package:meds/core/constants.dart';
+import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:sized_context/sized_context.dart';
 
 class ErrorMsgWidget extends StatelessWidget {
   const ErrorMsgWidget();
@@ -23,7 +24,7 @@ class ErrorMsgWidget extends StatelessWidget {
           duration: Duration(milliseconds: 275),
           alignment: Alignment.center,
           height: _model.errorMsgHeight,
-          width: context.widthPct(0.80),
+          width: context.widthPct(kErrorMsgWidthPercent),
           color: Colors.transparent,
           padding: EdgeInsets.only(top: 4, bottom: 4, left: 10, right: 10),
           child: Text(

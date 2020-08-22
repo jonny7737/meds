@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
+import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_viewmodel.dart';
+import 'package:meds/ui/views/add_med/widgets/error_msg_w.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
-
-import 'package:meds/core/mixins/logger.dart';
-import 'package:meds/ui/views/add_med/widgets/error_msg_w.dart';
 
 class AddMedField extends StatelessWidget with Logger {
   final LoggerViewModel _debug = locator();
@@ -54,7 +53,7 @@ class AddMedField extends StatelessWidget with Logger {
         ),
         margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.10)),
         alignment: Alignment.center,
-        width: context.widthPct(0.80),
+        width: context.widthPct(kFieldWidthPercent),
         child: Stack(
           children: <Widget>[
             TextFormField(
@@ -87,8 +86,6 @@ class AddMedField extends StatelessWidget with Logger {
                   borderRadius: BorderRadius.circular(25.0),
                 ),
               ),
-              // The validator receives the text that the user has entered.
-              //validator: _validator,
               onSaved: _onSave,
               onFieldSubmitted: _onSave,
               onEditingComplete: () {

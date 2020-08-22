@@ -2,17 +2,20 @@ import 'package:flutter/foundation.dart';
 import 'package:meds/core/mixins/logger.dart';
 
 class ScreenInfoViewModel with Logger {
-  int _setupComplete = 0;
-  bool get isSetup => _setupComplete == 2;
+  List<String> _setupCompleted = [];
+
+  bool get isSetup => _setupCompleted.contains('S') && _setupCompleted.contains('P');
 
   bool _smallScreen = false;
   bool _mediumScreen = false;
   bool _largeScreen = false;
+
   void setScreenSize(diagonalInches) {
+    if (_setupCompleted.contains('S')) return;
     _smallScreen = diagonalInches < 5.11;
     _mediumScreen = !_smallScreen && diagonalInches <= 5.6;
     _largeScreen = diagonalInches > 5.6;
-    if (_setupComplete < 2) _setupComplete++;
+    _setupCompleted.add('S');
   }
 
   bool get isSmallScreen => _smallScreen;
@@ -29,12 +32,13 @@ class ScreenInfoViewModel with Logger {
   TargetPlatform _platform = TargetPlatform.android;
   TargetPlatform get platform => _platform;
   void setPlatform(value) {
+    if (_setupCompleted.contains('P')) return;
     _platform = value;
     if (_platform == TargetPlatform.iOS) {
       _setFontScale(0.79);
     } else
       _setFontScale(1.0);
-    if (_setupComplete < 2) _setupComplete++;
+    _setupCompleted.add('P');
   }
 
   double _fontScale = 1.0;
