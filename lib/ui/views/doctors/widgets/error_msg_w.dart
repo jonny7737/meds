@@ -16,21 +16,21 @@ class DoctorErrorMsgWidget extends StatefulWidget {
 
 class _DoctorErrorMsgWidgetState extends State<DoctorErrorMsgWidget> {
   DoctorsViewModel _model = locator();
-  
+
   @override
   initState() {
     _model.addListener(update);
     super.initState();
   }
-  
+
   @override
   void dispose() {
     _model.removeListener(update);
     super.dispose();
   }
-  
+
   update() => setState(() => {});
-  
+
   @override
   Widget build(BuildContext context) {
     ScreenInfoViewModel _s = locator<ScreenInfoViewModel>();

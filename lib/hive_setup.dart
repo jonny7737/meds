@@ -22,10 +22,10 @@ class HiveSetup with Logger {
   void _initializeHive({bool purge = false}) async {
     log('Initializing Hive, Purge All Data: $purge');
     await Hive.initFlutter(kHiveDirectory);
-    
+
     Hive.registerAdapter(MedDataAdapter());
     Hive.registerAdapter(DoctorDataAdapter());
-    
+
     if (purge) {
       Future.wait([
         Hive.deleteBoxFromDisk(kMedHiveBox),
@@ -35,7 +35,7 @@ class HiveSetup with Logger {
     }
     log('HiveSetup complete');
   }
-  
+
   Future _initializeFakeData() async {
     RepositoryService repository = locator<RepositoryService>();
     await repository.initializeMedData();

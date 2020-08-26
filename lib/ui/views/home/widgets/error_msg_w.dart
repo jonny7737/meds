@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
+import 'package:meds/locator.dart';
+import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
@@ -10,6 +12,7 @@ class ErrorMsgWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeViewModel _model = Provider.of(context);
+    final ScreenInfoViewModel _s = locator();
 
     return Align(
       alignment: Alignment.topCenter,
@@ -30,7 +33,7 @@ class ErrorMsgWidget extends StatelessWidget {
           child: Text(
             _model.errorMsg,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: _s.isiOSSmall ? 16 : 18,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),

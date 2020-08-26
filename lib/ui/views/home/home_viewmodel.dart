@@ -38,9 +38,12 @@ class HomeViewModel with ChangeNotifier, Logger {
     modelDirty(true);
   }
 
+  bool isDisposed = false;
+
   @override
   void dispose() {
     log('Dispose was called', linenumber: lineNumber(StackTrace.current));
+    isDisposed = true;
     _userModel.removeListener(update);
     _repository.removeListener(updateListData);
     super.dispose();
@@ -71,7 +74,10 @@ class HomeViewModel with ChangeNotifier, Logger {
 
   void showAddMedError() {
     _setAddMedErrorHeight(_errorMsgMaxHeight);
-    Future.delayed(Duration(seconds: 4), () => {_setAddMedErrorHeight(0)});
+    Future.delayed(Duration(seconds: 4), () {
+      if (isDisposed) return;
+      _setAddMedErrorHeight(0);
+    });
   }
 
   void _setAddMedErrorHeight(double height) {
@@ -168,12 +174,17 @@ class HomeViewModel with ChangeNotifier, Logger {
   }
 
   int get numberOfDoctors => _repository.numberOfDoctors;
+
   int get numberOfMeds => _repository.numberOfMeds;
 
   List<MedData> get medList => _repository.getAllMeds();
+
   List<DoctorData> get doctorList => _repository.getAllDoctors();
+
   int get size => _repository.numberOfMeds;
-  MedData get mtMedData => MedData(_userModel.name, -1, '00000', 'MT MedData', '', '', [], [], doctorId: -1);
+
+  MedData get mtMedData =>
+      MedData(_userModel.name, -1, '00000', 'MT MedData', '', '', [], [], doctorId: -1);
 
   void updateListData() async {
     log('Updating lists', linenumber: lineNumber(StackTrace.current));

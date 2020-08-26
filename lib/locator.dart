@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:meds/core/models/logger_model.dart';
 import 'package:meds/core/models/user_model.dart';
+import 'package:meds/core/services/data_service.dart';
 import 'package:meds/core/services/doctor_data_box.dart';
 import 'package:meds/core/services/doctor_data_repository.dart';
-import 'package:meds/core/services/data_service.dart';
 import 'package:meds/core/services/med_data_box.dart';
 import 'package:meds/core/services/med_data_repository.dart';
 import 'package:meds/core/services/med_lookup_service.dart';
@@ -16,11 +16,13 @@ import 'package:meds/ui/views/doctors/doctors_viewmodel.dart';
 GetIt locator = GetIt.instance;
 
 void setupLocator() {
-  locator.registerLazySingleton<UserModel>(() => UserModel());
-  locator.registerLazySingleton<UserViewModel>(() => UserViewModel());
+//  print('Locator setup started');
 
-  locator.registerLazySingleton<LoggerModel>(() => LoggerModel());
-  locator.registerLazySingleton<LoggerViewModel>(() => LoggerViewModel());
+  locator.registerSingleton<LoggerModel>(LoggerModel());
+  locator.registerSingleton<LoggerViewModel>(LoggerViewModel(), signalsReady: false);
+
+  locator.registerSingleton<UserModel>(UserModel(), signalsReady: false);
+  locator.registerSingleton<UserViewModel>(UserViewModel(), signalsReady: false);
 
   locator.registerLazySingleton<MedDataBox>(() => MedDataBox());
   locator.registerLazySingleton<DoctorDataBox>(() => DoctorDataBox());
@@ -34,4 +36,6 @@ void setupLocator() {
   locator.registerLazySingleton<MedLookUpService>(() => MedLookUpService());
 
   locator.registerLazySingleton(() => ScreenInfoViewModel());
+
+//  print('Locator setup complete');
 }

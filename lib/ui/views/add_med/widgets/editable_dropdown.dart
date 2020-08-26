@@ -8,7 +8,11 @@ import 'package:sized_context/sized_context.dart';
 
 class EditableDropdownWidget extends StatelessWidget {
   EditableDropdownWidget(
-      {Key key, @required int index, FocusNode focusNode, @required String fieldName, Function onSave})
+      {Key key,
+      @required int index,
+      FocusNode focusNode,
+      @required String fieldName,
+      Function onSave})
       : _index = 30 + index * 80.0,
         fn = focusNode,
         onSave = onSave,
@@ -31,19 +35,18 @@ class EditableDropdownWidget extends StatelessWidget {
         create: (_) => ViewModel(),
         child: Consumer<ViewModel>(
           builder: (context, model, child) {
-            return buildFormField(context);
+            return buildFormField(context, model);
           },
         ),
       ),
     );
   }
 
-  Widget buildFormField(BuildContext context) {
-    ViewModel model = context.watch();
+  Widget buildFormField(BuildContext context, ViewModel model) {
     AddMedViewModel _vm = context.watch();
-
+  
     model.dropDownSuggestionKey = dropDownSuggestionKey;
-
+  
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[100],
@@ -97,7 +100,8 @@ class EditableDropdownWidget extends StatelessWidget {
             items: model.suggestions,
             itemBuilder: (BuildContext context, int index, AsyncSnapshot<List<String>> snapshot) {
               String suggestion = snapshot.data.elementAt(index);
-              return ItemBuilder(model: model, index: index, onSave: onSave, suggestion: suggestion);
+              return ItemBuilder(
+                  model: model, index: index, onSave: onSave, suggestion: suggestion);
             },
             onSelected: (String suggestion) => {},
             onSaved: (value) {

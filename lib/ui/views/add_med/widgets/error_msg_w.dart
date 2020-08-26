@@ -15,7 +15,7 @@ class ErrorMsgWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ErrorMessageViewModel _model = Provider.of(context);
     final ScreenInfoViewModel _s = locator();
-    
+
     return Align(
       alignment: Alignment.topCenter,
       child: Material(

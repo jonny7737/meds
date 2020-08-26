@@ -42,10 +42,16 @@ class ScreenInfoViewModel with Logger {
   }
 
   double _fontScale = 1.0;
+
   double get fontScale => _fontScale;
+
   double _setFontScale(value) => _fontScale = value;
 
   bool get isiOS => platform == TargetPlatform.iOS;
+
+  bool get isiOSSmall => isSmallScreen && platform == TargetPlatform.iOS;
+
   bool get isiOSLarge => isLargeScreen && platform == TargetPlatform.iOS;
+
   bool get isAndroid => platform == TargetPlatform.android;
 }
