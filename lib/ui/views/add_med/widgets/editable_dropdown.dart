@@ -44,9 +44,9 @@ class EditableDropdownWidget extends StatelessWidget {
 
   Widget buildFormField(BuildContext context, ViewModel model) {
     AddMedViewModel _vm = context.watch();
-  
+
     model.dropDownSuggestionKey = dropDownSuggestionKey;
-  
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[100],

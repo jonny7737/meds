@@ -38,12 +38,12 @@ class SetupScreenInfo extends StatelessWidget with Logger {
     if (_kbVisible) {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     }
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       log('Navigating to SplashPage');
       Navigator.pushReplacementNamed(context, splashRoute);
     });
-    
+
     return screen;
   }
 }
