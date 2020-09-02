@@ -52,9 +52,7 @@ class UserModel {
     if (await isLoggedIn() == true) {
       return;
     }
-    var now = DateTime
-        .now()
-        .millisecondsSinceEpoch ~/ 1000;
+    var now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     /**
      * Require login at least once per day
      */
