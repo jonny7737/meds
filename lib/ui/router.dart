@@ -6,10 +6,10 @@ import 'package:meds/locator.dart';
 import 'package:meds/setup_screen_info.dart';
 import 'package:meds/ui/views/add_med/add_med_view.dart';
 import 'package:meds/ui/views/add_med/meds_loaded_sub_view.dart';
-import 'package:meds/ui/views/logger_menu/logger_menu_view.dart';
 import 'package:meds/ui/views/doctors/doctors_view.dart';
 import 'package:meds/ui/views/doctors/widgets/add_doctor_form.dart';
 import 'package:meds/ui/views/home/home_view.dart';
+import 'package:meds/ui/views/logger_menu/logger_menu_view.dart';
 import 'package:meds/ui/views/login/login_view.dart';
 import 'package:meds/ui/views/splash_view.dart';
 
@@ -17,7 +17,8 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     LoggerModel _model = locator();
     bool isLogging = _model.isEnabled(ROUTING_LOGS) && _model.isEnabled(LOGGING_APP);
-    if (isLogging) print('[Router] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
+    if (isLogging)
+      print('[Router] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
 
     switch (settings.name) {
       case setupRoute:
@@ -79,6 +80,7 @@ class Router {
           builder: (_) => LoginView(),
         );
       case homeRoute:
+        if (isLogging) print('About to execute Home route');
         return MaterialPageRoute(
           builder: (_) => HomeView(),
         );

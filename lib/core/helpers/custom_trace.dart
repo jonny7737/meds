@@ -18,7 +18,7 @@ class CustomTrace {
 
     var fileInfo = traceString.substring(indexOfFileName);
 
-    var listOfInfos = fileInfo.split(":");
+    var listOfInfos = fileInfo.split(RegExp(r"([:)])"));
 
     /* Splitting fileInfo by the character ":" separates the file name, the line number and the column counter nicely.
       Example: main.dart:5:12
@@ -30,7 +30,9 @@ class CustomTrace {
     this.fileName = listOfInfos[0];
     this.lineNumber = int.parse(listOfInfos[1]);
     var columnStr = listOfInfos[2];
-    columnStr = columnStr.replaceFirst(")", "");
-    this.columnNumber = int.parse(columnStr);
+    if (columnStr.trim().length > 0)
+      this.columnNumber = int.parse(columnStr);
+    else
+      this.columnNumber = -1;
   }
 }
