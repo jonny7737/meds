@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget with Logger {
   final LoggerViewModel _debug = locator();
-  
+
   @override
   Widget build(BuildContext context) {
     setLogging(_debug.isLogging(HOME_LOGS));
