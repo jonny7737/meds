@@ -69,9 +69,7 @@ class UserModel {
     if (expirey == null) {
       logout();
       return false;
-    } else if (expirey < DateTime
-        .now()
-        .millisecondsSinceEpoch ~/ 1000) {
+    } else if (expirey < DateTime.now().millisecondsSinceEpoch ~/ 1000) {
       logout();
       return false;
     }
