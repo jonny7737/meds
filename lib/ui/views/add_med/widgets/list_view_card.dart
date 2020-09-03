@@ -25,8 +25,6 @@ class ListViewCard extends StatelessWidget with Logger {
 
   @override
   Widget build(BuildContext context) {
-//    AddMedViewModel _model = Provider.of(context, listen: false);
-
     TempMed tempMed = _model.medFound;
 
     setLogging(_debug.isLogging(ADDMED_LOGS));
@@ -115,7 +113,8 @@ class ListViewCard extends StatelessWidget with Logger {
                 style: TextStyle(
                   color: Colors.black,
                   height: 0.9,
-                  fontSize: context.heightPct(_s.isLargeScreen ? 0.020 : 0.024) * _s.fontScale * 1.1,
+                  fontSize:
+                      context.heightPct(_s.isLargeScreen ? 0.020 : 0.024) * _s.fontScale * 1.1,
                 ),
               ),
             ),

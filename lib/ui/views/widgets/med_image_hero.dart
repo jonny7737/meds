@@ -19,9 +19,9 @@ class MedImageHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: GestureDetector(
+      child: Material(
+        color: Colors.transparent,
+        child: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },

@@ -101,7 +101,7 @@ class Router {
             Animation<double> secondaryAnimation,
             Widget child,
           ) {
-            return effectMap[PageTransitionType.slideUp](
+            return effectMap[PageTransitionType.fadeIn](
               Curves.linear,
               animation,
               secondaryAnimation,
