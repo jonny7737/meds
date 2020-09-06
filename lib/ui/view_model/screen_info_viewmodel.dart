@@ -1,10 +1,38 @@
 import 'package:flutter/foundation.dart';
 import 'package:meds/core/mixins/logger.dart';
+import 'package:package_info/package_info.dart';
 
 class ScreenInfoViewModel with Logger {
   List<String> _setupCompleted = [];
 
-  bool get isSetup => _setupCompleted.contains('S') && _setupCompleted.contains('P');
+  String appName;
+  String packageName;
+  String version;
+  String buildNumber;
+
+  ScreenInfoViewModel() {
+    setLogging(true);
+    init();
+    log('isSetupCompleted: ${_setupCompleted.toString()}',
+        linenumber: lineNumber(StackTrace.current));
+  }
+
+  init() async {
+    if (_setupCompleted.contains('I')) return;
+    var packageInfo = await PackageInfo.fromPlatform();
+    appName = packageInfo.appName;
+    packageName = packageInfo.packageName;
+    version = packageInfo.version;
+    buildNumber = packageInfo.buildNumber;
+    _setupCompleted.add('I');
+  }
+
+  bool get isSetup =>
+      _setupCompleted.contains('I') &&
+      _setupCompleted.contains('S') &&
+      _setupCompleted.contains('P');
+
+  bool runningSetup = false;
 
   bool _smallScreen = false;
   bool _mediumScreen = false;

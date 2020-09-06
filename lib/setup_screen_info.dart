@@ -9,23 +9,37 @@ import 'package:meds/ui/view_model/screen_info_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
 
-class SetupScreenInfo extends StatelessWidget with Logger {
-  final LoggerViewModel _debug = locator();
+class SetupScreenInfo extends StatefulWidget with Logger {
+  @override
+  _SetupScreenInfoState createState() => _SetupScreenInfoState();
+}
 
-  void navigateToSplashScreen(BuildContext context) {
-    log('Navigating to SplashPage');
-    Navigator.pushReplacementNamed(context, splashRoute);
+class _SetupScreenInfoState extends State<SetupScreenInfo> {
+  final ScreenInfoViewModel _s = locator();
+  final LoggerViewModel _debug = locator();
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Function log;
+  Function lineNumber;
+  Function setLogging;
+
+  initState() {
+    log = widget.log;
+    lineNumber = widget.lineNumber;
+    setLogging = widget.setLogging;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      log('${context.toString()}', linenumber: lineNumber(StackTrace.current));
+      if (context == null) return;
+      log('Navigating to SplashPage');
+      Navigator.pushReplacementNamed(context, splashRoute);
+    });
+
+    super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    ScreenInfoViewModel _s = locator();
-
-    Widget screen = SafeArea(child: Material(color: Colors.yellow[300]));
-
-    setLogging(_debug.isLogging(LOGGING_APP));
-
-    if (_s.isSetup) return screen;
+  bool setup(BuildContext context) {
+    if (_s.isSetup || _s.runningSetup) return false;
+    _s.runningSetup = true;
 
     //  This is the first 'context' with a MediaQuery, therefore,
     //  this is the first opportunity to set these values.
@@ -38,12 +52,20 @@ class SetupScreenInfo extends StatelessWidget with Logger {
     if (_kbVisible) {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     }
+    return true;
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      log('Navigating to SplashPage');
-      Navigator.pushReplacementNamed(context, splashRoute);
-    });
+  @override
+  Widget build(BuildContext context) {
+    setLogging(_debug.isLogging(LOGGING_APP));
 
-    return screen;
+    if (setup(context)) log('setup() returned', linenumber: lineNumber(StackTrace.current));
+
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: Material(color: Colors.yellow[300]),
+      ),
+    );
   }
 }

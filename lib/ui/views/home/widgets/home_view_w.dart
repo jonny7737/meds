@@ -1,35 +1,35 @@
+import 'package:flutter/material.dart';
 import 'package:meds/core/constants.dart';
+import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
 import 'package:meds/ui/views/add_med/add_med_view.dart';
+import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:meds/ui/views/home/widgets/app_bar_w.dart';
 import 'package:meds/ui/views/home/widgets/detail_card_w.dart';
 import 'package:meds/ui/views/home/widgets/error_msg_w.dart';
 import 'package:meds/ui/views/home/widgets/list_view_card.dart';
 import 'package:meds/ui/views/widgets/stack_modal_blur.dart';
-import 'package:sized_context/sized_context.dart';
-import 'package:flutter/material.dart';
-import 'package:meds/core/mixins/logger.dart';
-import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:sized_context/sized_context.dart';
 
 class HomeViewWidget extends StatelessWidget with Logger {
   final LoggerViewModel _debug = locator();
-
+  
   HomeViewWidget() {
     setLogging(_debug.isLogging(HOME_LOGS));
   }
-
+  
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  
   @override
   Widget build(BuildContext context) {
     HomeViewModel _model = Provider.of(context);
-
+    
     log('Meds available: ${_model.numberOfMeds}', linenumber: lineNumber(StackTrace.current));
-
+    
     _model.setBottoms(context);
-
+    
     return SafeArea(
       child: Material(
         elevation: 10,
@@ -70,7 +70,7 @@ class HomeViewWidget extends StatelessWidget with Logger {
                           navigateToAddMed(context, index, _model);
                           return false;
                         }
-
+                        
                         /// true triggers a delete
                         return true;
                       },
@@ -86,8 +86,7 @@ class HomeViewWidget extends StatelessWidget with Logger {
                 },
               ),
               const ErrorMsgWidget(),
-              if (_model.detailCardVisible)
-                const StackModalBlur(),
+              if (_model.detailCardVisible) const StackModalBlur(),
               DetailCard(),
             ],
           ),
@@ -95,7 +94,7 @@ class HomeViewWidget extends StatelessWidget with Logger {
       ),
     );
   }
-
+  
   /// navigateToAddMed is done this way to eliminate an exception.
   ///   If the navigation is not done here, the Dismissible AnimationController
   ///   throws an exception for calling reverse() after dispose()
@@ -110,43 +109,43 @@ class HomeViewWidget extends StatelessWidget with Logger {
       _model.modelDirty(true);
     }
   }
-
+  
   handleDismiss(HomeViewModel model, DismissDirection direction, int index) {
     // Get a reference to the swiped item
     //model.setActiveMedIndex(index);
     final swipedMed = model.getMedAt(index);
-
+    
     // Remove it from the list
     model.delete(swipedMed);
-
+    
     String action;
     if (direction == DismissDirection.endToStart)
       action = "Deleted";
     else
       action = "Edited";
-
+    
     _scaffoldKey.currentState
         .showSnackBar(
-          SnackBar(
-            backgroundColor: Theme.of(_scaffoldKey.currentContext).primaryColor,
-            content: Text(
-              '$action. Do you want to undo?',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            duration: Duration(seconds: 5),
-            action: SnackBarAction(
-                label: "Undo",
-                textColor: Colors.yellowAccent,
-                onPressed: () async {
-                  // Deep copy the deleted medication
-                  final newMed = swipedMed.copyWith();
-                  // Save the newly created medication
+      SnackBar(
+        backgroundColor: Theme.of(_scaffoldKey.currentContext).primaryColor,
+        content: Text(
+          '$action. Do you want to undo?',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        duration: Duration(seconds: 5),
+        action: SnackBarAction(
+            label: "Undo",
+            textColor: Colors.yellowAccent,
+            onPressed: () async {
+              // Deep copy the deleted medication
+              final newMed = swipedMed.copyWith();
+              // Save the newly created medication
 //                  log('${newMed.mfg}', linenumber: lineNumber(StackTrace.current));
-                  if (newMed.mfg.contains('Unknown')) await model.setDefaultMedImage(newMed.rxcui);
-                  model.save(newMed);
-                }),
-          ),
-        )
+              if (newMed.mfg.contains('Unknown')) await model.setDefaultMedImage(newMed.rxcui);
+              model.save(newMed);
+            }),
+      ),
+    )
         .closed
         .then((reason) {
       if (reason != SnackBarClosedReason.action) {
@@ -161,7 +160,7 @@ class Background extends StatelessWidget {
   const Background({
     Key key,
   }) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -181,7 +180,7 @@ class SecondaryBackground extends StatelessWidget {
   const SecondaryBackground({
     Key key,
   }) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(

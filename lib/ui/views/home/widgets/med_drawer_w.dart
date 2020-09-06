@@ -138,7 +138,7 @@ class MedDrawer extends StatelessWidget with Logger {
                     height: context.heightPct(0.15),
                   ),
                   applicationName: 'Meds',
-                  applicationVersion: 'v-1.0.0',
+                  applicationVersion: '${_s.version}+${_s.buildNumber}',
                   children: [
                     Text(
                       'All drug information is provided by U.S. National Institute of Health API.'

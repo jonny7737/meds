@@ -42,9 +42,9 @@ mixin Logger {
     /// This is to determine the calling Class type so it can be included in the output.
     String source = this.runtimeType.toString();
     if (linenumber == null)
-      print('[$source]-> $msg');
+      print('[$source]=> $msg');
     else
-      print('[$source.$linenumber]-> $msg');
+      print('[$source.$linenumber]=> $msg');
   }
 }
 

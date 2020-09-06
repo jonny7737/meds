@@ -11,14 +11,14 @@ import 'package:meds/ui/views/doctors/widgets/add_doctor_form.dart';
 import 'package:meds/ui/views/home/home_view.dart';
 import 'package:meds/ui/views/logger_menu/logger_menu_view.dart';
 import 'package:meds/ui/views/login/login_view.dart';
-import 'package:meds/ui/views/splash_view.dart';
+import 'package:meds/ui/views/splash/splash_view.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     LoggerModel _model = locator();
     bool isLogging = _model.isEnabled(ROUTING_LOGS) && _model.isEnabled(LOGGING_APP);
     if (isLogging)
-      print('[Router] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
+      print('[Router.21] => ${settings.name}  Arguments: ${settings.arguments.toString()}');
 
     switch (settings.name) {
       case setupRoute:
@@ -80,7 +80,7 @@ class Router {
           builder: (_) => LoginView(),
         );
       case homeRoute:
-        if (isLogging) print('About to execute Home route');
+        if (isLogging) print('[Router.83] => About to execute Home route');
         return MaterialPageRoute(
           builder: (_) => HomeView(),
         );
@@ -122,7 +122,10 @@ class Router {
           builder: (_) => SafeArea(
             child: Scaffold(
               body: Center(
-                child: Text('No route defined for ${settings.name}'),
+                child: Text(
+                  'No route defined for ${settings.name}',
+                  style: TextStyle(fontSize: 24),
+                ),
               ),
             ),
           ),

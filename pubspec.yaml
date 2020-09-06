@@ -1,7 +1,7 @@
 name: meds
-description: Meds application for code exploration.
+description: Meds application for flutter code exploration.
 
-version: 1.0.0
+version: 1.0.0+5
 
 environment:
   sdk: ">=2.9.0 <3.0.0"
@@ -10,12 +10,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.0
   hive: ^1.4.4
   hive_flutter: ^0.3.1
-  provider: ^4.3.2+1
+  provider: ^4.3.2+2
   flutter_spinkit: ^4.1.2+1
-  shared_preferences: ^0.5.10
+  shared_preferences: '>=0.5.10 <2.0.0'
   sized_context: ^0.2.1+1
   get_it: ^4.0.4
   network_to_file_image: ^2.3.2
@@ -27,6 +27,7 @@ dependencies:
   flutter_page_transition: ^0.1.6
   dropdown_suggestions_form_field: ^1.0.3
   permission_handler: ^5.0.1+1
+  package_info: ^0.4.3
 
 dev_dependencies:
 #  flutter_test:

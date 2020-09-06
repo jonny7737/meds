@@ -4,19 +4,18 @@ import 'package:meds/core/mixins/logger.dart';
 import 'package:meds/locator.dart';
 import 'package:meds/ui/themes/theme_data_provider.dart';
 import 'package:meds/ui/view_model/logger_viewmodel.dart';
+import 'package:meds/ui/view_model/user_viewmodel.dart';
 import 'package:meds/ui/views/home/custom_drawer.dart';
 import 'package:meds/ui/views/home/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sized_context/sized_context.dart';
-
-import 'package:meds/ui/view_model/user_viewmodel.dart';
 
 class HomeAppBar extends StatelessWidget with Logger implements PreferredSizeWidget {
   final UserViewModel userViewModel = locator();
   final LoggerViewModel _debug = locator();
   @override
   Widget build(BuildContext context) {
-    final ThemeDataProvider themeDataProvider = Provider.of(context, listen: false);
+    final ThemeDataProvider themeDataProvider = Provider.of(context);
     final String userName = userViewModel.name;
     final HomeViewModel _model = Provider.of(context);
 

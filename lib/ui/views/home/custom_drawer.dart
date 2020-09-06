@@ -14,8 +14,7 @@ class CustomDrawer extends StatefulWidget {
   CustomDrawerState createState() => new CustomDrawerState();
 }
 
-class CustomDrawerState extends State<CustomDrawer>
-    with SingleTickerProviderStateMixin {
+class CustomDrawerState extends State<CustomDrawer> with SingleTickerProviderStateMixin {
   static const Duration toggleDuration = Duration(milliseconds: 300);
   static const double minDragStartEdge = 60;
 
@@ -94,10 +93,10 @@ class CustomDrawerState extends State<CustomDrawer>
     final double maxSlide = context.widthPct(maxSlidePct);
     final double maxDragStartEdge = maxSlide - maxSlideDragOffsetPct;
 
-    bool isDragOpenFromLeft = _animationController.isDismissed &&
-        details.globalPosition.dx < minDragStartEdge;
-    bool isDragCloseFromRight = _animationController.isCompleted &&
-        details.globalPosition.dx > maxDragStartEdge;
+    bool isDragOpenFromLeft =
+        _animationController.isDismissed && details.globalPosition.dx < minDragStartEdge;
+    bool isDragCloseFromRight =
+        _animationController.isCompleted && details.globalPosition.dx > maxDragStartEdge;
 
     _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
   }
@@ -119,8 +118,8 @@ class CustomDrawerState extends State<CustomDrawer>
       return;
     }
     if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
-      double visualVelocity = details.velocity.pixelsPerSecond.dx /
-          MediaQuery.of(context).size.width;
+      double visualVelocity =
+          details.velocity.pixelsPerSecond.dx / MediaQuery.of(context).size.width;
 
       _animationController.fling(velocity: visualVelocity);
     } else if (_animationController.value < 0.5) {

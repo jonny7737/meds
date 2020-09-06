@@ -20,8 +20,10 @@ class HomeView extends StatelessWidget with Logger {
     Widget screen = HomeViewWidget();
     screen = CustomDrawer(child: screen);
 
-    return ChangeNotifierProvider(
-      create: (_) => HomeViewModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: HomeViewModel()),
+      ],
       child: screen,
     );
   }
